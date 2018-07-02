@@ -40,8 +40,8 @@ public class UserController extends BaseController{
         if(null != bizUser){
             throw new UsernameIsExitedException("用户已经存在");
         }
-        user.setPassword(DigestUtils.md5DigestAsHex((user.getPassword()).getBytes()));
-//        user.setPassword("12345678");
+//        user.setPassword(DigestUtils.md5DigestAsHex((user.getPassword()).getBytes()));
+        user.setPassword("123456");
         return userRepository.save(user);
     }
     
