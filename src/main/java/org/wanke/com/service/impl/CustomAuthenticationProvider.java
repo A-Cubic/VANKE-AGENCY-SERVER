@@ -22,7 +22,8 @@ import org.springframework.util.DigestUtils;
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 	private UserDetailsService userDetailsService;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @SuppressWarnings("unused")
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public CustomAuthenticationProvider(UserDetailsService userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder){
         this.userDetailsService = userDetailsService;

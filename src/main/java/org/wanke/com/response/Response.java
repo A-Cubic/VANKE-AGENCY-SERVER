@@ -44,7 +44,8 @@ public class Response<T> implements Serializable{
          this.error = "错误代码:"+code+"原因："+msg;
     }  
 
-    public String toString() {
+    @SuppressWarnings("deprecation")
+	public String toString() {
         return Objects.toStringHelper(this).add("success", this.success).add("results", this.results).add("error", this.error).omitNullValues().toString();
     }
 }

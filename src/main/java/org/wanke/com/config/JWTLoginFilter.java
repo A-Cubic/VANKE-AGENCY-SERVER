@@ -55,6 +55,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
@@ -69,9 +70,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 				roleList.add(grantedAuthority.getAuthority());
 			}
 			token = Jwts.builder().setSubject(auth.getName() + "-" + roleList)
-					.setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 设置过期时间 7 * 24
-																										// * 60 *
-																										// 60秒(这里为了方便测试，所以设置了7天的过期时间，实际项目需要根据自己的情况修改)
+					// 设置过期时间 7 * 24 * 60 * 60秒(7天的过期时间)
+					.setExpiration(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) 
 					.signWith(SignatureAlgorithm.HS512, ConstantKey.SIGNING_KEY) //采用HS512算法
 					.compact();
 			// 登录成功后，返回token到header里面

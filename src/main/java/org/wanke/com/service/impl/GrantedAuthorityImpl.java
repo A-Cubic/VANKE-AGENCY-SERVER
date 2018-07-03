@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
  * @author fei.yu
  */
 public class GrantedAuthorityImpl implements GrantedAuthority {
+	private static final long serialVersionUID = -1939685575950481672L;
 	private String authority;
 
     public GrantedAuthorityImpl(String authority) {

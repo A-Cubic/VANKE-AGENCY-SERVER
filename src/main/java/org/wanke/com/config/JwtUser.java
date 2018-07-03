@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class JwtUser implements UserDetails {
+	private static final long serialVersionUID = 2070193318852024206L;
 	private String username;
 	private String password;
 	private Collection<? extends GrantedAuthority> authorities;
