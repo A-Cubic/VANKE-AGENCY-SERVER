@@ -45,8 +45,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException {
 		try {
-			org.wanke.com.entity.User user = new ObjectMapper().readValue(req.getInputStream(),
-					org.wanke.com.entity.User.class);
+			org.wanke.com.entity.SysUser user = new ObjectMapper().readValue(req.getInputStream(),
+					org.wanke.com.entity.SysUser.class);
 
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(user.getAccount(), user.getPassword(), new ArrayList<>()));

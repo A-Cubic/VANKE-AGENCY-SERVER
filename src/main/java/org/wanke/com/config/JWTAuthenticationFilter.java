@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.wanke.com.common.ConstantKey;
 import org.wanke.com.exception.TokenException;
-import org.wanke.com.service.impl.GrantedAuthorityImpl;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -73,7 +72,7 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
                 String[] split = user.split("-")[1].split(",");
                 ArrayList<GrantedAuthority> authorities = new ArrayList<>();
                 for (int i=0; i < split.length; i++) {
-                    authorities.add(new GrantedAuthorityImpl(split[i]));
+//                    authorities.add(new GrantedAuthorityImpl(split[i]));
                 }
                 return new UsernamePasswordAuthenticationToken(user, null, authorities);
             }

@@ -7,17 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.wanke.com.entity.User;
-import org.wanke.com.repository.UserRepository;
+import org.wanke.com.entity.SysUser;
+import org.wanke.com.mapper.SysMapper;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl11 implements UserDetailsService {
 	@Autowired
-	UserRepository userRepository;
+	SysMapper mapper;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByAccount(username);
+		SysUser user = mapper.findByUserAccount(username);
 		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		}

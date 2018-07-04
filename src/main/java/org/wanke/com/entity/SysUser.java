@@ -1,17 +1,10 @@
 package org.wanke.com.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.List;
 import lombok.Data;
 
 @Data
-@Entity
-@Table(name = "sys_user")
-public class User {
-	@Id
-    @GeneratedValue
+public class SysUser {
 	private long id;
 	private String account;
 	private String password;
@@ -29,4 +22,5 @@ public class User {
 	private String del_flag;
 	private String del_time;
 	private long del_id;
+	private List<SysRole> roles;
 }

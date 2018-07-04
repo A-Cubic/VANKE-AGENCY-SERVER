@@ -2,10 +2,14 @@ package org.wanke.com.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.sql.DataSource;
 
-//import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
 //import org.apache.ibatis.session.SqlSessionFactory;
 //import org.mybatis.spring.SqlSessionFactoryBean;
 //import org.mybatis.spring.annotation.MapperScan;
@@ -16,20 +20,23 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Lists;
 
-//@MapperScan("org.wanke.com.mapper")
-@Configuration
+
 /**
  * druid数据源配置
  * @author fei.yu
  */
+@MapperScan("org.wanke.com.mapper")
+@Configuration
 public class DataSourceConfig {
 	@Bean(name="datasource",initMethod = "init",destroyMethod = "close")
 	@ConfigurationProperties(prefix = "spring.datasource.druid")
@@ -37,29 +44,29 @@ public class DataSourceConfig {
 		return new DruidDataSource();
 	}
 
-//	@Bean
-//	public SqlSessionFactory sqlSessionFactoryBean() throws Exception {
-//
-//		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-//		sqlSessionFactoryBean.setDataSource(dataSource());
-//
-//		//mybatis分页
-//        PageHelper pageHelper = new PageHelper();
-//        Properties props = new Properties();
-//        props.setProperty("dialect", "mysql");
-//        props.setProperty("reasonable", "true");
-//        props.setProperty("supportMethodsArguments", "false");
-////        props.setProperty("returnPageInfo", "check");
-////        props.setProperty("params", "count=countSql");
-//        pageHelper.setProperties(props);
-//        //添加插件
-//        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});
-//		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-//
-//		sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:/mybatis/*.xml"));
-//
-//		return sqlSessionFactoryBean.getObject();
-//	}
+	@Bean
+	public SqlSessionFactory sqlSessionFactoryBean() throws Exception {
+
+		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+		sqlSessionFactoryBean.setDataSource(dataSource());
+
+		//mybatis分页
+        PageHelper pageHelper = new PageHelper();
+        Properties props = new Properties();
+        props.setProperty("dialect", "mysql");
+        props.setProperty("reasonable", "true");
+        props.setProperty("supportMethodsArguments", "false");
+//        props.setProperty("returnPageInfo", "check");
+//        props.setProperty("params", "count=countSql");
+        pageHelper.setProperties(props);
+        //添加插件
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper});
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+		sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:/mybatis/*.xml"));
+
+		return sqlSessionFactoryBean.getObject();
+	}
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {

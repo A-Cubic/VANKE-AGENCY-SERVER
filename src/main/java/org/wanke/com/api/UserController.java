@@ -12,13 +12,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.wanke.com.entity.User;
-import org.wanke.com.exception.UsernameIsExitedException;
-import org.wanke.com.repository.UserRepository;
+import org.wanke.com.entity.SysResources;
+import org.wanke.com.mapper.SysMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,21 +25,21 @@ import io.swagger.annotations.ApiOperation;
 @Api(value = "用户管理", description = "用户管理")
 public class UserController extends BaseController{
     @Autowired
-    UserRepository userRepository;
+    SysMapper mapper;
     
     private static final Logger logger = LogManager.getLogger(UserController.class);
 
 //    @RequestMapping(value = "/signup")
-    @PostMapping("/signup")
-    public User signUp(@RequestBody User user) {
-    	User bizUser = userRepository.findByAccount(user.getAccount());
-        if(null != bizUser){
-            throw new UsernameIsExitedException("用户已经存在");
-        }
-//        user.setPassword(DigestUtils.md5DigestAsHex((user.getPassword()).getBytes()));
-        user.setPassword("123456");
-        return userRepository.save(user);
-    }
+//    @PostMapping("/signup")
+//    public SysUser signUp(@RequestBody SysUser user) {
+//    	SysUser bizUser = userRepository.findByAccount(user.getAccount());
+//        if(null != bizUser){
+//            throw new UsernameIsExitedException("用户已经存在");
+//        }
+////        user.setPassword(DigestUtils.md5DigestAsHex((user.getPassword()).getBytes()));
+//        user.setPassword("123456");
+//        return userRepository.save(user);
+//    }
     
     /**
      * 获取用户列表
@@ -51,18 +48,24 @@ public class UserController extends BaseController{
     @ApiOperation(value = "查询用户列表")
     @GetMapping("/userList")
     public Map<String, Object> userList(){
-        List<User> users = userRepository.findAll();
-        logger.info("users: {}", users);
+        List<SysResources> resources = mapper.findAllSysResources();
+        logger.info("resources: {}", resources);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("users",users);
+        map.put("resources",resources);
         return map;
+    }
+    
+    @GetMapping("/a")
+    public String a(){
+        return "a";
     }
 
     @ApiOperation(value = "查询用户权限")
     @GetMapping("/authorityList")
     public List<String> authorityList(){
-        List<String> authentication = getAuthentication();
-        return authentication;
+//        List<String> authentication = getAuthentication();
+//        return authentication;
+    	return null;
     }
     
     public static void main(String[] args) {

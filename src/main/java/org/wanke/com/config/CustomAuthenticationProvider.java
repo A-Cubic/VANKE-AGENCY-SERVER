@@ -1,4 +1,4 @@
-package org.wanke.com.service.impl;
+package org.wanke.com.config;
 
 import java.util.ArrayList;
 
@@ -42,8 +42,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             if (userDetails.getPassword().equals(encodePassword)) {
                 // 这里设置权限和角色
                 ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN"));
-                authorities.add( new GrantedAuthorityImpl("AUTH_WRITE"));
+//                authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN"));
+//                authorities.add( new GrantedAuthorityImpl("AUTH_WRITE"));
                 // 生成令牌 这里令牌里面存入了:account,password,authorities
                 Authentication auth = new UsernamePasswordAuthenticationToken(name, password, authorities);
                 return auth;
