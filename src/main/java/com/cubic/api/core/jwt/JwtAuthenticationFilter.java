@@ -1,6 +1,8 @@
 package com.cubic.api.core.jwt;
 
 import com.cubic.api.util.IpUtil;
+
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,10 +49,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if ("OPTIONS".equals(request.getMethod())) {
             return;
         }
+        
+//        if (StringUtils.isNotBlank(authHeader) && authHeader.startsWith(tokenHead)) {
+//            //如果header中存在token，则覆盖掉url中的token
+//            authToken = authHeader.substring(tokenHead.length()); // "Bearer "之后的内容
+//        }
 
-        final String token = this.jwtUtil.getTokenFromRequest(request);
-        if (token == null) {
+
+        String token = this.jwtUtil.getTokenFromRequest(request);
+        String token_url = request.getParameter("token");
+        if (!StringUtils.isNotBlank(token) && !StringUtils.isNotBlank(token_url)) {
             log.info("JwtFilter => Anonymous<> request URL<{}> Method<{}>", IpUtil.getIpAddress(request), request.getRequestURL(), request.getMethod());
+        } else if (!StringUtils.isNotBlank(token) && StringUtils.isNotBlank(token_url)) {
+        	token = token_url;
         } else {
             final String username = this.jwtUtil.getUsername(token);
             log.info("JwtFilter => user<{}> token : {}", username, token);
