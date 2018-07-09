@@ -67,11 +67,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(this.jwtAuthenticationEntryPoint).and()
                 // 对所有的请求都做权限校验
                 .authorizeRequests()
-                // 允许登录和注册
+                // 允许登录
                 .antMatchers(
                         HttpMethod.POST,
-                        "/user/login",
-                        "/user"
+                        "/user/login"
+//                        ,"/api/ws"
                 ).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated().and();

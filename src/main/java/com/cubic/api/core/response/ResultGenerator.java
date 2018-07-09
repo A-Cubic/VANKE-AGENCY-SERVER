@@ -9,9 +9,12 @@ import org.springframework.http.HttpStatus;
  * @date 2018/06/09
  */
 public class ResultGenerator {
+	//默认消息区
     private static final String DEFAULT_OK_MESSAGE = "OK";
     private static final String DEFAULT_UNAUTHORIZED_MESSAGE = "需要授权";
     private static final String DEFAULT_METHOD_NOT_ALLOWED_MESSAGE = "请求方法不正确";
+    
+    //自定义消息区
 
     public static Result genOkResult() {
         return new Result

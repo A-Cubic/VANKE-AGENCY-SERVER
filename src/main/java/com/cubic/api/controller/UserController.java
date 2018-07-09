@@ -96,31 +96,31 @@ public class UserController {
         // {"username":"admin", "password":"admin123"}
         // {"email":"admin@qq.com", "password":"admin123"}
         if (user.getUsername() == null && user.getEmail() == null) {
-            return ResultGenerator.genFailedResult("username or email empty");
+            return ResultGenerator.genFailedResult("空账号");
         }
         if (user.getPassword() == null) {
-            return ResultGenerator.genFailedResult("password empty");
+            return ResultGenerator.genFailedResult("空密码");
         }
         // 用户名登录
         User dbUser = null;
         if (user.getUsername() != null) {
             dbUser = this.userService.findBy("username", user.getUsername());
             if (dbUser == null) {
-                return ResultGenerator.genFailedResult("username error");
+                return ResultGenerator.genFailedResult("账号不正确");
             }
         }
         // 邮箱登录
         if (user.getEmail() != null) {
             dbUser = this.userService.findBy("email", user.getEmail());
             if (dbUser == null) {
-                return ResultGenerator.genFailedResult("email error");
+                return ResultGenerator.genFailedResult("错误的邮箱地址");
             }
             user.setUsername(dbUser.getUsername());
         }
         // 验证密码
         //noinspection ConstantConditions
         if (!this.userService.verifyPassword(user.getPassword(), dbUser.getPassword())) {
-            return ResultGenerator.genFailedResult("password error");
+            return ResultGenerator.genFailedResult("密码错误");
         }
         // 更新登录时间
         this.userService.updateLoginTimeByUsername(user.getUsername());
