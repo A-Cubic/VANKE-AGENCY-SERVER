@@ -45,24 +45,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Expose-Headers", "*");
         // 预请求后，直接返回
         // 返回码必须为 200 否则视为请求失败
-
         if ("OPTIONS".equals(request.getMethod())) {
             return;
         }
         
-//        if (StringUtils.isNotBlank(authHeader) && authHeader.startsWith(tokenHead)) {
-//            //如果header中存在token，则覆盖掉url中的token
-//            authToken = authHeader.substring(tokenHead.length()); // "Bearer "之后的内容
-//        }
-
-
         String token = this.jwtUtil.getTokenFromRequest(request);
         String token_url = request.getParameter("token");
         if (!StringUtils.isNotBlank(token) && !StringUtils.isNotBlank(token_url)) {
             log.info("JwtFilter => Anonymous<> request URL<{}> Method<{}>", IpUtil.getIpAddress(request), request.getRequestURL(), request.getMethod());
-        } else if (!StringUtils.isNotBlank(token) && StringUtils.isNotBlank(token_url)) {
-        	token = token_url;
-        } else {
+        }  else {
+        	if (!StringUtils.isNotBlank(token) && StringUtils.isNotBlank(token_url)) {
+            	token = token_url;
+            } 
             final String username = this.jwtUtil.getUsername(token);
             log.info("JwtFilter => user<{}> token : {}", username, token);
             log.info("JwtFilter => request URL<{}> Method<{}>", request.getRequestURL(), request.getMethod());

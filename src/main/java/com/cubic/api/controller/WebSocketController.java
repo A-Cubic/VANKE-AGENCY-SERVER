@@ -19,7 +19,7 @@ public class WebSocketController {
      * @return 
      */  
 	@RequestMapping(value="/sendAll", method=RequestMethod.GET)  
-    String sendAllMessage(@RequestParam(required=true) String message,@RequestParam(required=true) String token){  
+    String sendAllMessage(@RequestParam(required=true) String message){  
         try {  
             WebSocketServer.BroadCastInfo(message);  
         } catch (IOException e) {  
@@ -35,7 +35,7 @@ public class WebSocketController {
      * @return 
      */  
 	@RequestMapping(value="/sendOne", method=RequestMethod.GET) 
-    String sendOneMessage(@RequestParam(required=true) String message,@RequestParam(required=true) String id,@RequestParam(required=true) String token){  
+    String sendOneMessage(@RequestParam(required=true) String message,@RequestParam(required=true) String id){  
         try {  
             WebSocketServer.SendMessage(id,message);  
         } catch (IOException e) {  
