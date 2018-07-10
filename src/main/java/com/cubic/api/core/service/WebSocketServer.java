@@ -12,7 +12,8 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;  
   
 import org.slf4j.Logger;  
-import org.slf4j.LoggerFactory;  
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;  
 
 /**
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author fei.yu
  * @date 2018/05/07
  */
-@ServerEndpoint(value = "/ws/vanke")  
+@ServerEndpoint(value = "/user/ws")  
 @Component  
 public class WebSocketServer {
 	 private static Logger log = LoggerFactory.getLogger(WebSocketServer.class);  
