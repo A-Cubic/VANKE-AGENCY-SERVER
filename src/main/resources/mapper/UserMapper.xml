@@ -14,6 +14,7 @@
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="relname" jdbcType="VARCHAR" property="relname"/>
         <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="store_id" jdbcType="BIGINT" property="store_id"/>
     </resultMap>
 
     <resultMap id="UserWithRoleMap" type="com.cubic.api.model.User" extends="UserMap">

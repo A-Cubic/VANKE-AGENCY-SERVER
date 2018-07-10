@@ -13,6 +13,7 @@ import java.util.List;
  * @author fei.yu
  * @date 2018/06/09
  */
+@Table(name = "sys_user")
 public class User {
     /**
      * 用户Id

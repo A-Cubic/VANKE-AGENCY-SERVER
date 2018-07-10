@@ -5,6 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  * @author fei.yu
  * @date 2018/06/09
  */
+@Table(name = "sys_role")
 public class Role {
     /**
      * 角色Id

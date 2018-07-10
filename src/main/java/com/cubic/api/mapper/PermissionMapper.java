@@ -24,6 +24,6 @@ public interface PermissionMapper extends MyMapper<Permission> {
      *
      * @return 代码列表
      */
-    @Select("SELECT p.code FROM `permission` p")
+    @Select("SELECT p.code FROM `sys_permission` p")
     List<String> findAllCode();
 }

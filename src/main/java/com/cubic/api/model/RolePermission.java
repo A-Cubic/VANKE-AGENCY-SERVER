@@ -8,7 +8,7 @@ import javax.persistence.Table;
  * @author fei.yu
  * @date 2018/06/09
  */
-@Table(name = "role_permission")
+@Table(name = "sys_role_permission")
 public class RolePermission {
     /**
      * 角色Id

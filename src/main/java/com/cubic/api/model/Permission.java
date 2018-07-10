@@ -3,11 +3,13 @@ package com.cubic.api.model;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author fei.yu
  * @date 2018/06/09
  */
+@Table(name = "sys_permission")
 public class Permission {
     /**
      * 权限Id
