@@ -51,7 +51,7 @@ class CodeGenerator {
         if (scanner.next().equals("y")) {
             overwrite = true;
         }
-        genCode("表名");
+        genCode("store");
         //genCodeByCustomModelName("输入表名","输入自定义Model名称");
     }
 

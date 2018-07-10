@@ -21,6 +21,6 @@
         p.resource,
         p.id,
         p.handle
-        FROM `permission` p
+        FROM `sys_permission` p
     </select>
 </mapper>

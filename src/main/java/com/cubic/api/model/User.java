@@ -24,7 +24,7 @@ public class User {
     /**
      * 邮箱
      */
-    @NotEmpty(message = "邮箱不能为空")
+//    @NotEmpty(message = "邮箱不能为空")
     @Email
     private String email;
 
@@ -52,8 +52,60 @@ public class User {
      * 简介
      */
     private String resume;
-
+    
     /**
+     * 门店id
+     */
+    private Long store_id;
+    
+    /**
+     * 电话
+     */
+    private String phone;
+    
+    /**
+     * 性别
+     */
+    private String sex;
+    
+    /**
+     * 真实姓名
+     */
+    private String relname;
+
+    public Long getStore_id() {
+		return store_id;
+	}
+
+	public void setStore_id(Long store_id) {
+		this.store_id = store_id;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getRelname() {
+		return relname;
+	}
+
+	public void setRelname(String relname) {
+		this.relname = relname;
+	}
+
+	/**
      * 注册时间
      */
     @Column(name = "register_time")

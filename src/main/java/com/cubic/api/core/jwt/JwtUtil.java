@@ -132,19 +132,19 @@ public class JwtUtil {
                     .parseClaimsJws(token.replace(this.jwtSetting.getTokenPrefix(), ""));
         } catch (final SignatureException e) {
             // 签名异常
-            log.error("Invalid JWT signature");
+            log.error("JWT 签名异常");
         } catch (final MalformedJwtException e) {
             // JWT 格式错误
-            log.error("Invalid JWT token");
+            log.error("JWT 格式错误");
         } catch (final ExpiredJwtException e) {
             // JWT 过期
-            log.error("Expired JWT token");
+            log.error("JWT 过期");
         } catch (final UnsupportedJwtException e) {
             // 不支持该 JWT
-            log.error("Unsupported JWT token");
+            log.error("不支持该 JWT");
         } catch (final IllegalArgumentException e) {
             // 参数错误异常
-            log.error("JWT token compact of handler are invalid");
+            log.error("JWT 参数错误异常");
         }
         return null;
     }
