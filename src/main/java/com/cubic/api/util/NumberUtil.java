@@ -7,7 +7,7 @@ package com.cubic.api.util;
  * @date 2018/07/12
  */
 public class NumberUtil {
-	public static String geoHouseEquipmentNo(String type,long equipmentNo){
+	public static String geoEquipmentNo(String type,long equipmentNo){
         String newEquipmentNo = "000000001";
         long newEquipment = equipmentNo;
         newEquipmentNo = String.format(type + "%09d", newEquipment);
