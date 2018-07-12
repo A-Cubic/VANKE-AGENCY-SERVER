@@ -45,7 +45,7 @@ public class StoreController {
 		return ResultGenerator.genOkResult(store);
 	}
 
-	@GetMapping
+	@GetMapping("/list")
 	public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
 		PageHelper.startPage(page, size);
 		List<Store> list = storeService.findAll();

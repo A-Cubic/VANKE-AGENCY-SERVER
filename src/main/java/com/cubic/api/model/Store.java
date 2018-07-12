@@ -2,6 +2,7 @@ package com.cubic.api.model;
 
 import javax.persistence.*;
 
+@Table(name = "base_store")
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
