@@ -1,5 +1,11 @@
 package com.cubic.api.util;
 
+/**
+ * 房源、客源、用户编号生成工具
+ *
+ * @author fei.yu
+ * @date 2018/07/12
+ */
 public class NumberUtil {
 	public static String geoHouseEquipmentNo(String equipmentNo){
         String newEquipmentNo = "000000001";
