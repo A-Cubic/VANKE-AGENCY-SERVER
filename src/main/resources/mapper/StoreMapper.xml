@@ -9,4 +9,9 @@
     <result column="store_name" jdbcType="VARCHAR" property="storeName" />
     <result column="store_adress" jdbcType="VARCHAR" property="storeAdress" />
   </resultMap>
+  
+  
+    <!-- <select id="ListBaseStore" resultMap="BaseResultMap">
+  		SELECT * FROM `base_store`
+  	</select>  -->
 </mapper>
