@@ -60,14 +60,14 @@ public class BusHouse {
     /**
      * 房屋维护人的id
      */
-    @Column(name = "record_user_id")
-    private Long recordUserId;
+    @Column(name = "record_user_name")
+    private String recordUserName;
 
     /**
      * 房屋提交人的id
      */
-    @Column(name = "create_user_id")
-    private Long createUserId;
+    @Column(name = "create_user_name")
+    private String createUserName;
 
     /**
      * 房屋提交时间
@@ -293,39 +293,39 @@ public class BusHouse {
     }
 
     /**
-     * 获取房屋维护人的id
+     * 获取房屋维护人的账号名
      *
-     * @return record_user_id - 房屋维护人的id
+     * @return record_user_Name - 房屋维护人的账号名
      */
-    public Long getRecordUserId() {
-        return recordUserId;
+    public String getRecordUserName() {
+        return recordUserName;
     }
 
     /**
-     * 设置房屋维护人的id
+     * 设置房屋维护人的账号名
      *
-     * @param recordUserId 房屋维护人的id
+     * @param recordUserName 房屋维护人的账号名
      */
-    public void setRecordUserId(Long recordUserId) {
-        this.recordUserId = recordUserId;
+    public void setRecordUserName(String recordUserName) {
+        this.recordUserName = recordUserName;
     }
 
     /**
-     * 获取房屋提交人的id
+     * 获取房屋提交人的账号名
      *
-     * @return create_user_id - 房屋提交人的id
+     * @return create_user_name - 房屋提交人的账号名
      */
-    public Long getCreateUserId() {
-        return createUserId;
+    public String getCreateUserName() {
+        return createUserName;
     }
 
     /**
-     * 设置房屋提交人的id
+     * 设置房屋提交人的账号名
      *
-     * @param createUserId 房屋提交人的id
+     * @param createUserName 房屋提交人的账号名
      */
-    public void setCreateUserId(Long createUserId) {
-        this.createUserId = createUserId;
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
     }
 
     /**

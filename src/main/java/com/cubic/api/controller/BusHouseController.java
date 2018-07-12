@@ -19,6 +19,7 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.service.BusHouseService;
+import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -32,9 +33,25 @@ public class BusHouseController {
     @Resource
     private BusHouseService busHouseService;
 
+   /**
+    * 创建房源信息
+    * @param user, busHouse
+    * 
+    * */
     @PostMapping("/save")
     public Result add(Principal user,@RequestBody BusHouse busHouse) {
+    	//创建人账号名
+    	busHouse.setCreateUserName(user.getName());
+    	//维护人账号名
+    	busHouse.setRecordUserName(user.getName());
     	busHouseService.save(busHouse);
+    	//根据id得到房源编号并更新
+    	String num = NumberUtil.geoEquipmentNo("H",busHouse.getId());
+    	BusHouse busHouseNew=new BusHouse();
+    	busHouseNew.setId(busHouse.getId());
+    	busHouseNew.setNumber(num);
+    	busHouseService.update(busHouseNew);
+    	
         return ResultGenerator.genOkResult();
     }
 
@@ -44,7 +61,11 @@ public class BusHouseController {
         return ResultGenerator.genOkResult();
     }
     
-    //改变房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
+    /**
+     * 改变房源状态
+     * @param busHouse
+     * 状态:(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * */
     @PutMapping("/updateState")
     public Result updateState(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
@@ -58,22 +79,28 @@ public class BusHouseController {
         return ResultGenerator.genOkResult();
     }
     
-    
-    //转赠房源维护人
+    /**
+     * 转赠房源维护人
+     * @param busHouse
+     * 
+     * */
     @PutMapping("/updateRecordUser")
     public Result updateRecordUser(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
     	if(null != busHouse){
-    		if(busHouse.getId() != null && busHouse.getRecordUserId() != null){
+    		if(busHouse.getId() != null && busHouse.getRecordUserName() != null){
     			busHouseNew.setId(busHouse.getId());
-    			busHouseNew.setRecordUserId(busHouse.getRecordUserId());
+    			busHouseNew.setRecordUserName(busHouse.getRecordUserName());
     			busHouseService.update(busHouseNew);
     		}
     	}
         return ResultGenerator.genOkResult();
     }
-    
-    //修改钥匙状态是否在维护人手里(0:不在,1:在)
+    /**
+     * 修改钥匙状态
+     * @param busHouse
+     * 状态:(0:不在维护人手里,1:在维护人手里)
+     * */
     @PutMapping("/updateIskey")
     public Result updateIsKey(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
@@ -86,8 +113,11 @@ public class BusHouseController {
     	}
         return ResultGenerator.genOkResult();
     }
-    
-    //修改房源等级
+    /**
+     * 修改房源等级
+     * @param busHouse
+     * 
+     * */
     @PutMapping("/updateGrade")
     public Result updateGrade(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
