@@ -55,7 +55,7 @@ public class BusHouse {
     /**
      * 房屋等级(S,A,B,C)
      */
-    private String grade;
+    private String grade="B";
 
     /**
      * 房屋维护人的id
@@ -88,7 +88,7 @@ public class BusHouse {
     /**
      * 房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
      */
-    private String state;
+    private String state="0";
 
     /**
      * 房屋详细地址

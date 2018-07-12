@@ -1,15 +1,26 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.service.BusHouseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author cubic
@@ -22,18 +33,7 @@ public class BusHouseController {
     private BusHouseService busHouseService;
 
     @PostMapping("/save")
-    public Result add(@RequestBody BusHouse busHouse) {
-
-    	if(null != busHouse){
-    		
-    		if(busHouse.getGrade()==null){
-    			busHouse.setGrade("B");
-    		}
-    		if(busHouse.getState()==null){
-    			busHouse.setState("0");
-    		}
-    		
-    	}
+    public Result add(Principal user,@RequestBody BusHouse busHouse) {
     	busHouseService.save(busHouse);
         return ResultGenerator.genOkResult();
     }
