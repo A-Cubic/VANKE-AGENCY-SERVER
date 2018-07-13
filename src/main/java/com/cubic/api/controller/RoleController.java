@@ -17,7 +17,7 @@ import java.util.List;
  * @date 2018/06/09
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/vanke/role")
 public class RoleController {
     @Resource
     private RoleService roleService;

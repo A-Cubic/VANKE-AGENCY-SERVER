@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2018/07/10
  */
 @RestController
-@RequestMapping("/store")
+@RequestMapping("/vanke/store")
 public class StoreController {
 	@Resource
 	private StoreService storeService;

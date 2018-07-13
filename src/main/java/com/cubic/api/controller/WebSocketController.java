@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.service.WebSocketServer;
 
 @RestController  
-@RequestMapping("/api/ws")  
+@RequestMapping("/vanke/api/ws")  
 public class WebSocketController {
 	
     /** 

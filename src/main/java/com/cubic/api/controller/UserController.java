@@ -36,7 +36,7 @@ import com.github.pagehelper.PageInfo;
  * @date 2018/06/09
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/vanke/user")
 @Validated
 public class UserController {
     @Resource

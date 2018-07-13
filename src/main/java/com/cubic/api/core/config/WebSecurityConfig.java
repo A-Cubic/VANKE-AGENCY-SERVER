@@ -70,8 +70,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 允许登录
                 .antMatchers(
                         HttpMethod.POST,
-                        "/user/login"
-//                        ,"/api/ws"
+                        "/vanke/user/login"
                 ).permitAll()
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated().and();

@@ -29,7 +29,7 @@ import com.github.pagehelper.PageInfo;
  * @date 2018/07/12
  */
 @RestController
-@RequestMapping("/house")
+@RequestMapping("/vanke/house")
 public class BusHouseController {
     @Resource
     private BusHouseService busHouseService;
@@ -125,13 +125,21 @@ public class BusHouseController {
      * 
      * */
     @PostMapping("/list")
-    public Result list(@RequestParam(defaultValue = "0") Integer page,
-                       @RequestParam(defaultValue = "0") Integer size,
-                       @RequestBody Map<String,Object>  map) {
+    public Result list(@RequestBody Map<String,Object> map) {
     	
-        PageHelper.startPage(page, size);
+        PageHelper.startPage((Integer)map.get("page"), (Integer)map.get("size"));
         List<BusHouse> list = busHouseService.ListBusHouse(map);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    /**
+     * 测试接口
+     * @param map
+     * 
+     * */
+    @PostMapping("/test")
+    public Result test(@RequestBody Map<String,Object> map) {
+        return ResultGenerator.genOkResult(map);
     }
 }
