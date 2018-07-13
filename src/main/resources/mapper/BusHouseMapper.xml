@@ -12,8 +12,10 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="price" jdbcType="VARCHAR" property="price" />
     <result column="floor" jdbcType="VARCHAR" property="floor" />
+    <result column="maxfloor" jdbcType="VARCHAR" property="maxfloor" />
     <result column="huxing" jdbcType="VARCHAR" property="huxing" />
     <result column="areas" jdbcType="VARCHAR" property="areas" />
+    <result column="hiddenarea" jdbcType="VARCHAR" property="hiddenarea" />
     <result column="chaoxiang" jdbcType="VARCHAR" property="chaoxiang" />
     <result column="grade" jdbcType="VARCHAR" property="grade" />
     <result column="record_user_name" jdbcType="VARCHAR" property="recordUserName" />
@@ -22,8 +24,13 @@
     <result column="introduce" jdbcType="VARCHAR" property="introduce" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="region_code" jdbcType="VARCHAR" property="region_code" />
+    <result column="street_id" jdbcType="VARCHAR" property="street_id" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="iskey" jdbcType="VARCHAR" property="iskey" />
+    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+    
+   
   </resultMap>
   
   
@@ -46,7 +53,8 @@
 		  `introduce`,
 		  `type`,
 		  `state`,
-		  `iskey`
+		  `iskey`,
+		   imgurl
 		FROM `vanke`.`bus_house`
 		<where>
 		1=1
@@ -108,8 +116,11 @@
 	             `introduce`,
 	             `type`,
 	             `state`,
+	             region_code,
+	             street_id,
 	             `address`,
-	             `iskey`)
+	             `iskey`,
+	             	imgurl)
 			VALUES (
 			        #{title},
 			        #{owner},
@@ -126,7 +137,10 @@
 			        #{introduce},
 			        #{type},
 			        #{state},
+			        #{regionCode},
+			        #{streetId},
 			        #{address},
-			        #{iskey});
+			        #{iskey},
+			        #{imgurl});
 	 </insert>
 </mapper>

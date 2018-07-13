@@ -89,7 +89,19 @@ public class BusHouse {
      * 房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
      */
     private String state="0";
-
+    
+    /**
+     * 房屋区号地址
+     */
+    @Column(name = "region_code")
+    private String regionCode;
+    
+    /**
+     * 房屋街道id
+     */
+    @Column(name = "street_id")
+    private String streetId;
+    
     /**
      * 房屋详细地址
      */
@@ -99,6 +111,11 @@ public class BusHouse {
      * 房屋钥匙状态在不在维护人手里(0:不在,1:在)
      */
     private String iskey;
+    
+    /**
+     * 房屋信息图片(多个逗号间隔)
+     */
+    private String imgurl;
 
     /**
      * @return id
@@ -399,6 +416,40 @@ public class BusHouse {
     public void setState(String state) {
         this.state = state;
     }
+    
+	 /**
+     * 房屋区号地址code
+     * 
+     * @return regionCode 
+     */
+	public String getRegionCode() {
+		return regionCode;
+	}
+	 /**
+     * 房屋区号地址code
+     * 
+     * @param regionCode 
+     */
+	public void setRegionCode(String regionCode) {
+		this.regionCode = regionCode;
+	}
+	 /**
+     * 房屋街道id
+     * 
+     * @return streetId 
+     */
+	public String getStreetId() {
+		return streetId;
+	}
+	
+	 /**
+     * 房屋街道id
+     * 
+     * @param streetId 
+     */
+	public void setStreetId(String streetId) {
+		this.streetId = streetId;
+	}
 
     /**
      * 获取房屋详细地址
@@ -435,4 +486,26 @@ public class BusHouse {
     public void setIskey(String iskey) {
         this.iskey = iskey;
     }
+
+
+
+	 /**
+     * 房屋信息图片
+     * 多个逗号间隔
+     * @return imgurl
+     */
+	public String getImgurl() {
+		return imgurl;
+	}
+	
+	 /**
+     * 房屋信息图片
+     * 多个逗号间隔
+     * @param imgurl 
+     */
+	public void setImgurl(String imgurl) {
+		this.imgurl = imgurl;
+	}
+    
+    
 }
