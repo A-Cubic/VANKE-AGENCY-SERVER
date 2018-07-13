@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusGuestMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusGuest">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="guestname" jdbcType="VARCHAR" property="guestname" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="guestgrade" jdbcType="VARCHAR" property="guestgrade" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="heartprice" jdbcType="VARCHAR" property="heartprice" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="areas" jdbcType="VARCHAR" property="areas" />
+    <result column="huxing" jdbcType="VARCHAR" property="huxing" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
+    <result column="purpose" jdbcType="VARCHAR" property="purpose" />
+    <result column="label" jdbcType="VARCHAR" property="label" />
+    <result column="iskey" jdbcType="VARCHAR" property="iskey" />
+    <result column="record_user_name" jdbcType="VARCHAR" property="recordUserName" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="collaboratorids" jdbcType="VARCHAR" property="collaboratorids" />
+  </resultMap>
+</mapper>

@@ -25,6 +25,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 /**
+ * 房源接口
  * @author cubic
  * @date 2018/07/12
  */
@@ -46,7 +47,7 @@ public class BusHouseController {
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
     	busHouseService.insertBusHouse(busHouse);
-    	System.out.println(busHouse.getId());
+
     	//根据id得到房源编号并更新
     	String num = NumberUtil.geoEquipmentNo("H",busHouse.getId());
     	BusHouse busHouseNew=new BusHouse();
@@ -54,7 +55,7 @@ public class BusHouseController {
     	busHouseNew.setNumber(num);
     	busHouseService.update(busHouseNew);
     	
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("添加成功");
     }
 
     @DeleteMapping("/{id}")
@@ -78,7 +79,7 @@ public class BusHouseController {
     			busHouseService.update(busHouseNew);
     		}
     	}
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("修改成功");
     }
     
     /**
@@ -96,7 +97,7 @@ public class BusHouseController {
     			busHouseService.update(busHouseNew);
     		}
     	}
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("修改成功");
     }
     /**
      * 修改房源基本信息
@@ -109,24 +110,29 @@ public class BusHouseController {
     	if(null != busHouse){
     			busHouseService.update(busHouse);  		
     	}
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("修改成功");
     }
   
 
-    @GetMapping("/detail/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusHouse busHouse = busHouseService.findById(id);
+    @PostMapping("/detailPhone")
+    public Result detailPhone(@RequestBody Map<String,Object> map) {
+    	BusHouse busHouse = busHouseService.findById(map.get("id"));
+        return ResultGenerator.genOkResult(busHouse);
+    }
+    @PostMapping("/detailAddress")
+    public Result detail(@RequestBody Map<String,Object> map) {
+    	BusHouse busHouse = busHouseService.findById(map.get("id"));
         return ResultGenerator.genOkResult(busHouse);
     }
 
     /**
      * 按条件查询列表 返回分页数据
      * @param  page  size map
-     * 
+     * @RequestBody Map<String,Object> map
      * */
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
-    	
+
         PageHelper.startPage((Integer)map.get("page"), (Integer)map.get("size"));
         List<BusHouse> list = busHouseService.ListBusHouse(map);
         PageInfo pageInfo = new PageInfo(list);
