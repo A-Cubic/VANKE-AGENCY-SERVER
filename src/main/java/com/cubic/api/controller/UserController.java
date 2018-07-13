@@ -1,23 +1,35 @@
 package com.cubic.api.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.cubic.api.core.jwt.JwtUtil;
-import com.cubic.api.core.response.Result;
-import com.cubic.api.core.response.ResultGenerator;
-import com.cubic.api.model.User;
-import com.cubic.api.service.UserService;
-import com.cubic.api.service.impl.UserDetailsServiceImpl;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cubic.api.core.jwt.JwtUtil;
+import com.cubic.api.core.response.Result;
+import com.cubic.api.core.response.ResultGenerator;
+import com.cubic.api.model.LoginResponse;
+import com.cubic.api.model.User;
+import com.cubic.api.service.UserService;
+import com.cubic.api.service.impl.UserDetailsServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author fei.yu
@@ -124,7 +136,7 @@ public class UserController {
         }
         // 更新登录时间
         this.userService.updateLoginTimeByUsername(user.getUsername());
-        return this.getToken(user);
+        return this.getLogin(user);
     }
 
     @GetMapping("/logout")
@@ -140,5 +152,21 @@ public class UserController {
         final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         final String token = this.jwtUtil.sign(username, userDetails.getAuthorities());
         return ResultGenerator.genOkResult(token);
+    }
+    
+	private Result getLogin(final User user) {
+        final String username = user.getUsername();
+        final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+        final String token = this.jwtUtil.sign(username, userDetails.getAuthorities());
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        for(Object o : userDetails.getAuthorities()) {
+        	SimpleGrantedAuthority sa = (SimpleGrantedAuthority)o;
+        	if(sa.getAuthority().indexOf("_") != -1) {
+        		response.setAuthorities(sa.getAuthority());
+        	}
+        	break;
+        }
+        return ResultGenerator.genOkResult(response);	 
     }
 }
