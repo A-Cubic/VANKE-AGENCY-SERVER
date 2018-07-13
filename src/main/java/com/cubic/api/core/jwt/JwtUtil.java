@@ -101,7 +101,7 @@ public class JwtUtil {
 
         final Date date = new Date(System.currentTimeMillis() + this.jwtSetting.getExpirationTime() * 1000);
         // 加载私钥
-        final PrivateKey privateKey = this.rsaUtil.loadPemPrivateKey(this.jwtSetting.getPrivateKey());
+//        final PrivateKey privateKey = this.rsaUtil.loadPemPrivateKey(this.jwtSetting.getPrivateKey());
         // 创建 token
         return this.jwtSetting.getTokenPrefix() + " " +
                 Jwts.builder()
@@ -112,7 +112,8 @@ public class JwtUtil {
                         // 设置失效时间
                         .setExpiration(date)
                         // 512位的私钥加密生成签名
-                        .signWith(SignatureAlgorithm.RS256, privateKey)
+//                        .signWith(SignatureAlgorithm.RS256, "cubic-secret@vanke")
+                        .signWith(SignatureAlgorithm.HS512, "cubic-secret@vanke")
                         // 哈夫曼压缩
                         .compressWith(CompressionCodecs.DEFLATE)
                         .compact();
@@ -124,11 +125,11 @@ public class JwtUtil {
     private Jws<Claims> parseToken(final String token) {
         try {
             // 加载公钥
-            final PublicKey publicKey = this.rsaUtil.loadPemPublicKey(this.jwtSetting.getPublicKey());
+//            final PublicKey publicKey = this.rsaUtil.loadPemPublicKey(this.jwtSetting.getPublicKey());
             return Jwts
                     .parser()
                     // 公钥解密
-                    .setSigningKey(publicKey)
+                    .setSigningKey("cubic-secret@vanke")
                     .parseClaimsJws(token.replace(this.jwtSetting.getTokenPrefix(), ""));
         } catch (final SignatureException e) {
             // 签名异常
