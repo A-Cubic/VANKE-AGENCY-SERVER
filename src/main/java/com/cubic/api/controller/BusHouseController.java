@@ -2,6 +2,7 @@ package com.cubic.api.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -28,7 +29,7 @@ import com.github.pagehelper.PageInfo;
  * @date 2018/07/12
  */
 @RestController
-@RequestMapping("/bus/house")
+@RequestMapping("/house")
 public class BusHouseController {
     @Resource
     private BusHouseService busHouseService;
@@ -44,7 +45,8 @@ public class BusHouseController {
     	busHouse.setCreateUserName(user.getName());
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
-    	busHouseService.save(busHouse);
+    	busHouseService.insertBusHouse(busHouse);
+    	System.out.println(busHouse.getId());
     	//根据id得到房源编号并更新
     	String num = NumberUtil.geoEquipmentNo("H",busHouse.getId());
     	BusHouse busHouseNew=new BusHouse();
@@ -97,51 +99,38 @@ public class BusHouseController {
         return ResultGenerator.genOkResult();
     }
     /**
-     * 修改钥匙状态
-     * @param busHouse
-     * 状态:(0:不在维护人手里,1:在维护人手里)
-     * */
-    @PutMapping("/updateIskey")
-    public Result updateIsKey(@RequestBody BusHouse busHouse) {
-    	BusHouse busHouseNew=new BusHouse();
-    	if(null != busHouse){
-    		if(busHouse.getId() != null && busHouse.getIskey() != null){
-    			busHouseNew.setId(busHouse.getId());
-    			busHouseNew.setIskey(busHouse.getIskey());
-    			busHouseService.update(busHouseNew);
-    		}
-    	}
-        return ResultGenerator.genOkResult();
-    }
-    /**
-     * 修改房源等级
+     * 修改房源基本信息
      * @param busHouse
      * 
      * */
-    @PutMapping("/updateGrade")
-    public Result updateGrade(@RequestBody BusHouse busHouse) {
-    	BusHouse busHouseNew=new BusHouse();
+    @PutMapping("/update")
+    public Result update(@RequestBody BusHouse busHouse) {
+    	
     	if(null != busHouse){
-    		if(busHouse.getId() != null && busHouse.getGrade() != null){
-    			busHouseNew.setId(busHouse.getId());
-    			busHouseNew.setGrade(busHouse.getGrade());
-    			busHouseService.update(busHouseNew);
-    		}
+    			busHouseService.update(busHouse);  		
     	}
         return ResultGenerator.genOkResult();
     }
+  
 
-    @GetMapping("/{id}")
+    @GetMapping("/detail/{id}")
     public Result detail(@PathVariable Long id) {
     	BusHouse busHouse = busHouseService.findById(id);
         return ResultGenerator.genOkResult(busHouse);
     }
 
-    @GetMapping("/list")
+    /**
+     * 按条件查询列表 返回分页数据
+     * @param  page  size map
+     * 
+     * */
+    @PostMapping("/list")
     public Result list(@RequestParam(defaultValue = "0") Integer page,
-                       @RequestParam(defaultValue = "0") Integer size) {
+                       @RequestParam(defaultValue = "0") Integer size,
+                       @RequestBody Map<String,Object>  map) {
+    	
         PageHelper.startPage(page, size);
-        List<BusHouse> list = busHouseService.findAll();
+        List<BusHouse> list = busHouseService.ListBusHouse(map);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
