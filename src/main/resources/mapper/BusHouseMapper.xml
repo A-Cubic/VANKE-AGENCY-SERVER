@@ -25,4 +25,108 @@
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="iskey" jdbcType="VARCHAR" property="iskey" />
   </resultMap>
+  
+  
+  
+  <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">
+		SELECT
+		  `id`,
+		  `number`,
+		  `title`,
+		  `owner`,
+		  `price`,
+		  `floor`,
+		  `huxing`,
+		  `areas`,
+		  `chaoxiang`,
+		  `grade`,
+		  `record_user_name`,
+		  `create_user_name`,
+		  `create_time`,
+		  `introduce`,
+		  `type`,
+		  `state`,
+		  `iskey`
+		FROM `vanke`.`bus_house`
+		<where>
+		1=1
+			<if test="priceUp == null and priceDown != null"><!-- 金额条件在XXX以下 -->
+				<![CDATA[and price <= #{priceDown} ]]>
+			</if>
+			
+			<if test="priceUp != null and priceDown == null"><!-- 金额条件在XXX以上 -->
+				<![CDATA[and price >= #{priceUp} ]]>
+			</if>
+			
+			<if test="priceUp != null and priceDown != null"><!-- 金额条件在XXX与XXX之间 -->
+				<![CDATA[and price >= #{priceUp} and price <= #{priceDown}]]>
+			</if>
+			
+			<if test="floor != null"><!-- 楼层条件-->
+				 and floor = #{floor}
+			</if>
+			
+			<if test="huxing != null"><!-- 户型条件-->
+				 and huxing like #{huxing}"%" 
+			</if>
+			
+			<if test="areasUp == null and areasDown != null"><!-- 面积条件在XXX以下 -->
+				<![CDATA[and areas <= #{areasDown} ]]>
+			</if>
+			
+			<if test="areasUp != null and areasDown == null"><!-- 面积条件在XXX以上 -->
+				<![CDATA[and areas >= #{areasUp} ]]>
+			</if>
+			
+			<if test="areasUp != null and areasDown != null"><!-- 面积条件在XXX与XXX之间 -->
+				<![CDATA[and areas >= #{areasUp} and areas <= #{areasDown}]]>
+			</if>
+			
+			<if test="chaoxiang != null"><!-- 朝向条件-->
+				 and chaoxiang = #{chaoxiang}
+			</if>
+		</where>
+  
+  </select>
+  
+  
+	 <insert id="insertBusHouse" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusHouse">
+	 	INSERT INTO `vanke`.`bus_house`
+	            (
+	             `title`,
+	             `owner`,
+	             `phone`,
+	             `price`,
+	             `floor`,
+	             `huxing`,
+	             `areas`,
+	             `chaoxiang`,
+	             `grade`,
+	             `record_user_name`,
+	             `create_user_name`,
+	             `create_time`,
+	             `introduce`,
+	             `type`,
+	             `state`,
+	             `address`,
+	             `iskey`)
+			VALUES (
+			        #{title},
+			        #{owner},
+			        #{phone},
+			        #{price},
+			        #{floor},
+			        #{huxing},
+			        #{areas},
+			        #{chaoxiang},
+			        #{grade},
+			        #{recordUserName},
+			        #{createUserName},
+			        NOW(),
+			        #{introduce},
+			        #{type},
+			        #{state},
+			        #{address},
+			        #{iskey});
+	 </insert>
 </mapper>
