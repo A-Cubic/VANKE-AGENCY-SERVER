@@ -10,6 +10,11 @@ public class BusGuest {
     private Long id;
 
     /**
+     * 客源编号
+     */
+    private String number;
+    
+    /**
      * 客源姓名
      */
     private String guestname;
@@ -73,8 +78,17 @@ public class BusGuest {
      * 是否是无效客源(0:否,1:是)
      */
     private String iskey;
+    
 
-    /**
+    public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	/**
      * 维护人账户名
      */
     @Column(name = "record_user_name")

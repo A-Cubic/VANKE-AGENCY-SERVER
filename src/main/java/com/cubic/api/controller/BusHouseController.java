@@ -121,7 +121,7 @@ public class BusHouseController {
     @PostMapping("/detailPhone")
     public Result detailPhone(Principal user,@RequestBody Map<String,Object> map) {
     	BusHouse busHouse = busHouseService.DetailContacts(map);
-    	if(busHouse.clickcount==20){
+    	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询联系信息的次数已用完");   		
     	}
     	return ResultGenerator.genOkResult(busHouse);
@@ -135,7 +135,7 @@ public class BusHouseController {
     @PostMapping("/detailAddress")
     public Result detail(Principal user,@RequestBody Map<String,Object> map) {
     	BusHouse busHouse = busHouseService.DetailAddress(map);
-    	if(busHouse.clickcount==20){
+    	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询房屋地址的次数已用完");
     	}
         return ResultGenerator.genOkResult(busHouse);

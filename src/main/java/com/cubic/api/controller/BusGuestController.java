@@ -1,16 +1,27 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusGuest;
 import com.cubic.api.service.BusGuestService;
+import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 客源接口
@@ -36,11 +47,11 @@ public class BusGuestController {
     	busGuestService.insertBusGuest(busGuest);
     	
     	//根据id得到客源编号并更新
-    	String num = NumberUtil.geoEquipmentNo("G",busHouse.getId());
+    	String num = NumberUtil.geoEquipmentNo("G",busGuest.getId());
     	BusGuest busGuestNew=new BusGuest();
-    	busGuestNew.setId(busHouse.getId());
+    	busGuestNew.setId(busGuest.getId());
     	busGuestNew.setNumber(num);
-    	busGuestService.update(busHouseNew);
+    	busGuestService.update(busGuestNew);
         return ResultGenerator.genOkResult("添加成功");
     }
 

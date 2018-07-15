@@ -56,8 +56,18 @@ public class BusHouse {
      * 房屋等级(S,A,B,C)
      */
     private String grade="B";
+    
+    private int clickcount = 0;
 
-    /**
+    public int getClickcount() {
+		return clickcount;
+	}
+
+	public void setClickcount(int clickcount) {
+		this.clickcount = clickcount;
+	}
+
+	/**
      * 房屋维护人的id
      */
     @Column(name = "record_user_name")

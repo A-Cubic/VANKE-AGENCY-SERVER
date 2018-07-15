@@ -28,7 +28,7 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
  	@Override
    public void insertBusGuest(BusGuest busGuest){
  		
-	   return busGuestMapper.insertBusGuest(busGuest);
+	   busGuestMapper.insertBusGuest(busGuest);
 	   
    }
 }
