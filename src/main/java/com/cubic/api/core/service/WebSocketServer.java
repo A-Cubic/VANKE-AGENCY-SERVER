@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
  * @author fei.yu
  * @date 2018/05/07
  */
-@ServerEndpoint(value = "/vanke/ws")  
+@ServerEndpoint(value = "/vanke/user/ws")  
 @Component  
 public class WebSocketServer {
 	 private static Logger log = LoggerFactory.getLogger(WebSocketServer.class);  
