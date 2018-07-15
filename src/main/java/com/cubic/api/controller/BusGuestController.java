@@ -73,7 +73,7 @@ public class BusGuestController {
         return ResultGenerator.genOkResult(busGuest);
     }
 
-    @PostMapping
+    @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage((Integer)map.get("page"), (Integer)map.get("size"));
         List<BusGuest> list = busGuestService.findAll();
