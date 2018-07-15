@@ -44,4 +44,28 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		busHouseMapper.insertBusHouse(busHouse);	
 	}
 
+	
+	
+	 /**
+    * 点击查看详细联系方式及房主姓名
+    * @param map
+    * 
+    * */
+	@Override
+	public BusHouse DetailContacts(Map<String,Object> map){
+		
+		return busHouseMapper.DetailContacts(map);
+		
+	}
+	
+	 /**
+    * 点击查看房屋地址
+    * @param map
+    * 
+    * */
+	@Override
+	public BusHouse DetailAddress(Map<String,Object> map){
+		return busHouseMapper.DetailAddress(map);
+		
+	}
 }

@@ -20,4 +20,15 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
     @Resource
     private BusGuestMapper busGuestMapper;
 
+	 /**
+     * 创建客源信息
+     * @param busGuest
+     * 
+     * */
+ 	@Override
+   public void insertBusGuest(BusGuest busGuest){
+ 		
+	   return busGuestMapper.insertBusGuest(busGuest);
+	   
+   }
 }

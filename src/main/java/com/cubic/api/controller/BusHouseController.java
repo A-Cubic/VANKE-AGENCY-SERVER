@@ -113,15 +113,31 @@ public class BusHouseController {
         return ResultGenerator.genOkResult("修改成功");
     }
   
-
+	 /**
+     * 点击查看详细联系方式及房主姓名
+     * @param map
+     * 
+     * */
     @PostMapping("/detailPhone")
-    public Result detailPhone(@RequestBody Map<String,Object> map) {
-    	BusHouse busHouse = busHouseService.findById(map.get("id"));
-        return ResultGenerator.genOkResult(busHouse);
+    public Result detailPhone(Principal user,@RequestBody Map<String,Object> map) {
+    	BusHouse busHouse = busHouseService.DetailContacts(map);
+    	if(busHouse.clickcount==20){
+    		return ResultGenerator.genOkResult("您今日查询联系信息的次数已用完");   		
+    	}
+    	return ResultGenerator.genOkResult(busHouse);
     }
+	
+	 /**
+    * 点击查看房屋地址
+    * @param map
+    * 
+    * */
     @PostMapping("/detailAddress")
-    public Result detail(@RequestBody Map<String,Object> map) {
-    	BusHouse busHouse = busHouseService.findById(map.get("id"));
+    public Result detail(Principal user,@RequestBody Map<String,Object> map) {
+    	BusHouse busHouse = busHouseService.DetailAddress(map);
+    	if(busHouse.clickcount==20){
+    		return ResultGenerator.genOkResult("您今日查询房屋地址的次数已用完");
+    	}
         return ResultGenerator.genOkResult(busHouse);
     }
 

@@ -24,4 +24,47 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="collaboratorids" jdbcType="VARCHAR" property="collaboratorids" />
   </resultMap>
+  
+  
+  
+  <insert id="insertBusGuest" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusGuest">
+  	INSERT INTO  bus_guest
+  			(
+  			guestname,
+  			sex,
+  			guestgrade,
+  			type,
+  			heartprice,
+  			phone,
+  			remarks,
+  			areas,
+  			huxing,
+  			position,
+  			purpose,
+  			label,
+  			iskey,
+  			record_user_name,
+  			create_user_name,
+  			create_time,
+  			collaboratorids,
+  			)	
+  			VALUES (
+  			#{guestname},
+  			#{sex},
+  			#{guestgrade},
+  			#{type},
+  			#{heartprice},
+  			#{phone},
+  			#{remarks},
+  			#{areas},
+  			#{huxing},
+  			#{position},
+  			#{label},
+  			#{iskey},
+  			#{recordUserName},
+  			#{createUserName},
+  			NOW(),
+  			#{collaboratorids}
+  			)
+  </insert>
 </mapper>

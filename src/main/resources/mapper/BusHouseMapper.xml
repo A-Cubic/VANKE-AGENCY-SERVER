@@ -145,4 +145,25 @@
 			        #{iskey},
 			        #{imgurl});
 	 </insert>
+	 
+	 
+	 <select id="DetailContacts"  parameterType="Map" resultMap="BaseResultMap">
+	 		SELECT owner,phone,(select count(*) 
+	 							FROM bus_house_clicklog 
+	 							where click_user_name=#{clickusername} 
+	 									and create_time like DATE(NOW())
+	 							)   clickcount
+	 		FROM bus_house		
+	 		WHERE id = #{houseId}	
+	 </select>
+	 
+	  <select id="DetailAddress"  parameterType="Map" resultMap="BaseResultMap">
+	 	SELECT address,(select count(*) 
+	 							FROM bus_house_clicklog 
+	 							where click_user_name=#{clickusername} 
+	 									and create_time like DATE(NOW())
+	 							)   clickcount
+	 		FROM bus_house		
+	 		WHERE id = #{houseId}	
+	 </select>
 </mapper>

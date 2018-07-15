@@ -22,11 +22,26 @@ import java.util.Map;
 public class BusGuestController {
     @Resource
     private BusGuestService busGuestService;
-
+    /**
+     * 创建客源
+     * @param busGuest
+     * 
+     * */
     @PostMapping
-    public Result add(@RequestBody BusGuest busGuest) {
-    	busGuestService.save(busGuest);//G
-        return ResultGenerator.genOkResult();
+    public Result add(Principal user,@RequestBody BusGuest busGuest) {
+       	//创建人账号名
+    	busGuest.setCreateUserName(user.getName());
+    	//维护人账号名
+    	busGuest.setRecordUserName(user.getName());
+    	busGuestService.insertBusGuest(busGuest);
+    	
+    	//根据id得到客源编号并更新
+    	String num = NumberUtil.geoEquipmentNo("G",busHouse.getId());
+    	BusGuest busGuestNew=new BusGuest();
+    	busGuestNew.setId(busHouse.getId());
+    	busGuestNew.setNumber(num);
+    	busGuestService.update(busHouseNew);
+        return ResultGenerator.genOkResult("添加成功");
     }
 
     @DeleteMapping("/{id}")
