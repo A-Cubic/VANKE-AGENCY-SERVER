@@ -148,26 +148,26 @@
 	 
 	 
 	 <select id="DetailContacts"  parameterType="Map" resultMap="BaseResultMap">
-	 		SELECT owner,phone,(select count(*) 
+	 		SELECT bh.owner,bh.phone,bh.record_user_name,(select count(*) 
 	 							FROM bus_house_clicklog 
 	 							where click_user_name=#{clickusername} 
-	 									and create_time like DATE(NOW()
+	 									and DATE(create_time) = DATE(NOW())
 	 									and record_user_name!=#{clickusername} 
 	 							group by house_id	)
 	 							)   clickcount
-	 		FROM bus_house		
-	 		WHERE id = #{houseId}	
+	 		FROM bus_house bh		
+	 		WHERE bh.id = #{houseId}	
 	 </select>
 	 
 	  <select id="DetailAddress"  parameterType="Map" resultMap="BaseResultMap">
-	 	SELECT address,(select count(*) 
+	 	SELECT bh.record_user_name,bh.address,(select count(*) 
 	 							FROM bus_house_clicklog 
 	 							where click_user_name=#{clickusername} 
-	 									and create_time like DATE(NOW()
+	 									and DATE(create_time) = DATE(NOW())
 	 									and record_user_name!=#{clickusername} 
 	 							group by house_id		)
 	 							)   clickcount
-	 		FROM bus_house		
-	 		WHERE id = #{houseId}	
+	 		FROM bus_house	bh	
+	 		WHERE bh.id = #{houseId}	
 	 </select>
 </mapper>

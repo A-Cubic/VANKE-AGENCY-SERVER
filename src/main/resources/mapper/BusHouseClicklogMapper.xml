@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusHouseClicklogMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusHouseClicklog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="click_user_name" jdbcType="VARCHAR" property="clickUserName" />
+    <result column="house_id" jdbcType="BIGINT" property="houseId" />
+    <result column="record_user_name" jdbcType="VARCHAR" property="recordUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+  
+  <insert id="insertClickLog" parameterType="com.cubic.api.model.BusHouseClicklog">
+  		INSERT INTO bus_house_clicklog 
+  					(click_user_name,
+  					house_id,
+  					record_user_name,
+  					create_time
+  					)
+  					VALUES(
+  					#{clickUserName},
+  					#{houseId},
+  					#{recordUserName},
+  					NOW()
+  					)
+  </insert>
+</mapper>
