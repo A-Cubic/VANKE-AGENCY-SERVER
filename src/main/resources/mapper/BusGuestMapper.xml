@@ -45,8 +45,7 @@
   			iskey,
   			record_user_name,
   			create_user_name,
-  			create_time,
-  			collaboratorids,
+  			create_time
   			)	
   			VALUES (
   			#{guestname},
@@ -60,11 +59,10 @@
   			#{huxing},
   			#{position},
   			#{label},
-  			#{iskey},
+  			0,
   			#{recordUserName},
   			#{createUserName},
-  			NOW(),
-  			#{collaboratorids}
+  			NOW()
   			)
   </insert>
 </mapper>

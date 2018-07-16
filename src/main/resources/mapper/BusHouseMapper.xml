@@ -138,7 +138,7 @@
 			        NOW(),
 			        #{introduce},
 			        #{type},
-			        #{state},
+			        0,
 			        #{regionCode},
 			        #{streetId},
 			        #{address},
@@ -151,7 +151,9 @@
 	 		SELECT owner,phone,(select count(*) 
 	 							FROM bus_house_clicklog 
 	 							where click_user_name=#{clickusername} 
-	 									and create_time like DATE(NOW())
+	 									and create_time like DATE(NOW()
+	 									and record_user_name!=#{clickusername} 
+	 							group by house_id	)
 	 							)   clickcount
 	 		FROM bus_house		
 	 		WHERE id = #{houseId}	
@@ -161,7 +163,9 @@
 	 	SELECT address,(select count(*) 
 	 							FROM bus_house_clicklog 
 	 							where click_user_name=#{clickusername} 
-	 									and create_time like DATE(NOW())
+	 									and create_time like DATE(NOW()
+	 									and record_user_name!=#{clickusername} 
+	 							group by house_id		)
 	 							)   clickcount
 	 		FROM bus_house		
 	 		WHERE id = #{houseId}	

@@ -36,16 +36,43 @@ public class BusHouse {
      * 房屋楼层
      */
     private String floor;
+    /**
+     * 房屋最大楼层
+     */
+    private String maxfloor;
+    
 
     /**
      * 房屋户型
      */
     private String huxing;
+    /**
+     * 房屋几室
+     */
+    private String huxingshi;
+    /**
+     * 房屋几厅
+     */
+    private String huxingting;
+    /**
+     * 房屋几卫
+     */
+    private String huxingwei;
+    /**
+     * 房屋几厨
+     */
+    private String huxingchu;
+    
 
     /**
      * 房屋面积
      */
     private String areas;
+    /**
+     * 隐藏面积
+     */
+    private String hiddenarea;
+    
 
     /**
      * 房屋朝向
@@ -265,7 +292,39 @@ public class BusHouse {
         this.huxing = huxing;
     }
 
-    /**
+    public String getHuxingshi() {
+		return huxingshi;
+	}
+
+	public void setHuxingshi(String huxingshi) {
+		this.huxingshi = huxingshi;
+	}
+
+	public String getHuxingting() {
+		return huxingting;
+	}
+
+	public void setHuxingting(String huxingting) {
+		this.huxingting = huxingting;
+	}
+
+	public String getHuxingwei() {
+		return huxingwei;
+	}
+
+	public void setHuxingwei(String huxingwei) {
+		this.huxingwei = huxingwei;
+	}
+
+	public String getHuxingchu() {
+		return huxingchu;
+	}
+
+	public void setHuxingchu(String huxingchu) {
+		this.huxingchu = huxingchu;
+	}
+
+	/**
      * 获取房屋面积
      *
      * @return areas - 房屋面积
@@ -515,6 +574,40 @@ public class BusHouse {
      */
 	public void setImgurl(String imgurl) {
 		this.imgurl = imgurl;
+	}
+	 /**
+     * 最大楼层
+     * 
+     * @return maxfloor
+     */
+	public String getMaxfloor() {
+		return maxfloor;
+	}
+	 /**
+     * 最大楼层
+     * 
+     * @param maxfloor
+     */
+	public void setMaxfloor(String maxfloor) {
+		this.maxfloor = maxfloor;
+	}
+	
+	
+	 /**
+     *隐藏面积
+     * 
+     * @return hiddenarea
+     */
+	public String getHiddenarea() {
+		return hiddenarea;
+	}
+	 /**
+     * 隐藏面积
+     * 
+     * @param hiddenarea
+     */
+	public void setHiddenarea(String hiddenarea) {
+		this.hiddenarea = hiddenarea;
 	}
     
     
