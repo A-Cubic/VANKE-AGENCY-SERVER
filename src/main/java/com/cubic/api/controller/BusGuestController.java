@@ -38,7 +38,7 @@ public class BusGuestController {
      * @param busGuest
      * 
      * */
-    @PostMapping
+    @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusGuest busGuest) {
        	//创建人账号名
     	busGuest.setCreateUserName(user.getName());
@@ -75,7 +75,7 @@ public class BusGuestController {
 
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
-    	PageHelper.startPage((Integer)map.get("page"), (Integer)map.get("size"));
+    	  PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusGuest> list = busGuestService.findAll();
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genOkResult(pageInfo);

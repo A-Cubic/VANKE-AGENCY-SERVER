@@ -14,7 +14,10 @@ public class BusHouseClicklog {
      */
     @Column(name = "click_user_name")
     private String clickUserName;
-
+    /**
+     * 点击查看类型(1:联系方式,2:房屋地址)
+     */
+    private String type;
     /**
      * 查看房源的id
      */
@@ -47,7 +50,15 @@ public class BusHouseClicklog {
         this.id = id;
     }
 
-    /**
+    public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
      * 获取点击查看人的账号名
      *
      * @return click_user_name - 点击查看人的账号名

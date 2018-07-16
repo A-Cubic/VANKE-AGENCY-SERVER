@@ -58,7 +58,7 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		
 	}
 	
-	 /**
+	/**
     * 点击查看房屋地址
     * @param map
     * 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusGuestRecordMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusGuestRecord">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="guest_id" jdbcType="BIGINT" property="guestId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="istop" jdbcType="VARCHAR" property="istop" />
+    <result column="toptime" jdbcType="TIMESTAMP" property="toptime" />
+    <result column="topicon" jdbcType="VARCHAR" property="topicon" />
+  </resultMap>
+  
+  
+  <insert id="insertGuestRecord" parameterType="com.cubic.api.model.BusGuestRecord">
+  	INSERT INTO bus_guest_record
+			  	(user_name,
+			  	guest_id,
+			  	content,
+			  	create_time,
+			  	istop,
+			  	toptime
+			  	)
+			  	VALUES(
+			  	#{userName},
+			  	#{guestId},
+			  	#{content},
+			  	NOW(),
+			  	0,
+			  	NOW()			  	
+			  	) 
+  </insert>
+  
+  <update id="updateGuestRecordIsTopOne" parameterType="com.cubic.api.model.BusGuestRecord">
+  		UPDATE bus_guest_record
+  		SET istop = #{istop},
+  			toptime = NOW(),
+  			topicon = #{topicon}
+  		WHERE 
+  			id=#{id}	
+  </update>
+  
+    <update id="updateGuestRecordIsTopZero" parameterType="com.cubic.api.model.BusGuestRecord">
+  		UPDATE bus_guest_record
+  		SET istop = #{istop},
+  			toptime = create_time,
+  			topicon = #{topicon}
+  		WHERE 
+  			id=#{id}	
+  </update>
+  
+  <select id="listGuestRecord" parameterType="map" resultMap="BaseResultMap">
+  		SELECT *
+  		FROM  bus_guest_record
+  		WHERE 
+  			Guest_id = #{guestId}
+  		order by  toptime desc
+  		limit #{page},#{size}  			
+  </select>
+</mapper>

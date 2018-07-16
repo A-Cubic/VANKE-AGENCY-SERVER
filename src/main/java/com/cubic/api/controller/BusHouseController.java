@@ -42,7 +42,7 @@ public class BusHouseController {
 
    /**
     * 创建房源信息
-    * @param user, busHouse
+    * @param busHouse
     * 
     * */
     @PostMapping("/save")
@@ -74,7 +74,7 @@ public class BusHouseController {
      * @param busHouse
      * 状态:(0:普通,1:特殊,2:无效,3:已售出/已租出)
      * */
-    @PutMapping("/updateState")
+    @PostMapping("/updateState")
     public Result updateState(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
     	if(null != busHouse){
@@ -92,7 +92,7 @@ public class BusHouseController {
      * @param busHouse
      * 
      * */
-    @PutMapping("/updateRecordUser")
+    @PostMapping("/updateRecordUser")
     public Result updateRecordUser(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
     	if(null != busHouse){
@@ -109,7 +109,7 @@ public class BusHouseController {
      * @param busHouse
      * 
      * */
-    @PutMapping("/update")
+    @PostMapping("/update")
     public Result update(@RequestBody BusHouse busHouse) {
     	
     	if(null != busHouse){
@@ -134,7 +134,7 @@ public class BusHouseController {
     		busHouseClicklog.setClickUserName(user.getName());
     		busHouseClicklog.setHouseId(Long.parseLong(map.get("houseId").toString()));
     		busHouseClicklog.setRecordUserName(busHouse.getRecordUserName());
-    		
+    		busHouseClicklog.setType("1");
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
     		busHouse.setRecordUserName(null);
@@ -157,7 +157,7 @@ public class BusHouseController {
     		busHouseClicklog.setClickUserName(user.getName());
     		busHouseClicklog.setHouseId(Long.parseLong(map.get("houseId").toString()));
     		busHouseClicklog.setRecordUserName(busHouse.getRecordUserName());
-    		
+    		busHouseClicklog.setType("2");
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
     		busHouse.setRecordUserName(null);
@@ -173,8 +173,8 @@ public class BusHouseController {
      * */
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
-
-        PageHelper.startPage((Integer)map.get("page"), (Integer)map.get("size"));
+    		
+        PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouse> list = busHouseService.ListBusHouse(map);
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genOkResult(pageInfo);

@@ -10,6 +10,7 @@
     <result column="house_id" jdbcType="BIGINT" property="houseId" />
     <result column="record_user_name" jdbcType="VARCHAR" property="recordUserName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
   
   
@@ -18,13 +19,15 @@
   					(click_user_name,
   					house_id,
   					record_user_name,
-  					create_time
+  					create_time,
+  					type
   					)
   					VALUES(
   					#{clickUserName},
   					#{houseId},
   					#{recordUserName},
-  					NOW()
+  					NOW(),
+  					#{type}
   					)
   </insert>
 </mapper>

@@ -28,25 +28,25 @@
   
   
   <insert id="insertBusGuest" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusGuest">
-  	INSERT INTO  bus_guest
-  			(
-  			guestname,
-  			sex,
-  			guestgrade,
-  			type,
-  			heartprice,
-  			phone,
-  			remarks,
-  			areas,
-  			huxing,
-  			position,
-  			purpose,
-  			label,
-  			iskey,
-  			record_user_name,
-  			create_user_name,
-  			create_time
-  			)	
+  INSERT INTO `vanke`.`bus_guest`
+            (
+             `guestname`,
+             `sex`,
+             `guestgrade`,
+             `type`,
+             `heartprice`,
+             `phone`,
+             `remarks`,
+             `areas`,
+             `huxing`,
+             `position`,
+             `purpose`,
+             `label`,
+             `iskey`,
+             `record_user_name`,
+             `create_user_name`,
+             `create_time`
+)	
   			VALUES (
   			#{guestname},
   			#{sex},
@@ -58,6 +58,7 @@
   			#{areas},
   			#{huxing},
   			#{position},
+  			#{purpose},
   			#{label},
   			0,
   			#{recordUserName},
