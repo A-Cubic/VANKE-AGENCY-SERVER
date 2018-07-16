@@ -7,22 +7,25 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import com.cubic.api.model.BusHouseClicklog;
+
+
 
 /**
  * 房源接口
@@ -34,6 +37,8 @@ import com.github.pagehelper.PageInfo;
 public class BusHouseController {
     @Resource
     private BusHouseService busHouseService;
+    @Resource
+    private BusHouseClicklogService busHouseClicklogService;
 
    /**
     * 创建房源信息
@@ -123,6 +128,16 @@ public class BusHouseController {
     	BusHouse busHouse = busHouseService.DetailContacts(map);
     	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询联系信息的次数已用完");   		
+    	}else if (busHouse.getClickcount()<20){
+    		
+    		BusHouseClicklog busHouseClicklog=new BusHouseClicklog();
+    		busHouseClicklog.setClickUserName(user.getName());
+    		busHouseClicklog.setHouseId(Long.parseLong(map.get("houseId").toString()));
+    		busHouseClicklog.setRecordUserName(busHouse.getRecordUserName());
+    		
+    		//记录查询日志
+    		busHouseClicklogService.insertClickLog(busHouseClicklog);
+    		busHouse.setRecordUserName(null);
     	}
     	return ResultGenerator.genOkResult(busHouse);
     }
@@ -137,6 +152,16 @@ public class BusHouseController {
     	BusHouse busHouse = busHouseService.DetailAddress(map);
     	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询房屋地址的次数已用完");
+    	}else if (busHouse.getClickcount()<20){
+    		BusHouseClicklog busHouseClicklog=new BusHouseClicklog();
+    		busHouseClicklog.setClickUserName(user.getName());
+    		busHouseClicklog.setHouseId(Long.parseLong(map.get("houseId").toString()));
+    		busHouseClicklog.setRecordUserName(busHouse.getRecordUserName());
+    		
+    		//记录查询日志
+    		busHouseClicklogService.insertClickLog(busHouseClicklog);
+    		busHouse.setRecordUserName(null);
+    		
     	}
         return ResultGenerator.genOkResult(busHouse);
     }
