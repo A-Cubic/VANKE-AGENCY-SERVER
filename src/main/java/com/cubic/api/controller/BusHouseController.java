@@ -76,15 +76,16 @@ public class BusHouseController {
      * */
     @PostMapping("/updateState")
     public Result updateState(@RequestBody BusHouse busHouse) {
-    	BusHouse busHouseNew=new BusHouse();
-    	if(null != busHouse){
-    		if(busHouse.getId() != null && busHouse.getState() != null){
-    			busHouseNew.setId(busHouse.getId());
-    			busHouseNew.setState(busHouse.getState());
-    			busHouseService.update(busHouseNew);
-    		}
-    	}
-        return ResultGenerator.genOkResult("修改成功");
+//    	BusHouse busHouseNew=new BusHouse();
+//    	if(null != busHouse){
+//    		if(busHouse.getId() != null && busHouse.getState() != null){
+//    			busHouseNew.setId(busHouse.getId());
+//    			busHouseNew.setState(busHouse.getState());
+//    			busHouseService.update(busHouseNew);
+//    		}
+//    	}
+    	//提交到审核
+        return ResultGenerator.genOkResult("提交审核成功");
     }
     
     /**
@@ -117,7 +118,37 @@ public class BusHouseController {
     	}
         return ResultGenerator.genOkResult("修改成功");
     }
+    
+    
+    /**
+     * 录入实勘图片
+     * @param busHouse
+     * 
+     * */
+    @PostMapping("/updateImg")
+    public Result updateImg(Principal user,@RequestBody BusHouse busHouse) {
+    	
+//    	if(null != busHouse){
+//    			busHouseService.update(busHouse);  		
+//    	}
+        return ResultGenerator.genOkResult("录入成功");
+    }
   
+    
+    /**
+     * 更新钥匙状态和拥有者
+     * 
+     * ,@RequestBody BusHouse busHouse
+     * */
+    @PostMapping("/updateKey")
+    public Result updateKey(Principal user) {
+    	BusHouse busHouse=new BusHouse();
+    		busHouse.setIskey("1");
+    		busHouse.setKeyUserName(user.getName());
+  			busHouseService.update(busHouse);  		
+
+        return ResultGenerator.genOkResult("更改成功");
+    }
 	 /**
      * 点击查看详细联系方式及房主姓名
      * @param map

@@ -23,6 +23,11 @@
     <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="collaboratorids" jdbcType="VARCHAR" property="collaboratorids" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="record_time" />
+    <result column="huxingshi" jdbcType="VARCHAR" property="huxingshi" />
+    <result column="huxingting" jdbcType="VARCHAR" property="huxingting" />
+    <result column="huxingwei" jdbcType="VARCHAR" property="huxingwei" />
+    <result column="huxingchu" jdbcType="VARCHAR" property="huxingchu" />
   </resultMap>
   
   
@@ -45,7 +50,12 @@
              `iskey`,
              `record_user_name`,
              `create_user_name`,
-             `create_time`
+             `create_time`,
+              record_time,
+              huxingshi,
+              huxingting,
+              huxingwei,
+              huxingchu
 )	
   			VALUES (
   			#{guestname},
@@ -63,7 +73,20 @@
   			0,
   			#{recordUserName},
   			#{createUserName},
-  			NOW()
+  			NOW(),
+  			NOW(),
+  			#{huxingshi},
+  			#{huxingting},
+  			#{huxingwei},
+  			#{husingchu}
   			)
   </insert>
+  
+  
+  	 <update id="updateRecordTime" parameterType="com.cubic.api.model.BusGuest">
+	 		UPDATE bus_guest
+	 		SET record_time=NOW()
+	 		WHERE 
+	 			id=#{id}
+	 </update>
 </mapper>

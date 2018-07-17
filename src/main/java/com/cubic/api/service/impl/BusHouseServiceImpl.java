@@ -68,4 +68,13 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		return busHouseMapper.DetailAddress(map);
 		
 	}
+	/**
+	    * 更新房源跟进时间
+	    * @param map
+	    * 
+	    * */
+	@Override
+	public void updateRecordTime(BusHouse busHouse) {
+		busHouseMapper.updateRecordTime(busHouse);		
+	}
 }

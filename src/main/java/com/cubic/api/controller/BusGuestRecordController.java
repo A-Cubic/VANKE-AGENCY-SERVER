@@ -2,8 +2,11 @@ package com.cubic.api.controller;
 
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
+import com.cubic.api.model.BusGuest;
 import com.cubic.api.model.BusGuestRecord;
+import com.cubic.api.model.BusHouse;
 import com.cubic.api.service.BusGuestRecordService;
+import com.cubic.api.service.BusGuestService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,8 @@ import java.util.Map;
 public class BusGuestRecordController {
     @Resource
     private BusGuestRecordService busGuestRecordService;
+    @Resource
+    private BusGuestService busGuestService;
     /**
      *添加跟进信息
      * @param busGuestRecord
@@ -30,7 +35,15 @@ public class BusGuestRecordController {
      * */
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusGuestRecord busGuestRecord) {
-    	busGuestRecord.setUserName(user.getName());
+    	busGuestRecord.setUserName(user.getName());    
+    	BusGuest busGuest=busGuestService.findById(busGuestRecord.getGuestId());
+    	//判断当前跟进人是否是该客源的维护人
+    	if(busGuest.getRecordUserName().equals(user.getName())){
+    		BusGuest busGuestNew=new BusGuest();
+    		busGuestNew.setId(busGuest.getId());
+    		//更新客源跟进时间
+    		busGuestService.updateRecordTime(busGuestNew);
+    	}
     	busGuestRecordService.insertGuestRecord(busGuestRecord);
         return ResultGenerator.genOkResult("添加成功");
     }

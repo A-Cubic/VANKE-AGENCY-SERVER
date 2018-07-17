@@ -1,7 +1,13 @@
 package com.cubic.api.model;
 
 import java.util.Date;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "bus_house")
 public class BusHouse {
@@ -152,7 +158,52 @@ public class BusHouse {
     /**
      * 房屋信息图片(多个逗号间隔)
      */
-    private String imgurl;
+    private List<String> imgurl;
+    
+    /**
+     * 钥匙拥有人账户名
+     */
+    @Column(name = "key_user_name")
+    private String keyUserName;
+    /**
+     * 实勘录入人账户名
+     */
+    @Column(name = "exploration_user_name")
+    private String explorationUserName;
+    /**
+     * 独家人账户名
+     */
+    @Column(name = "exclusive_user_name")
+    private String exclusiveUserName;
+    /**
+     * 上次维护时间
+     */
+    @Column(name = "record_time")
+    private Date recordTime;
+    /**
+     * 几室的实勘图片
+     */
+    private String shiimg;
+    /**
+     * 几厅的实勘图片
+     */
+    private String tingimg;
+    /**
+     * 几卫的实勘图片
+     */
+    private String weiimg;
+    /**
+     * 几厨的实勘图片
+     */
+    private String chuimg;
+    /**
+     * 户型的实勘图片
+     */
+    private String huxingimg;
+    /**
+     * 其他的实勘图片
+     */
+    private String otherimg;
 
     /**
      * @return id
@@ -560,19 +611,19 @@ public class BusHouse {
 
 	 /**
      * 房屋信息图片
-     * 多个逗号间隔
+     * 
      * @return imgurl
      */
-	public String getImgurl() {
+	public List<String> getImgurl() {
 		return imgurl;
 	}
 	
 	 /**
      * 房屋信息图片
-     * 多个逗号间隔
+     * 
      * @param imgurl 
      */
-	public void setImgurl(String imgurl) {
+	public void setImgurl(List<String> imgurl) {
 		this.imgurl = imgurl;
 	}
 	 /**
@@ -609,6 +660,169 @@ public class BusHouse {
 	public void setHiddenarea(String hiddenarea) {
 		this.hiddenarea = hiddenarea;
 	}
+	 /**
+     * 钥匙拥有者
+     * 
+     * @return keyUserName
+     */
+	public String getKeyUserName() {
+		return keyUserName;
+	}
+	 /**
+     * 钥匙拥有者
+     * 
+     * @param keyUserName
+     */
+	public void setKeyUserName(String keyUserName) {
+		this.keyUserName = keyUserName;
+	}
+	 /**
+     * 实勘录入人
+     * 
+     * @return explorationUserName
+     */
+	public String getExplorationUserName() {
+		return explorationUserName;
+	}
+	 /**
+     * 实勘录入人
+     * 
+     * @param explorationUserName
+     */
+	public void setExplorationUserName(String explorationUserName) {
+		this.explorationUserName = explorationUserName;
+	}
+	 /**
+     * 上次维护时间
+     * 
+     * @return recordTime
+     */
+	public Date getRecordTime() {
+		return recordTime;
+	}
+	 /**
+     * 上次维护时间
+     * 
+     * @param recordTime
+     */
+	public void setRecordTime(Date recordTime) {
+		this.recordTime = recordTime;
+	}
+	 /**
+     * 几室的实勘图片
+     * 
+     * @return shiimg
+     */
+	public String getShiimg() {
+		return shiimg;
+	}
+	 /**
+     *几室的实勘图片
+     * 
+     * @param shiimg
+     */
+	public void setShiimg(String shiimg) {
+		this.shiimg = shiimg;
+	}
+	 /**
+     * 几厅的实勘图片
+     * 
+     * @return tingimg
+     */
+	public String getTingimg() {
+		return tingimg;
+	}
+	 /**
+     *几厅的实勘图片
+     * 
+     * @param shiimg
+     */
+	public void setTingimg(String tingimg) {
+		this.tingimg = tingimg;
+	}
+	 /**
+     *几卫的实勘图片
+     * 
+     * @return weiimg
+     */
+	public String getWeiimg() {
+		return weiimg;
+	}
+	 /**
+     *几卫的实勘图片
+     * 
+     * @param weiimg
+     */
+	public void setWeiimg(String weiimg) {
+		this.weiimg = weiimg;
+	}
+	 /**
+     *几厨的实勘图片
+     * 
+     * @return chuimg
+     */
+	public String getChuimg() {
+		return chuimg;
+	}
+	 /**
+     *几厨的实勘图片
+     * 
+     * @param chuimg
+     */
+	public void setChuimg(String chuimg) {
+		this.chuimg = chuimg;
+	}
+	 /**
+     *户型的实勘图片
+     * 
+     * @return huxingimg
+     */
+	public String getHuxingimg() {
+		return huxingimg;
+	}
+	 /**
+     *户型的实勘图片
+     * 
+     * @param huxingimg
+     */
+	public void setHuxingimg(String huxingimg) {
+		this.huxingimg = huxingimg;
+	}
+	 /**
+     *其他的实勘图片
+     * 
+     * @return otherimg
+     */
+	public String getOtherimg() {
+		return otherimg;
+	}
+	 /**
+     *其他的实勘图片
+     * 
+     * @param otherimg
+     */
+	public void setOtherimg(String otherimg) {
+		this.otherimg = otherimg;
+	}
+	 /**
+     *独家账户名
+     * 
+     * @return exclusiveUserName
+     */
+	public String getExclusiveUserName() {
+		return exclusiveUserName;
+	}
+	 /**
+     *独家账户名
+     * 
+     * @param exclusiveUserName
+     */
+	public void setExclusiveUserName(String exclusiveUserName) {
+		this.exclusiveUserName = exclusiveUserName;
+	}
+	
+	
+	
     
     
 }

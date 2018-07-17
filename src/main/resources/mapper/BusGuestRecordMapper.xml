@@ -58,7 +58,6 @@
   		FROM  bus_guest_record
   		WHERE 
   			Guest_id = #{guestId}
-  		order by  toptime desc
-  		limit #{page},#{size}  			
+  		order by  toptime desc		
   </select>
 </mapper>

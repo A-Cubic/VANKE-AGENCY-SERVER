@@ -11,4 +11,10 @@ public interface BusGuestMapper extends MyMapper<BusGuest> {
      * 
      * */
 	void insertBusGuest(BusGuest busGuest);
+	 /**
+     * 更新客源的跟进时间
+     * @param busGuest
+     * 
+     * */
+	void updateRecordTime(BusGuest busGuest);
 }

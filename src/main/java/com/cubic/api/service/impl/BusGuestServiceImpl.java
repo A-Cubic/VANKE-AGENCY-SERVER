@@ -31,4 +31,14 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 	   busGuestMapper.insertBusGuest(busGuest);
 	   
    }
+	 /**
+     *更新跟进时间
+     * @param busGuest
+     * 
+     * */
+	@Override
+	public void updateRecordTime(BusGuest busGuest) {
+		busGuestMapper.updateRecordTime(busGuest);
+		
+	}
 }

@@ -79,14 +79,10 @@ public class BusGuest {
      */
     private String iskey;
     
+    
+    
 
-    public String getNumber() {
-		return number;
-	}
 
-	public void setNumber(String number) {
-		this.number = number;
-	}
 
 	/**
      * 维护人账户名
@@ -110,7 +106,36 @@ public class BusGuest {
      * 客源合作人(逗号间隔)
      */
     private String collaboratorids;
+    
+    /**
+     * 上次维护时间
+     */
+    @Column(name = "record_time")
+    private Date recordTime;
+    /**
+     * 需求几室
+     */
+    private String huxingshi;
+    /**
+     * 需求几厅
+     */
+    private String huxingting;
+    /**
+     * 需求几卫
+     */
+    private String huxingwei;
+    /**
+     * 需求几厨
+     */
+    private String huxingchu;
+    
+    public String getNumber() {
+		return number;
+	}
 
+	public void setNumber(String number) {
+		this.number = number;
+	}
     /**
      * @return id
      */
@@ -430,4 +455,54 @@ public class BusGuest {
     public void setCollaboratorids(String collaboratorids) {
         this.collaboratorids = collaboratorids;
     }
+    /**
+     * 上次维护时间
+     *
+     * @return recordTime
+     */
+	public Date getRecordTime() {
+		return recordTime;
+	}
+    /**
+     * 上次维护时间
+     *
+     * @param recordTime
+     */
+	public void setRecordTime(Date recordTime) {
+		this.recordTime = recordTime;
+	}
+
+	public String getHuxingshi() {
+		return huxingshi;
+	}
+
+	public void setHuxingshi(String huxingshi) {
+		this.huxingshi = huxingshi;
+	}
+
+	public String getHuxingting() {
+		return huxingting;
+	}
+
+	public void setHuxingting(String huxingting) {
+		this.huxingting = huxingting;
+	}
+
+	public String getHuxingwei() {
+		return huxingwei;
+	}
+
+	public void setHuxingwei(String huxingwei) {
+		this.huxingwei = huxingwei;
+	}
+
+	public String getHuxingchu() {
+		return huxingchu;
+	}
+
+	public void setHuxingchu(String huxingchu) {
+		this.huxingchu = huxingchu;
+	}
+    
+    
 }

@@ -42,4 +42,11 @@ public interface BusHouseService extends Service<BusHouse> {
     * 
     * */
 	BusHouse DetailAddress(Map<String,Object> map);
+	
+	 /**
+     * 更新房源跟进时间
+     * @param busHouse
+     * 
+     * */
+	void  updateRecordTime(BusHouse busHouse);
 }

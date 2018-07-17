@@ -28,9 +28,16 @@
     <result column="street_id" jdbcType="VARCHAR" property="street_id" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="iskey" jdbcType="VARCHAR" property="iskey" />
-    <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
-    
-   
+    <result column="key_user_name" jdbcType="VARCHAR" property="keyUserName" />
+    <result column="exploration_user_name" jdbcType="VARCHAR" property="explorationUserName" />
+    <result column="shiimg" jdbcType="VARCHAR" property="shiimg" />
+    <result column="tingimg" jdbcType="VARCHAR" property="tingimg" />
+    <result column="weiimg" jdbcType="VARCHAR" property="weiimg" />
+    <result column="chuimg" jdbcType="VARCHAR" property="chuimg" />
+    <result column="huxingimg" jdbcType="VARCHAR" property="huxingimg" />
+    <result column="otherimg" jdbcType="VARCHAR" property="otherimg" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="exclusive_user_name" jdbcType="VARCHAR" property="exclusiveUserName" />
   </resultMap>
   
   
@@ -56,7 +63,17 @@
 		  `type`,
 		  `state`,
 		  `iskey`,
-		   imgurl
+		   key_user_name,
+		   exploration_user_name,
+		   shiimg,
+		   tingimg,
+		   weiimg,
+		   chuimg,
+		   huxingimg,
+		   otherimg,
+		   exclusive_user_name,
+		   record_time
+		   
 		FROM `vanke`.`bus_house`
 		<where>
 		1=1
@@ -76,8 +93,21 @@
 				 and floor = #{floor}
 			</if>
 			
-			<if test="huxing != null"><!-- 户型条件-->
-				 and huxing like #{huxing}"%" 
+			<if test="searchText != null"><!-- 搜索条件-->
+				 and title like "%"#{searchText}"%"
+			</if>
+			
+			<if test="huxingshi != null"><!-- 户型几室条件-->
+				 and huxingshi = #{huxingshi}
+			</if>
+			<if test="huxingting != null"><!-- 户型几厅条件-->
+				 and huxingting = #{huxingting}
+			</if>
+			<if test="huxingwei != null"><!-- 户型几卫条件-->
+				 and huxingwei = #{huxingwei}
+			</if>
+			<if test="huxingchu != null"><!-- 户型几厨条件-->
+				 and huxingchu = #{huxingchu}
 			</if>
 			
 			<if test="areasUp == null and areasDown != null"><!-- 面积条件在XXX以下 -->
@@ -95,7 +125,16 @@
 			<if test="chaoxiang != null"><!-- 朝向条件-->
 				 and chaoxiang = #{chaoxiang}
 			</if>
+			
+			<if test="regionCode != null"><!-- 区条件-->
+				 and region_code = #{regionCode}
+			</if>
+			<if test="streetId != null"><!-- 街道条件-->
+				 and street_id = #{streetId}
+			</if>
+	
 		</where>
+		order by create_time desc
   
   </select>
   
@@ -108,8 +147,14 @@
 	             `phone`,
 	             `price`,
 	             `floor`,
+	              maxfloor,
 	             `huxing`,
+	             huxingshi,
+	             huxingting,
+	             huxingwei,
+	             huxingchu,
 	             `areas`,
+	              hiddenarea,
 	             `chaoxiang`,
 	             `grade`,
 	             `record_user_name`,
@@ -122,15 +167,23 @@
 	             street_id,
 	             `address`,
 	             `iskey`,
-	             	imgurl)
+	              key_user_name,
+				  record_time
+	             )
 			VALUES (
 			        #{title},
 			        #{owner},
 			        #{phone},
 			        #{price},
 			        #{floor},
+			        #{maxfloor},
 			        #{huxing},
+			        #{huxingshi},
+			        #{huxingting},
+			        #{huxingwei},
+			        #{huxingchu},
 			        #{areas},
+			        #{hiddenarea},
 			        #{chaoxiang},
 			        #{grade},
 			        #{recordUserName},
@@ -143,7 +196,8 @@
 			        #{streetId},
 			        #{address},
 			        #{iskey},
-			        #{imgurl});
+			        #{keyUserName},
+			     	NOW()	);
 	 </insert>
 	 
 	 
@@ -172,4 +226,12 @@
 	 		FROM bus_house	bh	
 	 		WHERE bh.id = #{houseId}	
 	 </select>
+	 
+	 
+	 <update id="updateRecordTime" parameterType="com.cubic.api.model.BusHouse">
+	 		UPDATE bus_house
+	 		SET record_time=NOW()
+	 		WHERE 
+	 			id=#{id}
+	 </update>
 </mapper>
