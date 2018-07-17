@@ -213,8 +213,8 @@ public class BusHouseController {
      * */
     @PreAuthorize("hasAuthority('house:list')")
     @PostMapping("/list")
-    public Result list(@RequestBody Map<String,Object> map) {
-    		
+    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    	map.put("userName", user.getName());
         PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouse> list = busHouseService.ListBusHouse(map);
         PageInfo pageInfo = new PageInfo(list);
