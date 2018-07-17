@@ -8,6 +8,8 @@ import com.cubic.api.service.BusHouseRecordService;
 import com.cubic.api.service.BusHouseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -27,7 +29,7 @@ public class BusHouseRecordController {
     private BusHouseRecordService busHouseRecordService;
     @Resource
     private BusHouseService busHouseService;
-
+    @PreAuthorize("hasAuthority('houserecord:insert')")
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusHouseRecord busHouseRecord) {
     	busHouseRecord.setUserName(user.getName());
@@ -54,6 +56,7 @@ public class BusHouseRecordController {
      * @param busHouseRecord
      * 
      * */
+    @PreAuthorize("hasAuthority('houserecord:updateIsTopOne')")
     @PostMapping("/updateIsTopOne")
     public Result updateIsTopOne(@RequestBody BusHouseRecord busHouseRecord) {
     	busHouseRecord.setTopicon("");
@@ -65,6 +68,7 @@ public class BusHouseRecordController {
      * @param busHouseRecord
      * 
      * */
+    @PreAuthorize("hasAuthority('houserecord:updateIsTopZero')")
     @PostMapping("/updateIsTopZero")
     public Result updateIsTopZero(@RequestBody BusHouseRecord busHouseRecord) {
     	busHouseRecord.setTopicon(null);
@@ -82,6 +86,7 @@ public class BusHouseRecordController {
      * @param map
      * 
      * */
+    @PreAuthorize("hasAuthority('houserecord:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));

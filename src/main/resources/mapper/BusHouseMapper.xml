@@ -7,7 +7,6 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="number" jdbcType="VARCHAR" property="number" />
-    <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="owner" jdbcType="VARCHAR" property="owner" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="price" jdbcType="VARCHAR" property="price" />
@@ -24,8 +23,8 @@
     <result column="introduce" jdbcType="VARCHAR" property="introduce" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="state" jdbcType="VARCHAR" property="state" />
-    <result column="region_code" jdbcType="VARCHAR" property="region_code" />
-    <result column="street_id" jdbcType="VARCHAR" property="street_id" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="street_id" jdbcType="BIGINT" property="street_id" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="iskey" jdbcType="VARCHAR" property="iskey" />
     <result column="key_user_name" jdbcType="VARCHAR" property="keyUserName" />
@@ -38,6 +37,16 @@
     <result column="otherimg" jdbcType="VARCHAR" property="otherimg" />
     <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
     <result column="exclusive_user_name" jdbcType="VARCHAR" property="exclusiveUserName" />
+    <result column="numfloor" jdbcType="VARCHAR" property="numfloor" />
+    <result column="numunit" jdbcType="VARCHAR" property="numunit" />
+    <result column="numhousehold" jdbcType="VARCHAR" property="numhousehold" />
+    <result column="searchtext" jdbcType="VARCHAR" property="searchtext" />
+    <result column="xiaoqu_name" jdbcType="VARCHAR" property="xiaoquName" />
+    <result column="xiaoqu_id" jdbcType="BIGINT" property="xiaoquId" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="street_name" jdbcType="VARCHAR" property="streetName" />
+    <result column="isfine" jdbcType="VARCHAR" property="isfine" />
+    <result column="isshare" jdbcType="VARCHAR" property="isshare" />
   </resultMap>
   
   
@@ -46,12 +55,13 @@
 		SELECT
 		  `id`,
 		  `number`,
-		  `title`,
 		  `owner`,
 		  `price`,
 		  `floor`,
 		   maxfloor,
-		  `huxing`,
+		   numfloor,
+		   numunit,
+		   numhousehold,
 		  `areas`,
 		   hiddenarea,
 		  `chaoxiang`,
@@ -72,7 +82,12 @@
 		   huxingimg,
 		   otherimg,
 		   exclusive_user_name,
-		   record_time
+		   record_time,
+		   isshare,
+		   isfine
+		
+		   
+		   
 		   
 		FROM `vanke`.`bus_house`
 		<where>
@@ -89,12 +104,22 @@
 				<![CDATA[and price >= #{priceUp} and price <= #{priceDown}]]>
 			</if>
 			
-			<if test="floor != null"><!-- 楼层条件-->
-				 and floor = #{floor}
+			<if test="floorType != null"><!-- 楼层条件-->
+				<if test="floorType==1"><!-- 低楼层条件-->
+					<![CDATA[and CONVERT(b.`floor`,SIGNED) <= (CONVERT(b.`maxfloor`,SIGNED)/3)]]>
+				</if>
+				
+				<if test="floorType==2"><!-- 中楼层条件-->
+					<![CDATA[and CONVERT(b.`floor`,SIGNED) > (CONVERT(b.`maxfloor`,SIGNED)/3) and CONVERT(b.`floor`,SIGNED) <= (CONVERT(b.`maxfloor`,SIGNED)/2)+(CONVERT(b.`maxfloor`,SIGNED)/10)]]>
+				</if>
+				
+				<if test="floorType==3"><!-- 高楼层条件-->
+					<![CDATA[and CONVERT(b.`floor`,SIGNED) >  (CONVERT(b.`maxfloor`,SIGNED)/2)+(CONVERT(b.`maxfloor`,SIGNED)/10)]]>
+				</if>
 			</if>
 			
 			<if test="searchText != null"><!-- 搜索条件-->
-				 and title like "%"#{searchText}"%"
+				 and numhousehold like "%"#{searchText}"%"
 			</if>
 			
 			<if test="huxingshi != null"><!-- 户型几室条件-->
@@ -126,11 +151,32 @@
 				 and chaoxiang = #{chaoxiang}
 			</if>
 			
-			<if test="regionCode != null"><!-- 区条件-->
-				 and region_code = #{regionCode}
+			<if test="regionId != null"><!-- 区条件-->
+				 and region_id = #{regionId}
 			</if>
 			<if test="streetId != null"><!-- 街道条件-->
 				 and street_id = #{streetId}
+			</if>
+			
+			<if test="isfine != null"><!-- 优质房源条件-->
+				 and isfine = #{isfine}
+			</if>
+			
+			<if test="state != null"><!-- 状态条件-->
+				 and state = #{state}
+			</if>
+			<if test="type != null"><!-- 类型条件-->
+				 and type = #{type}
+			</if>
+			<if test="isShare != null"><!-- 共享房源条件-->
+				 and isshare = #{isShare}
+			</if>
+			
+			<if test="grade != null"><!-- 房源等级条件-->
+				 and grade = #{grade}
+			</if>
+			<if test="iskey != null"><!-- 房源等级条件-->
+				 and iskey = #{iskey}
 			</if>
 	
 		</where>
@@ -142,13 +188,14 @@
 	 <insert id="insertBusHouse" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusHouse">
 	 	INSERT INTO `vanke`.`bus_house`
 	            (
-	             `title`,
 	             `owner`,
 	             `phone`,
 	             `price`,
 	             `floor`,
 	              maxfloor,
-	             `huxing`,
+	              numfloor,
+				  numunit,
+				  numhousehold,
 	             huxingshi,
 	             huxingting,
 	             huxingwei,
@@ -163,21 +210,27 @@
 	             `introduce`,
 	             `type`,
 	             `state`,
-	             region_code,
-	             street_id,
+	              region_id,
+	              street_id,
+	              xiaoqu_name,
+	              region_name,
+	              street_name,
 	             `address`,
 	             `iskey`,
 	              key_user_name,
-				  record_time
+				  record_time,
+				  isfine
+				  
 	             )
 			VALUES (
-			        #{title},
 			        #{owner},
 			        #{phone},
 			        #{price},
 			        #{floor},
 			        #{maxfloor},
-			        #{huxing},
+			        #{numfloor},
+			        #{numunit},
+			        #{numhousehold},
 			        #{huxingshi},
 			        #{huxingting},
 			        #{huxingwei},
@@ -192,12 +245,16 @@
 			        #{introduce},
 			        #{type},
 			        0,
-			        #{regionCode},
+			        #{regionId},
 			        #{streetId},
-			        #{address},
+			         #{xiaoquName},
+			        #{regionName},
+			        #{streetName},
+			        #{address},			      
 			        #{iskey},
 			        #{keyUserName},
-			     	NOW()	);
+			     	NOW(),
+			     	0	);
 	 </insert>
 	 
 	 

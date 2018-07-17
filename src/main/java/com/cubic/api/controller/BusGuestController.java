@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,7 @@ public class BusGuestController {
      * @param busGuest
      * 
      * */
+    @PreAuthorize("hasAuthority('guest:insert')")
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusGuest busGuest) {
        	//创建人账号名
@@ -72,7 +74,7 @@ public class BusGuestController {
     	BusGuest busGuest = busGuestService.findById(id);
         return ResultGenerator.genOkResult(busGuest);
     }
-
+    @PreAuthorize("hasAuthority('guest:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	  PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));

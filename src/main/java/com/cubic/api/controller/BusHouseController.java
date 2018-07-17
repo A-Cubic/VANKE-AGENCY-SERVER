@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +46,7 @@ public class BusHouseController {
     * @param busHouse
     * 
     * */
+    @PreAuthorize("hasAuthority('house:save')")
     @PostMapping("/save")
     public Result add(Principal user,@RequestBody BusHouse busHouse) {
     	//创建人账号名
@@ -74,6 +76,7 @@ public class BusHouseController {
      * @param busHouse
      * 状态:(0:普通,1:特殊,2:无效,3:已售出/已租出)
      * */
+    @PreAuthorize("hasAuthority('house:updateState')")
     @PostMapping("/updateState")
     public Result updateState(@RequestBody BusHouse busHouse) {
 //    	BusHouse busHouseNew=new BusHouse();
@@ -93,6 +96,7 @@ public class BusHouseController {
      * @param busHouse
      * 
      * */
+    @PreAuthorize("hasAuthority('house:updateRecordUser')")
     @PostMapping("/updateRecordUser")
     public Result updateRecordUser(@RequestBody BusHouse busHouse) {
     	BusHouse busHouseNew=new BusHouse();
@@ -110,6 +114,7 @@ public class BusHouseController {
      * @param busHouse
      * 
      * */
+    @PreAuthorize("hasAuthority('house:update')")
     @PostMapping("/update")
     public Result update(@RequestBody BusHouse busHouse) {
     	
@@ -125,6 +130,7 @@ public class BusHouseController {
      * @param busHouse
      * 
      * */
+    @PreAuthorize("hasAuthority('house:updateImg')")
     @PostMapping("/updateImg")
     public Result updateImg(Principal user,@RequestBody BusHouse busHouse) {
     	
@@ -140,6 +146,7 @@ public class BusHouseController {
      * 
      * ,@RequestBody BusHouse busHouse
      * */
+    @PreAuthorize("hasAuthority('house:updateKey')")
     @PostMapping("/updateKey")
     public Result updateKey(Principal user) {
     	BusHouse busHouse=new BusHouse();
@@ -154,6 +161,7 @@ public class BusHouseController {
      * @param map
      * 
      * */
+    @PreAuthorize("hasAuthority('house:detailPhone')")
     @PostMapping("/detailPhone")
     public Result detailPhone(Principal user,@RequestBody Map<String,Object> map) {
     	BusHouse busHouse = busHouseService.DetailContacts(map);
@@ -178,6 +186,7 @@ public class BusHouseController {
     * @param map
     * 
     * */
+    @PreAuthorize("hasAuthority('house:detailAddress')")
     @PostMapping("/detailAddress")
     public Result detail(Principal user,@RequestBody Map<String,Object> map) {
     	BusHouse busHouse = busHouseService.DetailAddress(map);
@@ -202,6 +211,7 @@ public class BusHouseController {
      * @param  page  size map
      * @RequestBody Map<String,Object> map
      * */
+    @PreAuthorize("hasAuthority('house:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     		

@@ -37,8 +37,8 @@ public interface BusHouseMapper extends MyMapper<BusHouse> {
 	BusHouse DetailAddress(Map<String,Object> map);
 	
 	 /**
-     *更新房源跟进时间
-     * @param map
+     * 更新房源跟进时间
+     * @param busHouse
      * 
      * */
 	void  updateRecordTime(BusHouse busHouse);
