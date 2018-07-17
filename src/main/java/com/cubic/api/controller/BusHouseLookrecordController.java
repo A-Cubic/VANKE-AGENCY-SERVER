@@ -6,6 +6,8 @@ import com.cubic.api.model.BusHouseLookrecord;
 import com.cubic.api.service.BusHouseLookrecordService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -49,6 +51,7 @@ public class BusHouseLookrecordController {
     	 * 查询带看记录
     	 * @param   map
     	 * */
+    @PreAuthorize("hasAuthority('houselookrecord:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));

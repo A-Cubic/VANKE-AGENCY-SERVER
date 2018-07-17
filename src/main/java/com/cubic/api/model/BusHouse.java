@@ -134,17 +134,35 @@ public class BusHouse {
     private String state="0";
     
     /**
-     * 房屋区号地址
+     * 房屋区号地址id
      */
-    @Column(name = "region_code")
-    private String regionCode;
+    @Column(name = "region_id")
+    private Long regionId;
     
     /**
      * 房屋街道id
      */
     @Column(name = "street_id")
-    private String streetId;
+    private Long streetId;
     
+    
+    /**
+     * 房屋区号地址
+     */
+    @Column(name = "region_name")
+    private String regionName;
+    
+    /**
+     * 房屋街道地址
+     */
+    @Column(name = "region_name")
+    private String streetName;
+    
+    /**
+     * 房屋小区地址
+     */
+    @Column(name = "xiaoqu_name")
+    private String xiaoquName;
     /**
      * 房屋详细地址
      */
@@ -204,6 +222,34 @@ public class BusHouse {
      * 其他的实勘图片
      */
     private String otherimg;
+    
+    /**
+     * 几号楼
+     */
+    private String numfloor;
+    /**
+     * 几号单元
+     */
+    private String numunit;
+    /**
+     * 几号住户
+     */
+    private String numhousehold;
+    /**
+     * 搜索框模糊匹配条件
+     */
+    private String searchtext;
+    
+    
+    /**
+     * 是否是优质房源
+     */
+    private String isfine;
+    
+    /**
+     * 是否是共享池状态
+     */
+    private String isshare;
 
     /**
      * @return id
@@ -540,25 +586,25 @@ public class BusHouse {
 	 /**
      * 房屋区号地址code
      * 
-     * @return regionCode 
+     * @return regionId 
      */
-	public String getRegionCode() {
-		return regionCode;
+	public Long getRegionId() {
+		return regionId;
 	}
 	 /**
      * 房屋区号地址code
      * 
-     * @param regionCode 
+     * @param regionId 
      */
-	public void setRegionCode(String regionCode) {
-		this.regionCode = regionCode;
+	public void setRegionId(Long regionId) {
+		this.regionId = regionId;
 	}
 	 /**
      * 房屋街道id
      * 
      * @return streetId 
      */
-	public String getStreetId() {
+	public Long getStreetId() {
 		return streetId;
 	}
 	
@@ -567,7 +613,7 @@ public class BusHouse {
      * 
      * @param streetId 
      */
-	public void setStreetId(String streetId) {
+	public void setStreetId(Long streetId) {
 		this.streetId = streetId;
 	}
 
@@ -819,6 +865,78 @@ public class BusHouse {
      */
 	public void setExclusiveUserName(String exclusiveUserName) {
 		this.exclusiveUserName = exclusiveUserName;
+	}
+
+	public String getNumfloor() {
+		return numfloor;
+	}
+
+	public void setNumfloor(String numfloor) {
+		this.numfloor = numfloor;
+	}
+
+	public String getNumunit() {
+		return numunit;
+	}
+
+	public void setNumunit(String numunit) {
+		this.numunit = numunit;
+	}
+
+	public String getNumhousehold() {
+		return numhousehold;
+	}
+
+	public void setNumhousehold(String numhousehold) {
+		this.numhousehold = numhousehold;
+	}
+
+	public String getSearchtext() {
+		return searchtext;
+	}
+
+	public void setSearchtext(String searchtext) {
+		this.searchtext = searchtext;
+	}
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getXiaoquName() {
+		return xiaoquName;
+	}
+
+	public void setXiaoquName(String xiaoquName) {
+		this.xiaoquName = xiaoquName;
+	}
+
+	public String getIsfine() {
+		return isfine;
+	}
+
+	public void setIsfine(String isfine) {
+		this.isfine = isfine;
+	}
+
+	public String getIsshare() {
+		return isshare;
+	}
+
+	public void setIsshare(String isshare) {
+		this.isshare = isshare;
 	}
 	
 	

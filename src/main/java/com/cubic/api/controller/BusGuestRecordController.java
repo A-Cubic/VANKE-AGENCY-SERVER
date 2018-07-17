@@ -9,6 +9,8 @@ import com.cubic.api.service.BusGuestRecordService;
 import com.cubic.api.service.BusGuestService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -33,17 +35,16 @@ public class BusGuestRecordController {
      * @param busGuestRecord
      * 
      * */
+    @PreAuthorize("hasAuthority('guestrecord:insert')")
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusGuestRecord busGuestRecord) {
     	busGuestRecord.setUserName(user.getName());    
     	BusGuest busGuest=busGuestService.findById(busGuestRecord.getGuestId());
-    	//判断当前跟进人是否是该客源的维护人
-    	if(busGuest.getRecordUserName().equals(user.getName())){
-    		BusGuest busGuestNew=new BusGuest();
-    		busGuestNew.setId(busGuest.getId());
-    		//更新客源跟进时间
-    		busGuestService.updateRecordTime(busGuestNew);
-    	}
+    	BusGuest busGuestNew=new BusGuest();
+    	busGuestNew.setId(busGuest.getId());
+    	//更新客源跟进时间
+    	busGuestService.updateRecordTime(busGuestNew);
+    	
     	busGuestRecordService.insertGuestRecord(busGuestRecord);
         return ResultGenerator.genOkResult("添加成功");
     }
@@ -58,6 +59,7 @@ public class BusGuestRecordController {
      * @param busGuestRecord
      * 
      * */
+    @PreAuthorize("hasAuthority('guestrecord:updateIsTopOne')")
     @PostMapping("/updateIsTopOne")
     public Result updateIsTopOne(@RequestBody BusGuestRecord busGuestRecord) {
     	busGuestRecordService.update(busGuestRecord);
@@ -68,6 +70,7 @@ public class BusGuestRecordController {
      * @param busGuestRecord
      * 
      * */
+    @PreAuthorize("hasAuthority('guestrecord:updateIsTopZero')")
     @PostMapping("/updateIsTopZero")
     public Result updateIsTopZero(@RequestBody BusGuestRecord busGuestRecord) {
     	busGuestRecordService.update(busGuestRecord);
@@ -83,6 +86,7 @@ public class BusGuestRecordController {
      * @param map
      * 
      * */
+    @PreAuthorize("hasAuthority('guestrecord:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));

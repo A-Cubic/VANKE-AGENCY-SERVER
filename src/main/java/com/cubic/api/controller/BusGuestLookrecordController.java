@@ -6,6 +6,8 @@ import com.cubic.api.model.BusGuestLookrecord;
 import com.cubic.api.service.BusGuestLookrecordService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -45,7 +47,7 @@ public class BusGuestLookrecordController {
     	BusGuestLookrecord busGuestLookrecord = busGuestLookrecordService.findById(id);
         return ResultGenerator.genOkResult(busGuestLookrecord);
     }
-
+    @PreAuthorize("hasAuthority('guestlookrecord:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
