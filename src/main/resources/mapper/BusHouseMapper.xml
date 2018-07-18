@@ -46,6 +46,10 @@
     <result column="street_name" jdbcType="VARCHAR" property="streetName" />
     <result column="isfine" jdbcType="VARCHAR" property="isfine" />
     <result column="isshare" jdbcType="VARCHAR" property="isshare" />
+    <result column="record_rel_name" jdbcType="VARCHAR" property="recordrelName" />
+    <result column="create_rel_name" jdbcType="VARCHAR" property="createrelName" />
+    <result column="key_rel_name" jdbcType="VARCHAR" property="keyrelName" />
+    <result column="exploration_rel_name" jdbcType="VARCHAR" property="explorationrelName" />
   </resultMap>
   
   
@@ -87,8 +91,12 @@
 		  bh.huxingshi,
 		  bh.huxingting,
 		  bh.huxingwei,
-		  bh.huxingchu
-		   
+		  bh.huxingchu,
+		  bh.record_rel_name,
+		  bh.create_rel_name,
+		  bh.key_rel_name,
+		  bh.exploration_rel_name
+		  
 		FROM bus_house bh,base_store_range  bsr,sys_user su	
 		
 		
@@ -242,7 +250,10 @@
 	              key_user_name,
 				  record_time,
 				  isfine,
-				  searchtext
+				  searchtext,
+				  record_rel_name,
+				  create_rel_name,
+				  key_rel_name
 				  
 	             )
 			VALUES (
@@ -278,7 +289,10 @@
 			        #{keyUserName},			       
 			     	NOW(),
 			     	0,
-			     	#{searchtext}	);
+			     	#{searchtext},
+			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
+			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
+			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName})			);
 	 </insert>
 	 
 	 

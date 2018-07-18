@@ -101,11 +101,6 @@ public class BusHouseRecordController {
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseRecord> list = busHouseRecordService.listHouseRecord(map);
-        //获得真实姓名
-        for(BusHouseRecord busHouseRecord:list){        	
-        	User users=userService.findBy("username", busHouseRecord.getUserName());
-        	busHouseRecord.setUserRelName(users.getRelname());
-        }
         PageInfo<BusHouseRecord> pageInfo = new PageInfo<BusHouseRecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

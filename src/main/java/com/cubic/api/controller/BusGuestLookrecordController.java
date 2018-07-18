@@ -79,11 +79,7 @@ public class BusGuestLookrecordController {
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusGuestLookrecord> list = busGuestLookrecordService.listBusGuestLookrecord(map);
-        //获得真实姓名
-        for(BusGuestLookrecord busGuestLookrecord:list){        	
-        	User users=userService.findBy("username", busGuestLookrecord.getUserName());
-        	busGuestLookrecord.setUserRelName(users.getRelname());
-        }
+ 
         PageInfo<BusGuestLookrecord> pageInfo = new PageInfo<BusGuestLookrecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

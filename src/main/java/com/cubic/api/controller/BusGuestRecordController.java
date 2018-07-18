@@ -100,12 +100,6 @@ public class BusGuestRecordController {
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusGuestRecord> list = busGuestRecordService.listGuestRecord(map);
-        //获得真实姓名
-        for(BusGuestRecord busGuestRecord:list){        	
-        	User users=userService.findBy("username", busGuestRecord.getUserName());
-        	busGuestRecord.setUserRelName(users.getRelname());
-        }
-        
         PageInfo<BusGuestRecord> pageInfo = new PageInfo<BusGuestRecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

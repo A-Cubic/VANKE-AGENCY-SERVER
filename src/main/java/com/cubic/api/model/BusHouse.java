@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "bus_house")
 public class BusHouse {
@@ -19,8 +20,14 @@ public class BusHouse {
      */
     private String number;
     /**
+     * 用户是否是维护人
+     */
+    @Transient
+    private String user_ype;
+    /**
      * 房屋标题
      */
+    @Transient
     private String title;
 
     /**
@@ -90,6 +97,7 @@ public class BusHouse {
      */
     private String grade;
     
+    @Transient
     private int clickcount = 0;
 
     public int getClickcount() {
@@ -181,18 +189,22 @@ public class BusHouse {
     /**
      * 维护人真实姓名
      */
+    @Column(name = "record_rel_name")
     private String recordrelName;
     /**
      * 创建人真实姓名
      */
+    @Column(name = "create_rel_name")
     private String createrelName;
     /**
      * 钥匙持有人真实姓名
      */
+    @Column(name = "key_rel_name")
     private String keyrelName;
     /**
      * 实勘人真实姓名
      */
+    @Column(name = "exploration_rel_name")
     private String explorationrelName;
     /**
      * 钥匙拥有人账户名
@@ -219,25 +231,55 @@ public class BusHouse {
      */
     private String shiimg;
     /**
+     * 几室的实勘图片接受list
+     */
+    @Transient
+    private List<String> shiImgList;
+    /**
      * 几厅的实勘图片
      */
     private String tingimg;
+    /**
+     * 几厅的实勘图片接受list
+     */
+    @Transient
+    private List<String>  tingImgList;
     /**
      * 几卫的实勘图片
      */
     private String weiimg;
     /**
+     * 几卫的实勘图片接受list
+     */
+    @Transient
+    private List<String> weiImgList;
+    /**
      * 几厨的实勘图片
      */
     private String chuimg;
+    /**
+     * 几厨的实勘图片接受list
+     */
+    @Transient
+    private List<String> chuImgList;
     /**
      * 户型的实勘图片
      */
     private String huxingimg;
     /**
+     * 户型的实勘图片接受list
+     */
+    @Transient
+    private List<String> huxingImgList;
+    /**
      * 其他的实勘图片
      */
     private String otherimg;
+    /**
+     * 其他的实勘图片接受list
+     */
+    @Transient
+    private List<String> otherImgList;
     
     /**
      * 几号楼
@@ -1058,9 +1100,62 @@ public class BusHouse {
 	public void setExplorationrelName(String explorationrelName) {
 		this.explorationrelName = explorationrelName;
 	}
-	
-	
-	
-    
+
+	public List<String> getShiImgList() {
+		return shiImgList;
+	}
+
+	public void setShiImgList(List<String> shiImgList) {
+		this.shiImgList = shiImgList;
+	}
+
+	public List<String> getTingImgList() {
+		return tingImgList;
+	}
+
+	public void setTingImgList(List<String> tingImgList) {
+		this.tingImgList = tingImgList;
+	}
+
+	public List<String> getWeiImgList() {
+		return weiImgList;
+	}
+
+	public void setWeiImgList(List<String> weiImgList) {
+		this.weiImgList = weiImgList;
+	}
+
+	public List<String> getChuImgList() {
+		return chuImgList;
+	}
+
+	public void setChuImgList(List<String> chuImgList) {
+		this.chuImgList = chuImgList;
+	}
+
+	public List<String> getHuxingImgList() {
+		return huxingImgList;
+	}
+
+	public void setHuxingImgList(List<String> huxingImgList) {
+		this.huxingImgList = huxingImgList;
+	}
+
+	public List<String> getOtherImgList() {
+		return otherImgList;
+	}
+
+	public void setOtherImgList(List<String> otherImgList) {
+		this.otherImgList = otherImgList;
+	}
+
+	public String getUser_ype() {
+		return user_ype;
+	}
+
+	public void setUser_ype(String user_ype) {
+		this.user_ype = user_ype;
+	}
+
     
 }

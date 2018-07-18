@@ -53,10 +53,11 @@
   </update>
   
   <select id="listHouseRecord" parameterType="map" resultMap="BaseResultMap">
-  		SELECT *
-  		FROM  bus_house_record
+  		SELECT b.*,su.relname userRelName
+  		FROM  bus_house_record b,sys_user su	
   		WHERE 
-  			house_id = #{houseId}
+  			house_id = #{houseId} 
+  			and  su.username=b.user_name
   		order by  toptime desc	
   </select>
   

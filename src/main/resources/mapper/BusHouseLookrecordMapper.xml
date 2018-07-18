@@ -14,10 +14,11 @@
   
   
   <select id="listBusHouseLookrecord" parameterType="Map" resultMap="BaseResultMap">
-  		SELECT * 
-  		FROM bus_house_lookrecord
+  		SELECT bhl.* ,su.relname userRelName
+  		FROM bus_house_lookrecord bhl,sys_user su	
   		WHERE 
   			house_id=#{houseId}
+  			and  su.username=bhl.user_name
   		ORDER BY create_time DESC	
   
   </select>

@@ -1,6 +1,7 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -18,13 +19,16 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseClicklog;
-import com.cubic.api.model.User;
+import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.util.NumberUtil;
+import com.cubic.api.util.OSSUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import com.cubic.api.model.BusExamine;
 
 
 
@@ -42,6 +46,8 @@ public class BusHouseController {
     private BusHouseClicklogService busHouseClicklogService;
     @Resource
     private UserService userService;
+    @Resource
+    private BusExamineService busExamineService;
 
    /**
     * 创建房源信息
@@ -137,11 +143,51 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:updateImg')")
     @PostMapping("/updateImg")
     public Result updateImg(Principal user,@RequestBody BusHouse busHouse) {
+    	StringBuffer url=new StringBuffer();
+    	BusExamine busExamine =new BusExamine(); 
+    	//循环读取室的实勘图片url
+    	for(String urltext:busHouse.getShiImgList()){
+    		url.append(OSSUtil.uploadOSSToInputStream(urltext,"house")+",");
+    	}
+    	busExamine.setShiimg(url.toString());
+    	url.setLength(0);
+    	//循环读取厅的实勘图片url
+    	for(String urltext:busHouse.getTingImgList()){
+    		url.append(OSSUtil.uploadOSSToInputStream(urltext,"house")+",");
+    	}
+    	busExamine.setTingimg(url.toString());
+    	url.setLength(0);
+    	//循环读取卫的实勘图片url
+    	for(String urltext:busHouse.getWeiImgList()){
+    		url.append(OSSUtil.uploadOSSToInputStream(urltext,"house")+",");
+    	}
+    	busExamine.setWeiimg(url.toString());
+    	url.setLength(0);
+    	//循环读取厨的实勘图片url
+    	for(String urltext:busHouse.getChuImgList()){
+    		url.append(OSSUtil.uploadOSSToInputStream(urltext,"house")+",");
+    	}
+    	busExamine.setChuimg(url.toString());
+    	url.setLength(0);
+    	//循环读取户型的实勘图片url
+    	for(String urltext:busHouse.getHuxingImgList()){
+    		url.append(OSSUtil.uploadOSSToInputStream(urltext,"house")+",");
+    	}
+    	busExamine.setHuxingimg(url.toString());
+    	url.setLength(0);
+    	//循环读取其他的实勘图片url
+    	for(String urltext:busHouse.getOtherImgList()){
+    		url.append(OSSUtil.uploadOSSToInputStream(urltext,"house")+",");
+    	}
+    	busExamine.setOtherimg(url.toString());
+    	url.setLength(0);
     	
-//    	if(null != busHouse){
-//    			busHouseService.update(busHouse);  		
-//    	}
-        return ResultGenerator.genOkResult("录入成功");
+    	busExamine.setHouseId(busHouse.getId());
+    	busExamine.setType("4");
+    	busExamine.setUserName(user.getName());
+    	
+    	busExamineService.insertBusExamine(busExamine);
+        return ResultGenerator.genOkResult("提交待审核");
     }
   
     
@@ -191,7 +237,7 @@ public class BusHouseController {
     * */
     @PreAuthorize("hasAuthority('house:detailAddress')")
     @PostMapping("/detailAddress")
-    public Result detail(Principal user,@RequestBody Map<String,Object> map) {
+    public Result detailAddress(Principal user,@RequestBody Map<String,Object> map) {
     	BusHouse busHouse = busHouseService.DetailAddress(map);
     	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询房屋地址的次数已用完");
@@ -208,6 +254,34 @@ public class BusHouseController {
     	}
         return ResultGenerator.genOkResult(busHouse);
     }
+    /**
+     * 查询详细信息
+     * @param  
+     * @RequestBody busHouse
+     * */
+    @PreAuthorize("hasAuthority('house:detail')")
+    @PostMapping("/detail")
+    public Result detail(Principal user,@RequestBody BusHouse busHouse) {
+    	BusHouse busHouseNew=busHouseService.findById(busHouse.getId());
+    	busHouseNew.setAddress(null);
+    	busHouseNew.setRegionId(null);
+    	busHouseNew.setRegionName(null);
+    	busHouseNew.setStreetId(null);
+    	busHouseNew.setStreetName(null);
+    	busHouseNew.setXiaoquName(null);
+    	busHouseNew.setOwner(null);
+    	busHouseNew.setPhone(null);
+    	busHouseNew.setNumfloor(null);
+    	busHouseNew.setNumhousehold(null);
+    	busHouseNew.setNumunit(null);
+    	if(user.getName().equals(busHouseNew.getRecordUserName())){
+    		busHouseNew.setUser_ype("1");
+    	}else{
+    		busHouseNew.setUser_ype("0");
+    	}
+    	return ResultGenerator.genOkResult(busHouseNew);
+    }
+    
 
     /**
      * 按条件查询列表 返回分页数据
@@ -220,22 +294,35 @@ public class BusHouseController {
     	map.put("userName", user.getName());
         PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouse> list = busHouseService.ListBusHouse(map);
-         //遍历获取真实姓名
+         //显示图片
         for(BusHouse bushouses:list){        	
-	        	User users=userService.findBy("username", bushouses.getRecordUserName());
-	        	bushouses.setRecordrelName(users.getRelname());
-        	     users=userService.findBy("username", bushouses.getCreateUserName());
-        	     bushouses.setCreaterelName(users.getRelname());
-        	     if(null!=bushouses.getKeyUserName()){
-        	    	  users=userService.findBy("username", bushouses.getKeyUserName());
-             	      bushouses.setKeyrelName(users.getRelname());
+        	     StringBuffer urltext=new StringBuffer();
+        	     if(null!=bushouses.getShiimg()){
         	    	 
+        	    	 urltext.append(bushouses.getShiimg());
         	     }
-        	     if(null!=bushouses.getExplorationrelName()){
-        		   users=userService.findBy("username", bushouses.getExplorationrelName());
-          	       bushouses.setExplorationrelName(users.getRelname());
-        	    }
-        	   
+			     if(null!=bushouses.getTingimg()){
+		        	    	 
+		            urltext.append(","+bushouses.getTingimg());
+		        	     }
+			     if(null!=bushouses.getWeiimg()){
+			    	 
+			    	 urltext.append(","+bushouses.getWeiimg());
+			     }
+			     if(null!=bushouses.getChuimg()){
+			    	 
+			    	 urltext.append(","+bushouses.getChuimg());
+			     }
+				 if(null!=bushouses.getHuxingimg()){
+							    	 
+					urltext.append(","+bushouses.getHuxingimg());
+							     }
+				 if(null!=bushouses.getOtherimg()){
+				  	 
+				  	 urltext.append(","+bushouses.getOtherimg());
+				   }
+				 
+				 bushouses.setImgurl(Arrays.asList(urltext.toString().split(",")));
         }
         PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
         return ResultGenerator.genOkResult(pageInfo);

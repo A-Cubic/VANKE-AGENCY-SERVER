@@ -54,10 +54,11 @@
   </update>
   
   <select id="listGuestRecord" parameterType="map" resultMap="BaseResultMap">
-  		SELECT *
-  		FROM  bus_guest_record
+  		SELECT bgr.*,su.relname userRelName
+  		FROM  bus_guest_record bgr,sys_user su	
   		WHERE 
   			Guest_id = #{guestId}
+  			and su.username=bgr.user_name
   		order by  toptime desc		
   </select>
 </mapper>

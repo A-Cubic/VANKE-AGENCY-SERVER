@@ -15,9 +15,10 @@
   </resultMap>
   
   <select id="listBusGuestLookrecord" resultMap="BaseResultMap">
-  	SELECT * 
-  	FROM bus_guest_lookrecord
+  	SELECT bgl.*,su.relname userRelName 
+  	FROM bus_guest_lookrecord bgl,sys_user su	
   	WHERE guest_id=#{guestId}
+  		and  su.username=bgl.user_name
   	ORDER BY create_time DESC	
   </select>
 </mapper>
