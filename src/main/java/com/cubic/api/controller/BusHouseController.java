@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,13 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.BusHouseClicklog;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
+import com.cubic.api.service.UserService;
 import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.cubic.api.model.BusHouseClicklog;
+import com.cubic.api.model.User;
 
 
 
@@ -40,6 +41,8 @@ public class BusHouseController {
     private BusHouseService busHouseService;
     @Resource
     private BusHouseClicklogService busHouseClicklogService;
+    @Resource
+    private UserService userService;
 
    /**
     * 创建房源信息
@@ -150,8 +153,7 @@ public class BusHouseController {
      * */
     @PreAuthorize("hasAuthority('house:updateKey')")
     @PostMapping("/updateKey")
-    public Result updateKey(Principal user) {
-    	BusHouse busHouse=new BusHouse();
+    public Result updateKey(Principal user,@RequestBody BusHouse busHouse) {
     		busHouse.setIskey("1");
     		busHouse.setKeyUserName(user.getName());
   			busHouseService.update(busHouse);  		
@@ -219,6 +221,23 @@ public class BusHouseController {
     	map.put("userName", user.getName());
         PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouse> list = busHouseService.ListBusHouse(map);
+         //遍历获取真实姓名
+        for(BusHouse bushouses:list){        	
+	        	User users=userService.findBy("username", bushouses.getRecordUserName());
+	        	bushouses.setRecordrelName(users.getRelname());
+        	     users=userService.findBy("username", bushouses.getCreateUserName());
+        	     bushouses.setCreaterelName(users.getRelname());
+        	     if(null!=bushouses.getKeyUserName()){
+        	    	  users=userService.findBy("username", bushouses.getKeyUserName());
+             	      bushouses.setKeyrelName(users.getRelname());
+        	    	 
+        	     }
+        	     if(null!=bushouses.getExplorationrelName()){
+        		   users=userService.findBy("username", bushouses.getExplorationrelName());
+          	     bushouses.setExplorationrelName(users.getRelname());
+        	    }
+        	   
+        }
         PageInfo pageInfo = new PageInfo(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

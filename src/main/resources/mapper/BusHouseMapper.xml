@@ -93,7 +93,7 @@
 		
 		
 		<where>
-		  1=1
+		   1=1
 			<if test="priceUp == null and priceDown != null"><!-- 金额条件在XXX以下 -->
 				<![CDATA[and bh.price <= #{priceDown} ]]>
 			</if>
@@ -125,8 +125,15 @@
 			</if>
 			
 			<if test="huxingshi != null"><!-- 户型几室条件-->
-				 and bh.huxingshi = #{huxingshi}
+				<if test="huxingshi == 6 "><!-- 户型5室以上条件-->
+					 and CONVERT(bh.huxingshi,SIGNED) >= 5
+				</if>
+				<if test="huxingshi != 6 "><!-- 户型几室条件-->
+					and bh.huxingshi = #{huxingshi}
+				</if>
+				 
 			</if>
+			
 			<if test="huxingting != null"><!-- 户型几厅条件-->
 				 and bh.huxingting = #{huxingting}
 			</if>

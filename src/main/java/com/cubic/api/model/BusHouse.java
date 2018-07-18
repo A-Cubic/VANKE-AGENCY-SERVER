@@ -88,7 +88,7 @@ public class BusHouse {
     /**
      * 房屋等级(S,A,B,C)
      */
-    private String grade="B";
+    private String grade;
     
     private int clickcount = 0;
 
@@ -131,7 +131,7 @@ public class BusHouse {
     /**
      * 房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
      */
-    private String state="0";
+    private String state;
     
     /**
      * 房屋区号地址id
@@ -178,6 +178,22 @@ public class BusHouse {
      */
     private List<String> imgurl;
     
+    /**
+     * 维护人真实姓名
+     */
+    private String recordrelName;
+    /**
+     * 创建人真实姓名
+     */
+    private String createrelName;
+    /**
+     * 钥匙持有人真实姓名
+     */
+    private String keyrelName;
+    /**
+     * 实勘人真实姓名
+     */
+    private String explorationrelName;
     /**
      * 钥匙拥有人账户名
      */
@@ -1009,6 +1025,38 @@ public class BusHouse {
      */
 	public void setIsshare(String isshare) {
 		this.isshare = isshare;
+	}
+
+	public String getRecordrelName() {
+		return recordrelName;
+	}
+
+	public void setRecordrelName(String recordrelName) {
+		this.recordrelName = recordrelName;
+	}
+
+	public String getCreaterelName() {
+		return createrelName;
+	}
+
+	public void setCreaterelName(String createrelName) {
+		this.createrelName = createrelName;
+	}
+
+	public String getKeyrelName() {
+		return keyrelName;
+	}
+
+	public void setKeyrelName(String keyrelName) {
+		this.keyrelName = keyrelName;
+	}
+
+	public String getExplorationrelName() {
+		return explorationrelName;
+	}
+
+	public void setExplorationrelName(String explorationrelName) {
+		this.explorationrelName = explorationrelName;
 	}
 	
 	

@@ -10,14 +10,14 @@ public interface BusHouseLookrecordMapper extends MyMapper<BusHouseLookrecord> {
 	
 	 /**
      * 查看带看记录
-     * @param busHouse
+     * @param map
      * 
      * */
 	List<BusHouseLookrecord> listBusHouseLookrecord(Map<String,Object> map);
 	
 	 /**
      * 创建带看记录
-     * @param busHouse
+     * @param busHouseLookrecord
      * 
      * */
 	void insertBusHouseLookrecord(BusHouseLookrecord busHouseLookrecord);
