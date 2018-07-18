@@ -53,6 +53,8 @@ public class BusHouseController {
     	busHouse.setCreateUserName(user.getName());
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
+    	//搜索文本条件
+    	busHouse.setSearchtext("大连市"+busHouse.getRegionName()+busHouse.getStreetName()+busHouse.getXiaoquName()+busHouse.getAddress());
     	busHouseService.insertBusHouse(busHouse);
 
     	//根据id得到房源编号并更新

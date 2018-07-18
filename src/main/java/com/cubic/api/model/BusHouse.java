@@ -866,75 +866,147 @@ public class BusHouse {
 	public void setExclusiveUserName(String exclusiveUserName) {
 		this.exclusiveUserName = exclusiveUserName;
 	}
-
+	 /**
+     * 几号楼
+     * 
+     * @return numfloor
+     */
 	public String getNumfloor() {
 		return numfloor;
 	}
-
+	 /**
+     * 几号楼
+     * 
+     * @param numfloor
+     */
 	public void setNumfloor(String numfloor) {
 		this.numfloor = numfloor;
 	}
-
+	 /**
+     * 单元号
+     * 
+     * @return numunit
+     */
 	public String getNumunit() {
 		return numunit;
 	}
-
+	 /**
+     * 单元号
+     * 
+     * @param numunit
+     */
 	public void setNumunit(String numunit) {
 		this.numunit = numunit;
 	}
-
+	 /**
+     * 住户门号
+     * 
+     * @return numhousehold
+     */
 	public String getNumhousehold() {
 		return numhousehold;
 	}
-
+	 /**
+     * 住户门号
+     * 
+     * @param numhousehold
+     */
 	public void setNumhousehold(String numhousehold) {
 		this.numhousehold = numhousehold;
 	}
-
+	 /**
+     * 搜索文本
+     * 
+     * @return searchtext
+     */
 	public String getSearchtext() {
 		return searchtext;
 	}
-
+	 /**
+     * 搜索文本
+     * 
+     * @param searchtext
+     */
 	public void setSearchtext(String searchtext) {
 		this.searchtext = searchtext;
 	}
-
+	 /**
+     * 区域名称
+     * 
+     * @return regionName
+     */
 	public String getRegionName() {
 		return regionName;
 	}
-
+	 /**
+     * 区域名称
+     * 
+     * @param regionName
+     */
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
 	}
-
+	 /**
+     * 街道名称
+     * 
+     * @return streetName
+     */
 	public String getStreetName() {
 		return streetName;
 	}
-
+	 /**
+     * 街道名称
+     * 
+     * @param streetName
+     */
 	public void setStreetName(String streetName) {
 		this.streetName = streetName;
 	}
-
+	 /**
+     * 小区名称
+     * 
+     * @return xiaoquName
+     */
 	public String getXiaoquName() {
 		return xiaoquName;
 	}
-
+	 /**
+     * 小区名称
+     * 
+     * @param xiaoquName
+     */
 	public void setXiaoquName(String xiaoquName) {
 		this.xiaoquName = xiaoquName;
 	}
-
+	 /**
+     * 判断是否是优质房源
+     * 
+     * @return isfine
+     */
 	public String getIsfine() {
 		return isfine;
 	}
-
+	 /**
+     * 判断是否是优质房源
+     * 
+     * @param isfine
+     */
 	public void setIsfine(String isfine) {
 		this.isfine = isfine;
 	}
-
+	 /**
+     * 判断是否是共享状态的房源
+     * 
+     * @return isshare
+     */
 	public String getIsshare() {
 		return isshare;
 	}
-
+	 /**
+     * 判断是否是共享状态的房源
+     * 
+     * @param isshare
+     */
 	public void setIsshare(String isshare) {
 		this.isshare = isshare;
 	}

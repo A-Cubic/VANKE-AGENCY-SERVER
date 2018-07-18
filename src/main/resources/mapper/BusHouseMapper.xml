@@ -42,7 +42,6 @@
     <result column="numhousehold" jdbcType="VARCHAR" property="numhousehold" />
     <result column="searchtext" jdbcType="VARCHAR" property="searchtext" />
     <result column="xiaoqu_name" jdbcType="VARCHAR" property="xiaoquName" />
-    <result column="xiaoqu_id" jdbcType="BIGINT" property="xiaoquId" />
     <result column="region_name" jdbcType="VARCHAR" property="regionName" />
     <result column="street_name" jdbcType="VARCHAR" property="streetName" />
     <result column="isfine" jdbcType="VARCHAR" property="isfine" />
@@ -90,7 +89,9 @@
 		  bh.huxingwei,
 		  bh.huxingchu
 		   
-		FROM bus_house bh,base_store_range  bsr,sys_user su
+		FROM bus_house bh,base_store_range  bsr,sys_user su	
+		
+		
 		<where>
 		  1=1
 			<if test="priceUp == null and priceDown != null"><!-- 金额条件在XXX以下 -->
@@ -102,7 +103,7 @@
 			</if>
 			
 			<if test="priceUp != null and priceDown != null"><!-- 金额条件在XXX与XXX之间 -->
-				<![CDATA[and bh.price >= #{priceUp} and price <= #{priceDown}]]>
+				<![CDATA[and bh.price >= #{priceUp} and bh.price <= #{priceDown}]]>
 			</if>
 			
 			<if test="floorType != null"><!-- 楼层条件-->
@@ -120,7 +121,7 @@
 			</if>
 			
 			<if test="searchText != null"><!-- 搜索条件-->
-				 and bh.numhousehold like "%"#{searchText}"%"
+				 and bh.searchtext like "%"#{searchText}"%"
 			</if>
 			
 			<if test="huxingshi != null"><!-- 户型几室条件-->
@@ -180,11 +181,11 @@
 			<if test="grade != null"><!-- 房源等级条件-->
 				 and bh.grade = #{grade}
 			</if>
-			<if test="iskey != null"><!-- 房源等级条件-->
+			<if test="iskey != null"><!-- 是否有钥匙条件-->
 				 and bh.iskey = #{iskey}
 			</if>
 			
-			<if test="rangeType!=null"><!-- 范围盘条件-->
+			<if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->
 					and  su.username=#{userName}	
 					and  bsr.store_id=su.store_id					
 					and  bh.region_name=bsr.region_name
@@ -193,7 +194,8 @@
 			</if>
 	
 		</where>
-		order by create_time desc
+		group by  bh.id
+		order by  bh.create_time desc
   
   </select>
   
@@ -232,7 +234,8 @@
 	             `iskey`,
 	              key_user_name,
 				  record_time,
-				  isfine
+				  isfine,
+				  searchtext
 				  
 	             )
 			VALUES (
@@ -260,14 +263,15 @@
 			        0,
 			        #{regionId},
 			        #{streetId},
-			         #{xiaoquName},
+			        #{xiaoquName},
 			        #{regionName},
 			        #{streetName},
 			        #{address},			      
 			        #{iskey},
-			        #{keyUserName},
+			        #{keyUserName},			       
 			     	NOW(),
-			     	0	);
+			     	0,
+			     	#{searchtext}	);
 	 </insert>
 	 
 	 
