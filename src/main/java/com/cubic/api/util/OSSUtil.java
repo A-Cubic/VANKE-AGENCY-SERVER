@@ -27,6 +27,7 @@ public class OSSUtil {
 	private static String accessKeySecret = "rmzyxAMkthwtpFBE7RfrGLB8WCRoTL";
 	private static String bucketName = "cubic-vanke";
 	private static String img_suffix = ".jpg";
+	private static String head = "https://cubic-vanke.oss-cn-qingdao.aliyuncs.com/";
 	
 	public static String uploadOSSToInputStream(String base64,String key) {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
@@ -41,8 +42,9 @@ public class OSSUtil {
                 ossClient.createBucket(createBucketRequest);
             }
             in = new ByteArrayInputStream(Util.decryptBASE64(base64));
-            PutObjectResult putResult = ossClient.putObject(new PutObjectRequest(bucketName,key+"/"+fileName(), in));
-            ret = putResult.getETag();
+            String file_name = fileName();
+            ossClient.putObject(new PutObjectRequest(bucketName,key+"/"+file_name, in));
+            ret = head+key+"/"+file_name;
         } catch (Exception e) {
         	log.error("上传oss失败，原因："+e.getMessage());
         }  finally {
