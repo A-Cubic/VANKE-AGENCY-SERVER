@@ -89,4 +89,85 @@
 	 		WHERE 
 	 			id=#{id}
 	 </update>
+	 
+	 
+	 <select id="listBusGuest" resultMap="BaseResultMap">
+	 				
+				SELECT
+				  `id`,
+				  `number`,
+				  `guestname`,
+				  `sex`,
+				  `guestgrade`,
+				  `type`,
+				  `heartprice`,
+				  `remarks`,
+				  `areas`,
+				  `position`,
+				  `purpose`,
+				  `label`,
+				  `iskey`,
+				  `record_user_name`,
+				  `create_user_name`,
+				  `create_time`,
+				  `collaboratorids`,
+				  `record_time`,
+				  `huxingshi`,
+				  `huxingting`,
+				  `huxingwei`,
+				  `huxingchu`,
+				  `isshare`
+				FROM `vanke`.`bus_guest`
+				
+				<where>
+					 record_user_name=#{recordUserName}
+					 
+					<if test="guestname!=null"><!-- 客源姓名 -->
+							and guestname like "%"#{guestname}"%"
+					</if>
+					
+					<if test="sex!=null">><!-- 客源性别 -->
+							and sex=#{sex}
+					</if>
+					
+					<if test="guestgrade!=null">><!-- 客源星级 -->
+							and guestgrade=#{guestgrade}
+					</if>
+					
+					<if test="type!=null">><!-- 客源类型(0买,1租)-->
+							and type=#{type}
+					</if>
+					
+					<if test="heartprice!=null">><!-- 客源心里价位-->
+							and heartprice=#{heartprice}
+					</if>
+					
+					<if test="areas!=null">><!-- 客源需求面积-->
+							and areas=#{areas}
+					</if>
+					<if test="iskey!=null">><!-- 是否是无效客源-->
+							and iskey=#{iskey}
+					</if>
+					
+					<if test="huxingshi!=null">><!-- 需求户型几室-->
+							and huxingshi=#{huxingshi}
+					</if>
+					
+					<if test="huxingting!=null">><!-- 需求户型几厅-->
+							and huxingshi=#{huxingshi}
+					</if>
+					
+					<if test="huxingwei!=null">><!-- 需求户型几卫-->
+							and huxingshi=#{huxingshi}
+					</if>
+					
+					<if test="huxingchu!=null">><!-- 需求户型几厨-->
+							and huxingshi=#{huxingshi}
+					</if>
+					
+					<if test="collaboratorName!=null">><!-- 查看当前登录人为合作人的客源-->
+							and collaboratorids like "%"#{collaboratorName}"%"
+					</if>
+				</where>
+	 </select>
 </mapper>
