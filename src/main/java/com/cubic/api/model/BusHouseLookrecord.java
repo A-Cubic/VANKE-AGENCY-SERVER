@@ -14,7 +14,10 @@ public class BusHouseLookrecord {
      */
     @Column(name = "user_name")
     private String userName;
-
+    /**
+     * 带看人真实姓名
+     */
+    private String userRelName;
     /**
      * 房源id
      */
@@ -117,4 +120,14 @@ public class BusHouseLookrecord {
     public void setEndtime(Date endtime) {
         this.endtime = endtime;
     }
+
+	public String getUserRelName() {
+		return userRelName;
+	}
+
+	public void setUserRelName(String userRelName) {
+		this.userRelName = userRelName;
+	}
+    
+    
 }

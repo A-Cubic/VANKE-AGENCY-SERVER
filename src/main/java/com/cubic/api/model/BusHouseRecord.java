@@ -14,6 +14,11 @@ public class BusHouseRecord {
      */
     @Column(name = "user_name")
     private String userName;
+    
+    /**
+     * 跟进人真实姓名
+     */
+    private String userRelName;
 
     /**
      * 跟进房屋id
@@ -186,4 +191,13 @@ public class BusHouseRecord {
     public void setTopicon(String topicon) {
         this.topicon = topicon;
     }
+
+	public String getUserRelName() {
+		return userRelName;
+	}
+
+	public void setUserRelName(String userRelName) {
+		this.userRelName = userRelName;
+	}
+    
 }

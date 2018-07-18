@@ -99,7 +99,7 @@ public class UserController {
         PageHelper.startPage(page, size);
         final List<User> list = this.userService.findAllUserWithRole();
         //noinspection unchecked
-        final PageInfo pageInfo = new PageInfo(list);
+        final PageInfo<User> pageInfo = new PageInfo<User>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 

@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.cubic.api.core.mapper.MyMapper;
 import com.cubic.api.model.BusGuestRecord;
-import com.cubic.api.model.BusGuestRecord;
 
 public interface BusGuestRecordMapper extends MyMapper<BusGuestRecord> {
 	 /**

@@ -1,23 +1,30 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusGuest;
 import com.cubic.api.model.BusGuestRecord;
-import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.User;
 import com.cubic.api.service.BusGuestRecordService;
 import com.cubic.api.service.BusGuestService;
+import com.cubic.api.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-
-import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author cubic
@@ -30,6 +37,8 @@ public class BusGuestRecordController {
     private BusGuestRecordService busGuestRecordService;
     @Resource
     private BusGuestService busGuestService;
+    @Resource
+    private UserService userService;
     /**
      *添加跟进信息
      * @param busGuestRecord
@@ -91,7 +100,13 @@ public class BusGuestRecordController {
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusGuestRecord> list = busGuestRecordService.listGuestRecord(map);
-        PageInfo pageInfo = new PageInfo(list);
+        //获得真实姓名
+        for(BusGuestRecord busGuestRecord:list){        	
+        	User users=userService.findBy("username", busGuestRecord.getUserName());
+        	busGuestRecord.setUserRelName(users.getRelname());
+        }
+        
+        PageInfo<BusGuestRecord> pageInfo = new PageInfo<BusGuestRecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

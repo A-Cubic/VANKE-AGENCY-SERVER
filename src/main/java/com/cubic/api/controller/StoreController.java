@@ -49,7 +49,7 @@ public class StoreController {
 	public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
 		PageHelper.startPage(page, size);
 		List<Store> list = storeService.findAll();
-		PageInfo pageInfo = new PageInfo(list);
+		PageInfo<Store> pageInfo = new PageInfo<Store> (list);
 		return ResultGenerator.genOkResult(pageInfo);
 	}
 }

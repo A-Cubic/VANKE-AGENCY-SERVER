@@ -16,6 +16,10 @@ public class BusGuestRecord {
     private String userName;
 
     /**
+     * 跟进人真实姓名
+     */
+    private String userRelName;
+    /**
      * 客源id
      */
     @Column(name = "guest_id")
@@ -186,4 +190,13 @@ public class BusGuestRecord {
     public void setTopicon(String topicon) {
         this.topicon = topicon;
     }
+
+	public String getUserRelName() {
+		return userRelName;
+	}
+
+	public void setUserRelName(String userRelName) {
+		this.userRelName = userRelName;
+	}
+    
 }

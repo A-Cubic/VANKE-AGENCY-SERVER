@@ -1,18 +1,31 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusGuestLookrecord;
+import com.cubic.api.model.BusHouseLookrecord;
+import com.cubic.api.model.User;
 import com.cubic.api.service.BusGuestLookrecordService;
+import com.cubic.api.service.BusHouseLookrecordService;
+import com.cubic.api.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author cubic
@@ -23,11 +36,25 @@ import java.util.Map;
 public class BusGuestLookrecordController {
     @Resource
     private BusGuestLookrecordService busGuestLookrecordService;
-
+    @Resource
+    private BusHouseLookrecordService busHouseLookrecordService;
+    @Resource
+    private UserService userService;
+    /**
+     * 创建客源的带看信息
+     * */
+    @PreAuthorize("hasAuthority('guestlookrecord:insert')")
     @PostMapping("/insert")
-    public Result add(@RequestBody BusGuestLookrecord busGuestLookrecord) {
+    public Result add(Principal user,@RequestBody BusGuestLookrecord busGuestLookrecord) {
     	busGuestLookrecordService.save(busGuestLookrecord);
-        return ResultGenerator.genOkResult();
+    	//同时创建房源的带看信息
+    	BusHouseLookrecord busHouseLookrecord=new BusHouseLookrecord();
+    	busHouseLookrecord.setHouseId(busGuestLookrecord.getHouseId());
+    	busHouseLookrecord.setUserName(user.getName());
+    	busHouseLookrecord.setCreateTime(busGuestLookrecord.getCreateTime());
+    	busHouseLookrecord.setEndtime(busGuestLookrecord.getEndtime());
+    	busHouseLookrecordService.save(busHouseLookrecord);
+        return ResultGenerator.genOkResult("添加成功");
     }
 
     @DeleteMapping("/{id}")
@@ -51,8 +78,13 @@ public class BusGuestLookrecordController {
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-        List<BusGuestLookrecord> list = busGuestLookrecordService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
+        List<BusGuestLookrecord> list = busGuestLookrecordService.listBusGuestLookrecord(map);
+        //获得真实姓名
+        for(BusGuestLookrecord busGuestLookrecord:list){        	
+        	User users=userService.findBy("username", busGuestLookrecord.getUserName());
+        	busGuestLookrecord.setUserRelName(users.getRelname());
+        }
+        PageInfo<BusGuestLookrecord> pageInfo = new PageInfo<BusGuestLookrecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

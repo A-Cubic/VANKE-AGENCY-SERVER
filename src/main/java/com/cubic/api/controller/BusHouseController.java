@@ -18,14 +18,13 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseClicklog;
+import com.cubic.api.model.User;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import com.cubic.api.model.User;
 
 
 
@@ -234,11 +233,11 @@ public class BusHouseController {
         	     }
         	     if(null!=bushouses.getExplorationrelName()){
         		   users=userService.findBy("username", bushouses.getExplorationrelName());
-          	     bushouses.setExplorationrelName(users.getRelname());
+          	       bushouses.setExplorationrelName(users.getRelname());
         	    }
         	   
         }
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
     

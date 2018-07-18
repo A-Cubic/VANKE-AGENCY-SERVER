@@ -50,7 +50,7 @@ public class RoleController {
         PageHelper.startPage(page, size);
         final List<com.cubic.api.model.Resource> list = this.roleService.findAllRoleWithPermission();
         //noinspection unchecked
-        final PageInfo pageInfo = new PageInfo(list);
+        final PageInfo<com.cubic.api.model.Resource> pageInfo = new PageInfo<com.cubic.api.model.Resource>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

@@ -7,6 +7,9 @@ import com.cubic.api.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 /**
@@ -19,5 +22,25 @@ import javax.annotation.Resource;
 public class BusGuestLookrecordServiceImpl extends AbstractService<BusGuestLookrecord> implements BusGuestLookrecordService {
     @Resource
     private BusGuestLookrecordMapper busGuestLookrecordMapper;
+	 /**
+     * 查看带看记录
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusGuestLookrecord> listBusGuestLookrecord(Map<String, Object> map) {
+		
+		return busGuestLookrecordMapper.listBusGuestLookrecord(map);
+	}
+	 /**
+     * 创建带看记录
+     * @param busGuestLookrecord
+     * 
+     * */
+	@Override
+	public void insertBusGuestLookrecord(BusGuestLookrecord busGuestLookrecord) {
+		busGuestLookrecordMapper.insertBusGuestLookrecord(busGuestLookrecord);
+		
+	}
 
 }
