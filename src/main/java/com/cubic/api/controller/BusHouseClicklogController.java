@@ -1,15 +1,25 @@
 package com.cubic.api.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouseClicklog;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author cubic
@@ -50,7 +60,7 @@ public class BusHouseClicklogController {
                        @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<BusHouseClicklog> list = busHouseClicklogService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<BusHouseClicklog> pageInfo = new PageInfo<BusHouseClicklog>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

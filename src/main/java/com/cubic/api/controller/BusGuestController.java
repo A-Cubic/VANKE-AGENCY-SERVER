@@ -79,7 +79,7 @@ public class BusGuestController {
     public Result list(@RequestBody Map<String,Object> map) {
     	  PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusGuest> list = busGuestService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

@@ -14,6 +14,10 @@ public class BusGuestLookrecord {
      */
     @Column(name = "user_name")
     private String userName;
+    /**
+     * 带看人真实姓名
+     */
+    private String userRelName;
 
     /**
      * 客源id
@@ -164,4 +168,14 @@ public class BusGuestLookrecord {
     public void setEndtime(Date endtime) {
         this.endtime = endtime;
     }
+
+	public String getUserRelName() {
+		return userRelName;
+	}
+
+	public void setUserRelName(String userRelName) {
+		this.userRelName = userRelName;
+	}
+    
+    
 }

@@ -1,22 +1,30 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseRecord;
+import com.cubic.api.model.User;
 import com.cubic.api.service.BusHouseRecordService;
 import com.cubic.api.service.BusHouseService;
+import com.cubic.api.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-
-import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author cubic
@@ -29,6 +37,8 @@ public class BusHouseRecordController {
     private BusHouseRecordService busHouseRecordService;
     @Resource
     private BusHouseService busHouseService;
+    @Resource
+    private UserService userService;
     @PreAuthorize("hasAuthority('houserecord:insert')")
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusHouseRecord busHouseRecord) {
@@ -91,7 +101,12 @@ public class BusHouseRecordController {
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseRecord> list = busHouseRecordService.listHouseRecord(map);
-        PageInfo pageInfo = new PageInfo(list);
+        //获得真实姓名
+        for(BusHouseRecord busHouseRecord:list){        	
+        	User users=userService.findBy("username", busHouseRecord.getUserName());
+        	busHouseRecord.setUserRelName(users.getRelname());
+        }
+        PageInfo<BusHouseRecord> pageInfo = new PageInfo<BusHouseRecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

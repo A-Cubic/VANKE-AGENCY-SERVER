@@ -13,4 +13,11 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
   </resultMap>
+  
+  <select id="listBusGuestLookrecord" resultMap="BaseResultMap">
+  	SELECT * 
+  	FROM bus_guest_lookrecord
+  	WHERE guest_id=#{guestId}
+  	ORDER BY create_time DESC	
+  </select>
 </mapper>
