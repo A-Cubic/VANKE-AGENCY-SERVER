@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusExamineMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusExamine">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="house_id" jdbcType="BIGINT" property="houseId" />
+    <result column="guest_id" jdbcType="BIGINT" property="guestId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="shiimg" jdbcType="VARCHAR" property="shiimg" />
+    <result column="tingimg" jdbcType="VARCHAR" property="tingimg" />
+    <result column="weiimg" jdbcType="VARCHAR" property="weiimg" />
+    <result column="chuimg" jdbcType="VARCHAR" property="chuimg" />
+    <result column="huxingimg" jdbcType="VARCHAR" property="huxingimg" />
+    <result column="otherimg" jdbcType="VARCHAR" property="otherimg" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="examine_name" jdbcType="VARCHAR" property="examineName" />
+    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />
+  </resultMap>
+  
+  
+  <insert id="insertBusExamine" parameterType="com.cubic.api.model.BusExamine">
+  		INSERT INTO bus_examine
+  					(
+  					house_id,
+  					guest_id,
+  					type,
+  					shiimg,
+  					tingimg,
+  					weiimg,
+  					chuimg,
+  					huxingimg,
+  					otherimg,
+  					user_name,
+  					state,
+  					create_time  				
+  					)
+  		  VALUES(
+	  		  #{houseId},
+	  		  #{guestId},
+	  		  #{type},
+	  		  #{shiimg},
+	  		  #{tingimg},
+	  		  #{weiimg},
+	  		  #{chuimg},
+	  		  #{huxing},
+	  		  #{otherimg},
+	  		  #{userName},
+	  		  0,
+	  		  NOW()
+  					
+  					)
+  </insert>
+</mapper>
