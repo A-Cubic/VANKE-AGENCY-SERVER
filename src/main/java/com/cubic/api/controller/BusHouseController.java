@@ -292,6 +292,7 @@ public class BusHouseController {
     	busHouseNew.setNumfloor(null);
     	busHouseNew.setNumhousehold(null);
     	busHouseNew.setNumunit(null);
+    	//是否是维护人
     	if(user.getName().equals(busHouseNew.getRecordUserName())){
     		busHouseNew.setUser_ype("1");
     	}else{

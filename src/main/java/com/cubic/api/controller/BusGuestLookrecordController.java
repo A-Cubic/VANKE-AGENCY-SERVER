@@ -45,15 +45,18 @@ public class BusGuestLookrecordController {
      * */
     @PreAuthorize("hasAuthority('guestlookrecord:insert')")
     @PostMapping("/insert")
-    public Result add(Principal user,@RequestBody BusGuestLookrecord busGuestLookrecord) {
-    	busGuestLookrecordService.save(busGuestLookrecord);
-    	//同时创建房源的带看信息
-    	BusHouseLookrecord busHouseLookrecord=new BusHouseLookrecord();
-    	busHouseLookrecord.setHouseId(busGuestLookrecord.getHouseId());
-    	busHouseLookrecord.setUserName(user.getName());
-    	busHouseLookrecord.setCreateTime(busGuestLookrecord.getCreateTime());
-    	busHouseLookrecord.setEndtime(busGuestLookrecord.getEndtime());
-    	busHouseLookrecordService.save(busHouseLookrecord);
+    public Result add(Principal user,@RequestBody List<BusGuestLookrecord> busGuestLookrecords) {
+    	
+    	for(BusGuestLookrecord busGuestLookrecord:busGuestLookrecords){
+	    	busGuestLookrecordService.save(busGuestLookrecord);
+	    	//同时创建房源的带看信息
+	    	BusHouseLookrecord busHouseLookrecord=new BusHouseLookrecord();
+	    	busHouseLookrecord.setHouseId(busGuestLookrecord.getHouseId());
+	    	busHouseLookrecord.setUserName(user.getName());
+	    	busHouseLookrecord.setCreateTime(busGuestLookrecord.getCreateTime());
+	    	busHouseLookrecord.setEndtime(busGuestLookrecord.getEndtime());
+	    	busHouseLookrecordService.save(busHouseLookrecord);
+    	}
         return ResultGenerator.genOkResult("添加成功");
     }
 

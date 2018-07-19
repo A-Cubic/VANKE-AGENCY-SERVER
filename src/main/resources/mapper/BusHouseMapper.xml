@@ -343,7 +343,7 @@
 	 
 	 <update id="updateKey" parameterType="com.cubic.api.model.BusHouse">
 	 		UPDATE bus_house bh
-	 		SET bh.iskey=#{isKey},
+	 		SET bh.iskey=#{iskey},
 	 			bh.key_user_name=#{keyUserName},
 	 			bh.key_rel_name=(select su.relname from sys_user su	where su.username=#{keyUserName})
 	 		WHERE 
