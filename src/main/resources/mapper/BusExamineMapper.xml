@@ -21,7 +21,9 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="result" jdbcType="VARCHAR" property="result" />
     <result column="examine_name" jdbcType="VARCHAR" property="examineName" />
-    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />
+    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />   
+    <result column="user_rel_name" jdbcType="VARCHAR" property="userRelName" />
+    <result column="examine_rel_name" jdbcType="VARCHAR" property="examineRelName" />
   </resultMap>
   
   
@@ -39,7 +41,8 @@
   					otherimg,
   					user_name,
   					state,
-  					create_time  				
+  					create_time  ,
+  					user_rel_name				
   					)
   		  VALUES(
 	  		  #{houseId},
@@ -53,7 +56,8 @@
 	  		  #{otherimg},
 	  		  #{userName},
 	  		  0,
-	  		  NOW()
+	  		  NOW(),
+	  		  (select su.relname from sys_user su	where su.username=#{userName})
   					
   					)
   </insert>
@@ -61,6 +65,7 @@
   	 UPDATE bus_examine
   	 SET state = #{state},
   	 	 examine_name=#{examineName},
+  	 	 examine_rel_name= (select su.relname from sys_user su	where su.username=#{examineName}),
   	 	 examine_time=NOW()
   	 WHERE 
   	 	id=#{id}
@@ -71,6 +76,7 @@
   	 UPDATE bus_examine
   	 SET state = #{state},
   	 	 examine_name=#{examineName},
+  	 	 examine_rel_name= (select su.relname from sys_user su	where su.username=#{examineName}),
   	 	 result=#{result},
   	 	 content=#{content},
   	 	 examine_time=NOW()
@@ -80,7 +86,7 @@
   </update>
   
   <select id="listBusExamine" resultMap="BaseResultMap">
-  	SELECT be.*,su.`relname`  userRelName
+  	SELECT be.*
 	FROM `bus_examine` be ,`sys_user` su
 	WHERE 
 		be.`user_name`=su.`username` 

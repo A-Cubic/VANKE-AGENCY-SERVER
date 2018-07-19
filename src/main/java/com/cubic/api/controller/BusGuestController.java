@@ -20,7 +20,6 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusGuest;
-import com.cubic.api.model.BusHouse;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusGuestService;
 import com.cubic.api.util.NumberUtil;

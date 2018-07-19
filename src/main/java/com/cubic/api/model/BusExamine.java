@@ -30,12 +30,12 @@ public class BusExamine {
     /**
      * 申请人真实姓名
      */
-    @Transient
+    @Column(name = "user_rel_name")
     private String userRelName;
     /**
      * 审批人真实姓名
      */
-    @Transient
+    @Column(name = "examine_rel_name")
     private String examineRelName;
     /**
      * 审核未通过理由

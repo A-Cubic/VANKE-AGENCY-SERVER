@@ -22,14 +22,5 @@
   		ORDER BY create_time DESC	
   
   </select>
-  
-  <!--  <insert id="insertBusHouseLookrecord" parameterType="com.cubic.api.model.BusHouseLookrecord">
-  	INSERT INTO bus_house_lookrecord
-  				(
-  				user_name,
-  				house_id,
-  				create_time,
-  				
-  				)
-  </insert>-->
+
 </mapper>

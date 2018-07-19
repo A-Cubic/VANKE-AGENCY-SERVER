@@ -3,7 +3,11 @@ package com.cubic.api.controller;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusExamine;
+import com.cubic.api.model.BusGuest;
+import com.cubic.api.model.BusHouse;
 import com.cubic.api.service.BusExamineService;
+import com.cubic.api.service.BusGuestService;
+import com.cubic.api.service.BusHouseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -25,6 +29,10 @@ import java.util.Map;
 public class BusExamineController {
     @Resource
     private BusExamineService busExamineService;
+    @Resource
+    private BusHouseService busHouseService;
+    @Resource
+    private BusGuestService busGuestService;
 
     @PostMapping
     public Result add(@RequestBody BusExamine busExamine) {
@@ -48,6 +56,34 @@ public class BusExamineController {
     	BusExamine busExamineNew=busExamineService.findById(busExamine.getId());
     	if(busExamineNew.getState().equals("2")){
     		  return ResultGenerator.genOkResult("已经有人审核过了");
+    	}
+    	if(busExamineNew.getResult().equals("1")){
+	    	if(!busExamineNew.getType().equals("5")){
+		    	BusHouse bushouse=new BusHouse();
+		    	bushouse.setId(busExamineNew.getHouseId());
+		    	if(busExamineNew.getType().equals("1")){
+		    		bushouse.setState("1");
+		    	}else if(busExamineNew.getType().equals("2")){  		
+		    		bushouse.setIsfine("1");
+		    	}else if(busExamineNew.getType().equals("3")){
+		    		bushouse.setState("2");
+		    	}else if(busExamineNew.getType().equals("4")){
+		    		bushouse.setShiimg(busExamineNew.getShiimg());
+		    		bushouse.setTingimg(busExamineNew.getTingimg());
+		    		bushouse.setWeiimg(busExamineNew.getWeiimg());
+		    		bushouse.setChuimg(busExamineNew.getChuimg());
+		    		bushouse.setHuxingimg(busExamineNew.getHuxingimg());
+		    		bushouse.setOtherimg(busExamineNew.getOtherimg());
+		    		bushouse.setExplorationUserName(busExamineNew.getUserName());
+		    		bushouse.setExplorationrelName(busExamineNew.getUserRelName());
+		    	}
+		    	busHouseService.update(bushouse);
+	    	}else if(busExamineNew.getType().equals("5")){
+	    		BusGuest busGuest=new BusGuest();
+	    		busGuest.setId(busExamineNew.getGuestId());
+	    		busGuest.setIskey("1");
+	    		busGuestService.update(busGuest);
+	    	}
     	}
     	busExamine.setState("2");
     	busExamine.setUserName(user.getName());
