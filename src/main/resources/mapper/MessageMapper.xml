@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.MessageMapper">
+	
+	<select id="listMessage" parameterType="String" resultType="com.cubic.api.model.SysMessage">
+		SELECT 
+		  t.* 
+		FROM 
+		  sys_message t 
+		where 
+		  t.receiver = #{username} 
+	</select>
+	
+	<select id="getCount" parameterType="String" resultType="Integer">
+		SELECT 
+		  COUNT(*) count 
+		FROM 
+		  sys_message a 
+		where 
+		  a.receiver = #{username} 
+		  and a.last_time IS NULL
+	</select>
+	
+	 <update id="updateMessage">
+        UPDATE sys_message SET
+        last_time = NOW()
+        WHERE receiver = #{username}
+    </update>
+	
+</mapper>
