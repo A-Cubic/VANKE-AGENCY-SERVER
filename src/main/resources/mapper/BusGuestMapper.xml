@@ -134,47 +134,47 @@
 							and guestname like "%"#{guestname}"%"
 					</if>
 					
-					<if test="sex!=null">><!-- 客源性别 -->
+					<if test="sex!=null"><!-- 客源性别 -->
 							and sex=#{sex}
 					</if>
 					
-					<if test="guestgrade!=null">><!-- 客源星级 -->
+					<if test="guestgrade!=null"><!-- 客源星级 -->
 							and guestgrade=#{guestgrade}
 					</if>
 					
-					<if test="type!=null">><!-- 客源类型(0买,1租)-->
+					<if test="type!=null"><!-- 客源类型(0买,1租)-->
 							and type=#{type}
 					</if>
 					
-					<if test="heartprice!=null">><!-- 客源心里价位-->
+					<if test="heartprice!=null"><!-- 客源心里价位-->
 							and heartprice=#{heartprice}
 					</if>
 					
-					<if test="areas!=null">><!-- 客源需求面积-->
+					<if test="areas!=null"><!-- 客源需求面积-->
 							and areas=#{areas}
 					</if>
-					<if test="iskey!=null">><!-- 是否是无效客源-->
+					<if test="iskey!=null"><!-- 是否是无效客源-->
 							and iskey=#{iskey}
 					</if>
 					
-					<if test="huxingshi!=null">><!-- 需求户型几室-->
+					<if test="huxingshi!=null"><!-- 需求户型几室-->
 							and huxingshi=#{huxingshi}
 					</if>
 					
-					<if test="huxingting!=null">><!-- 需求户型几厅-->
+					<if test="huxingting!=null"><!-- 需求户型几厅-->
 							and huxingshi=#{huxingshi}
 					</if>
 					
-					<if test="huxingwei!=null">><!-- 需求户型几卫-->
+					<if test="huxingwei!=null"><!-- 需求户型几卫-->
 							and huxingshi=#{huxingshi}
 					</if>
 					
-					<if test="huxingchu!=null">><!-- 需求户型几厨-->
+					<if test="huxingchu!=null"><!-- 需求户型几厨-->
 							and huxingshi=#{huxingshi}
 					</if>
 					
-					<if test="collaboratorName!=null">><!-- 查看当前登录人为合作人的客源-->
-							and collaboratorids like "%"#{collaboratorName}"%"
+					<if test="collaboratorName!=null"><!-- 查看当前登录人为合作人的客源-->
+							and collaboratorids like "%"#{recordUserName}"%"
 					</if>
 				</where>
 	 </select>

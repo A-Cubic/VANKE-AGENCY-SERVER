@@ -84,7 +84,7 @@
 	FROM `bus_examine` be ,`sys_user` su
 	WHERE 
 		be.`user_name`=su.`username` 
-		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username='admin')
+		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
 		<if test="state!=null"><!-- 审核状态条件(0:未审核,1:审核中,2:已审核) -->
 			AND state=#{state}	
 		</if>
@@ -97,10 +97,10 @@
 		<if test="userName!=null"><!-- 提交审核的人 -->
 			AND user_name=#{userName}	
 		</if>	
-	    <if test="createTimeStart!=null AND createTimeEnd!=null"><!-- 申请时间在两个时间值之间 -->
+	    <if test="createTimeStart!=null and createTimeEnd!=null"><!-- 申请时间在两个时间值之间 -->
 			<![CDATA[AND create_time > #{createTimeStart}	AND　create_time < #{createTimeEnd}]]>
 		</if>
-		<if test="examineTimeStart!=null AND examineTimeEnd!=null"><!-- 审批时间在两个时间值之间 -->
+		<if test="examineTimeStart!=null and examineTimeEnd!=null"><!-- 审批时间在两个时间值之间 -->
 			<![CDATA[AND examine_time > #{examineTimeStart}	AND　examine_time < #{examineTimeEnd}]]>
 		</if>		
   		<if test="examineName!=null"><!-- 审批处理人 -->

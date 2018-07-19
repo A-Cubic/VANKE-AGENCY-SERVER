@@ -26,6 +26,17 @@ public class BusExamine {
      */
     private String type;
 
+    
+    /**
+     * 申请人真实姓名
+     */
+    @Transient
+    private String userRelName;
+    /**
+     * 审批人真实姓名
+     */
+    @Transient
+    private String examineRelName;
     /**
      * 审核未通过理由
      */
@@ -386,4 +397,22 @@ public class BusExamine {
     public void setExamineTime(Date examineTime) {
         this.examineTime = examineTime;
     }
+
+	public String getUserRelName() {
+		return userRelName;
+	}
+
+	public void setUserRelName(String userRelName) {
+		this.userRelName = userRelName;
+	}
+
+	public String getExamineRelName() {
+		return examineRelName;
+	}
+
+	public void setExamineRelName(String examineRelName) {
+		this.examineRelName = examineRelName;
+	}
+    
+    
 }

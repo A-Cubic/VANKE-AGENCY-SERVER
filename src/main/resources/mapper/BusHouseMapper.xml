@@ -252,9 +252,10 @@
 				  isfine,
 				  searchtext,
 				  record_rel_name,
-				  create_rel_name,
-				  key_rel_name
-				  
+				  create_rel_name
+				  <if test="iskey==1">
+				  	,key_rel_name
+				  </if>
 	             )
 			VALUES (
 			        #{owner},
@@ -291,8 +292,10 @@
 			     	0,
 			     	#{searchtext},
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
-			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
-			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName})			);
+			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName})  
+			     	<if test="iskey==1">
+				  	,(SELECT relname FROM sys_user WHERE username=#{recordUserName})
+				    </if>			);
 	 </insert>
 	 
 	 

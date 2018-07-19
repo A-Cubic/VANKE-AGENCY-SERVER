@@ -45,10 +45,14 @@ public class BusExamineController {
     @PreAuthorize("hasAuthority('examine:updateResult')")
     @PostMapping("/updateResult")
     public Result updateResult(Principal user,@RequestBody BusExamine busExamine) {
+    	BusExamine busExamineNew=busExamineService.findById(busExamine.getId());
+    	if(busExamineNew.getState().equals("2")){
+    		  return ResultGenerator.genOkResult("已经有人审核过了");
+    	}
     	busExamine.setState("2");
     	busExamine.setUserName(user.getName());
     	busExamineService.updateResult(busExamine);
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("审核成功");
     }
     /**
      * 开始审核(审核状态设置为审核中:1)
@@ -77,7 +81,8 @@ public class BusExamineController {
     @PostMapping("/list")
     public Result list(Principal user,@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-        List<BusExamine> list = busExamineService.listBusExamine(map);
+    	map.put("username", user.getName());
+    	List<BusExamine> list = busExamineService.listBusExamine(map);
         PageInfo<BusExamine> pageInfo = new PageInfo<BusExamine>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

@@ -121,9 +121,10 @@ public class BusGuestController {
      * */
     @PreAuthorize("hasAuthority('guest:list')")
     @PostMapping("/list")
-    public Result list(@RequestBody Map<String,Object> map) {
-    	  PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-        List<BusGuest> list = busGuestService.listBusGuest(map);
+    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+    	map.put("recordUserName", user.getName());
+    	List<BusGuest> list = busGuestService.listBusGuest(map);
         PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
