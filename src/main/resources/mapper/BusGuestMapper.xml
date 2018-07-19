@@ -27,7 +27,9 @@
     <result column="huxingshi" jdbcType="VARCHAR" property="huxingshi" />
     <result column="huxingting" jdbcType="VARCHAR" property="huxingting" />
     <result column="huxingwei" jdbcType="VARCHAR" property="huxingwei" />
-    <result column="huxingchu" jdbcType="VARCHAR" property="huxingchu" />
+    <result column="huxingchu" jdbcType="VARCHAR" property="huxingchu" />   
+     <result column="record_rel_name" jdbcType="VARCHAR" property="recordRelName" />
+    <result column="create_rel_name" jdbcType="VARCHAR" property="createRelName" />
   </resultMap>
   
   
@@ -55,7 +57,9 @@
               huxingshi,
               huxingting,
               huxingwei,
-              huxingchu
+              huxingchu,
+              record_rel_name,
+              create_rel_name
 )	
   			VALUES (
   			#{guestname},
@@ -78,7 +82,9 @@
   			#{huxingshi},
   			#{huxingting},
   			#{huxingwei},
-  			#{husingchu}
+  			#{husingchu},
+  			(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
+  			(SELECT relname FROM sys_user WHERE username=#{createUserName})
   			)
   </insert>
   
@@ -116,7 +122,9 @@
 				  `huxingting`,
 				  `huxingwei`,
 				  `huxingchu`,
-				  `isshare`
+				  `isshare`,
+				   record_rel_name,
+                   create_rel_name
 				FROM `vanke`.`bus_guest`
 				
 				<where>
@@ -170,4 +178,13 @@
 					</if>
 				</where>
 	 </select>
+	 
+	 <update id="updateRecordUser" parameterType="com.cubic.api.model.BusGuest">
+	  		UPDATE bus_guest b
+	 		SET b.record_user_name=#{recordUserName},
+	 			b.record_rel_name=(select su.relname from sys_user su	where su.username=#{recordUserName})
+	 		WHERE 
+	 		  bh.id=#{id}
+	 
+	 </update>
 </mapper>

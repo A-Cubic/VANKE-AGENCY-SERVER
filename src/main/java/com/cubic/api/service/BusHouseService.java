@@ -49,4 +49,19 @@ public interface BusHouseService extends Service<BusHouse> {
      * 
      * */
 	void  updateRecordTime(BusHouse busHouse);
+	
+	 /**
+     * 转赠维护人
+     * @param busHouse
+     * 
+     * */
+	void updateRecordUser(BusHouse busHouse);
+	
+	
+	 /**
+     * 改变钥匙持有人
+     * @param busHouse
+     * 
+     * */
+	void updateKey(BusHouse busHouse);
 }

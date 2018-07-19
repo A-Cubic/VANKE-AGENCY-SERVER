@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
+import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseClicklog;
 import com.cubic.api.service.BusExamineService;
@@ -28,7 +29,7 @@ import com.cubic.api.util.OSSUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
-import com.cubic.api.model.BusExamine;
+import ch.qos.logback.core.util.SystemInfo;
 
 
 
@@ -88,15 +89,17 @@ public class BusHouseController {
      * */
     @PreAuthorize("hasAuthority('house:updateState')")
     @PostMapping("/updateState")
-    public Result updateState(@RequestBody BusHouse busHouse) {
-//    	BusHouse busHouseNew=new BusHouse();
-//    	if(null != busHouse){
-//    		if(busHouse.getId() != null && busHouse.getState() != null){
-//    			busHouseNew.setId(busHouse.getId());
-//    			busHouseNew.setState(busHouse.getState());
-//    			busHouseService.update(busHouseNew);
-//    		}
-//    	}
+    public Result updateState(Principal user,@RequestBody BusHouse busHouse) {
+    	BusExamine busExamine =new BusExamine(); 
+    	if(busHouse.getState().equals("1")){
+    		busExamine.setType("1");
+    		
+    	}else if(busHouse.getState().equals("2")){
+    		busExamine.setType("3");
+    	}
+    	busExamine.setHouseId(busHouse.getId());
+    	busExamine.setUserName(user.getName());
+    	busExamineService.insertBusExamine(busExamine);
     	//提交到审核
         return ResultGenerator.genOkResult("提交审核成功");
     }
@@ -114,7 +117,7 @@ public class BusHouseController {
     		if(busHouse.getId() != null && busHouse.getRecordUserName() != null){
     			busHouseNew.setId(busHouse.getId());
     			busHouseNew.setRecordUserName(busHouse.getRecordUserName());
-    			busHouseService.update(busHouseNew);
+    			busHouseService.updateRecordUser(busHouseNew);
     		}
     	}
         return ResultGenerator.genOkResult("修改成功");
@@ -201,7 +204,7 @@ public class BusHouseController {
     public Result updateKey(Principal user,@RequestBody BusHouse busHouse) {
     		busHouse.setIskey("1");
     		busHouse.setKeyUserName(user.getName());
-  			busHouseService.update(busHouse);  		
+  			busHouseService.updateKey(busHouse);  		
 
         return ResultGenerator.genOkResult("更改成功");
     }

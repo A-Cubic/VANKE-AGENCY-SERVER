@@ -70,11 +70,31 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 	}
 	/**
 	    * 更新房源跟进时间
-	    * @param map
+	    * @param busHouse
 	    * 
 	    * */
 	@Override
 	public void updateRecordTime(BusHouse busHouse) {
 		busHouseMapper.updateRecordTime(busHouse);		
+	}
+	/**
+	    *转赠维护人
+	    * @param busHouse
+	    * 
+	    * */
+	@Override
+	public void updateRecordUser(BusHouse busHouse) {
+		busHouseMapper.updateRecordUser(busHouse);
+		
+	}
+	/**
+	    *改变钥匙持有人
+	    * @param busHouse
+	    * 
+	    * */
+	@Override
+	public void updateKey(BusHouse busHouse) {
+		busHouseMapper.updateKey(busHouse);
+		
 	}
 }

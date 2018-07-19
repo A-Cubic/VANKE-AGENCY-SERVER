@@ -129,6 +129,17 @@ public class BusGuest {
      */
     private String huxingchu;
     
+    /**
+     * 维护人真实姓名
+     */
+    @Column(name = "record_rel_name")
+    private String  recordRelName;
+    /**
+     * 创建人真实姓名
+     */
+    @Column(name = "create_rel_name")
+    private String  createRelName;
+    
     public String getNumber() {
 		return number;
 	}
@@ -502,6 +513,22 @@ public class BusGuest {
 
 	public void setHuxingchu(String huxingchu) {
 		this.huxingchu = huxingchu;
+	}
+
+	public String getRecordRelName() {
+		return recordRelName;
+	}
+
+	public void setRecordRelName(String recordRelName) {
+		this.recordRelName = recordRelName;
+	}
+
+	public String getCreateRelName() {
+		return createRelName;
+	}
+
+	public void setCreateRelName(String createRelName) {
+		this.createRelName = createRelName;
 	}
     
     

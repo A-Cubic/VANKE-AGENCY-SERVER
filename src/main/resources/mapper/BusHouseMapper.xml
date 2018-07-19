@@ -329,4 +329,21 @@
 	 		WHERE 
 	 			id=#{id}
 	 </update>
+	 
+	 <update id="updateRecordUser" parameterType="com.cubic.api.model.BusHouse">
+	 		UPDATE bus_house bh
+	 		SET bh.record_user_name=#{recordUserName},
+	 			bh.record_rel_name=(select su.relname from sys_user su	where su.username=#{recordUserName})
+	 		WHERE 
+	 		  bh.id=#{id}
+	 </update>
+	 
+	 <update id="updateKey" parameterType="com.cubic.api.model.BusHouse">
+	 		UPDATE bus_house bh
+	 		SET bh.iskey=#{isKey},
+	 			bh.key_user_name=#{keyUserName},
+	 			bh.key_rel_name=(select su.relname from sys_user su	where su.username=#{keyUserName})
+	 		WHERE 
+	 		  bh.id=#{id}
+	 </update>
 </mapper>

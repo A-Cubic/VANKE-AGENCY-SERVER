@@ -74,12 +74,16 @@ public class BusGuestLookrecordController {
     	BusGuestLookrecord busGuestLookrecord = busGuestLookrecordService.findById(id);
         return ResultGenerator.genOkResult(busGuestLookrecord);
     }
+    
+    /**
+     *查询带看客源信息
+     *@param map
+     * */
     @PreAuthorize("hasAuthority('guestlookrecord:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-        List<BusGuestLookrecord> list = busGuestLookrecordService.listBusGuestLookrecord(map);
- 
+        List<BusGuestLookrecord> list = busGuestLookrecordService.listBusGuestLookrecord(map); 
         PageInfo<BusGuestLookrecord> pageInfo = new PageInfo<BusGuestLookrecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

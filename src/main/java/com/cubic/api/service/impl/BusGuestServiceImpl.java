@@ -7,6 +7,9 @@ import com.cubic.api.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 /**
@@ -40,5 +43,25 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 	public void updateRecordTime(BusGuest busGuest) {
 		busGuestMapper.updateRecordTime(busGuest);
 		
+	}
+	 /**
+     *转赠维护人
+     * @param busGuest
+     * 
+     * */
+	@Override
+	public void updateRecordUser(BusGuest busGuest) {
+		busGuestMapper.updateRecordUser(busGuest);
+		
+	}
+	 /**
+     *条件查询
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusGuest> listBusGuest(Map<String, Object> map) {
+
+		return busGuestMapper.listBusGuest(map);
 	}
 }
