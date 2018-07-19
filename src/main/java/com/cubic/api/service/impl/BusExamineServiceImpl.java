@@ -7,6 +7,9 @@ import com.cubic.api.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 /**
@@ -28,6 +31,36 @@ public class BusExamineServiceImpl extends AbstractService<BusExamine> implement
 	@Override
 	public void insertBusExamine(BusExamine busExamine) {
 		busExamineMapper.insertBusExamine(busExamine);
+		
+	}
+	 /**
+     * 处理审核
+     * @param busExamine
+     * 
+     * */
+	@Override
+	public void updateResult(BusExamine busExamine) {
+		busExamineMapper.updateResult(busExamine);
+		
+	}
+	 /**
+     * 条件查询
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusExamine> listBusExamine(Map<String, Object> map) {
+
+		return busExamineMapper.listBusExamine(map);
+	}
+	 /**
+     * 开始审核
+     * @param busExamine
+     * 
+     * */
+	@Override
+	public void updateState(BusExamine busExamine) {
+		busExamineMapper.updateState(busExamine);
 		
 	}
 

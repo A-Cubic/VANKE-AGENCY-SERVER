@@ -83,9 +83,9 @@ public class BusHouseController {
     }
     
     /**
-     * 改变房源状态
+     * 提交房源状态更改申请
      * @param busHouse
-     * 状态:(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * 状态:(0:普通,1:特殊,2:无效)
      * */
     @PreAuthorize("hasAuthority('house:updateState')")
     @PostMapping("/updateState")
@@ -97,6 +97,23 @@ public class BusHouseController {
     	}else if(busHouse.getState().equals("2")){
     		busExamine.setType("3");
     	}
+    	busExamine.setHouseId(busHouse.getId());
+    	busExamine.setUserName(user.getName());
+    	busExamineService.insertBusExamine(busExamine);
+    	//提交到审核
+        return ResultGenerator.genOkResult("提交审核成功");
+    }
+    
+    /**
+     *提交优质房源申请
+     * @param busHouse
+     * 状态:(0:普通,1:特殊,2:无效)
+     * */
+    @PreAuthorize("hasAuthority('house:updateIsFine')")
+    @PostMapping("/updateIsFine")
+    public Result updateIsFine(Principal user,@RequestBody BusHouse busHouse) {
+    	BusExamine busExamine =new BusExamine(); 
+    	busExamine.setType("2");  
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
