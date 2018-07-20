@@ -19,7 +19,6 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseRecord;
-import com.cubic.api.model.User;
 import com.cubic.api.service.BusHouseRecordService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.UserService;

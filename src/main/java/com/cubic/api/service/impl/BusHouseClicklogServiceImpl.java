@@ -15,7 +15,6 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-@SuppressWarnings("SpringJavaAutowiringInspection")
 public class BusHouseClicklogServiceImpl extends AbstractService<BusHouseClicklog> implements BusHouseClicklogService {
     @Resource
     private BusHouseClicklogMapper busHouseClicklogMapper;

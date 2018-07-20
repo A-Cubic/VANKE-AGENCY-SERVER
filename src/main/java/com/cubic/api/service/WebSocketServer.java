@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -16,11 +15,8 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import com.cubic.api.mapper.MessageMapper;
 
 /**
  * WebSocketServer服务端
@@ -38,8 +34,6 @@ public class WebSocketServer {
 	private static Map<String, Session> UserMap = new ConcurrentHashMap<String, Session>();
 
 	private MessageService service;
-//	@Autowired
-//	private MessageMapper mapper;
 
 	private static ApplicationContext applicationContext;
 
@@ -155,7 +149,7 @@ public class WebSocketServer {
 		if (session != null) {
 			SendMessage(session, message);
 		} else {
-			log.warn("没有找到你指定ID的会话：{}", session.getId());
+			log.error("没有找到你指定会话：{}", username);
 		}
 	}
 }

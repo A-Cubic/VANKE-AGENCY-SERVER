@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouseLookrecord;
-import com.cubic.api.model.User;
 import com.cubic.api.service.BusHouseLookrecordService;
 import com.cubic.api.service.UserService;
 import com.github.pagehelper.PageHelper;

@@ -1,10 +1,7 @@
 package com.cubic.api.service;
 
-import com.cubic.api.model.Store;
-
-import java.util.List;
-
 import com.cubic.api.core.service.Service;
+import com.cubic.api.model.Store;
 
 /**
  * @author cubic

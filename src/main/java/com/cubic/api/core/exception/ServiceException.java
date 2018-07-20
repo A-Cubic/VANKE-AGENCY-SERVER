@@ -7,7 +7,9 @@ package com.cubic.api.core.exception;
  * @date 2018/06/09
  */
 public class ServiceException extends RuntimeException {
-    public ServiceException(final String message) {
+	private static final long serialVersionUID = -4218262170344207786L;
+
+	public ServiceException(final String message) {
         super(message);
     }
 

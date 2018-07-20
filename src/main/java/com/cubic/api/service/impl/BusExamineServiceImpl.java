@@ -18,7 +18,6 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-@SuppressWarnings("SpringJavaAutowiringInspection")
 public class BusExamineServiceImpl extends AbstractService<BusExamine> implements BusExamineService {
     @Resource
     private BusExamineMapper busExamineMapper;

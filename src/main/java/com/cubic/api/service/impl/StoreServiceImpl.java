@@ -1,15 +1,14 @@
 package com.cubic.api.service.impl;
 
-import com.cubic.api.mapper.StoreMapper;
-import com.cubic.api.model.Store;
-import com.cubic.api.service.StoreService;
-import com.cubic.api.core.service.AbstractService;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import javax.annotation.Resource;
+import com.cubic.api.core.service.AbstractService;
+import com.cubic.api.mapper.StoreMapper;
+import com.cubic.api.model.Store;
+import com.cubic.api.service.StoreService;
 
 /**
  * @author cubic
@@ -17,7 +16,6 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional
-@SuppressWarnings("SpringJavaAutowiringInspection")
 public class StoreServiceImpl extends AbstractService<Store> implements StoreService {
     @Resource
     private StoreMapper storeMapper;

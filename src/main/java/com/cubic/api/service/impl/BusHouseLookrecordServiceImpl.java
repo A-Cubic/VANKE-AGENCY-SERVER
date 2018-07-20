@@ -18,7 +18,6 @@ import javax.annotation.Resource;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-@SuppressWarnings("SpringJavaAutowiringInspection")
 public class BusHouseLookrecordServiceImpl extends AbstractService<BusHouseLookrecord> implements BusHouseLookrecordService {
     @Resource
     private BusHouseLookrecordMapper busHouseLookrecordMapper;

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
-import com.cubic.api.model.BaseXiaoQu;
 import com.cubic.api.model.home.CurrentScore;
 import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.HomeService;

@@ -17,7 +17,6 @@ import java.util.List;
  * @date 2018/05/07
  */
 public abstract class AbstractService<T> implements Service<T> {
-    @SuppressWarnings("SpringAutowiredFieldsWarningInspection")
     @Autowired
     protected MyMapper<T> mapper;
     /**
@@ -25,7 +24,8 @@ public abstract class AbstractService<T> implements Service<T> {
      */
     private final Class<T> modelClass;
 
-    protected AbstractService() {
+    @SuppressWarnings("unchecked")
+	protected AbstractService() {
         final ParameterizedType pt = (ParameterizedType) this.getClass().getGenericSuperclass();
         //noinspection unchecked
         this.modelClass = (Class<T>) pt.getActualTypeArguments()[0];

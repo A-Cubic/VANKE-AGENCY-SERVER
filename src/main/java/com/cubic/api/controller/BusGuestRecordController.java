@@ -19,7 +19,6 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusGuest;
 import com.cubic.api.model.BusGuestRecord;
-import com.cubic.api.model.User;
 import com.cubic.api.service.BusGuestRecordService;
 import com.cubic.api.service.BusGuestService;
 import com.cubic.api.service.UserService;

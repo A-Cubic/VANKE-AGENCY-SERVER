@@ -13,6 +13,7 @@ import java.util.List;
  * @author fei.yu
  * @date 2018/06/09
  */
+@SuppressWarnings("serial")
 public class Resource extends JSONObject {
     private List<JSONObject> handleList;
 

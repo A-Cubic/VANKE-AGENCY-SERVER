@@ -1,5 +1,16 @@
 package com.cubic.api.service.impl;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.cubic.api.core.exception.ServiceException;
 import com.cubic.api.core.service.AbstractService;
 import com.cubic.api.mapper.PermissionMapper;
@@ -8,17 +19,6 @@ import com.cubic.api.mapper.UserRoleMapper;
 import com.cubic.api.model.User;
 import com.cubic.api.model.UserRole;
 import com.cubic.api.service.UserService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Condition;
-
-import javax.annotation.Resource;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author fei.yu

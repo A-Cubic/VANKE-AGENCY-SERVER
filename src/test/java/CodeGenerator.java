@@ -16,7 +16,6 @@ import static com.cubic.api.core.ProjectConstant.*;
 /**
  * 代码生成器，根据数据表名称生成对应的Model、MyMapper、Service、Controller简化开发。
  */
-@SuppressWarnings("SameParameterValue")
 class CodeGenerator {
     // JDBC配置，请修改为你项目的实际配置
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/vanke" + "?useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=true";
@@ -45,7 +44,8 @@ class CodeGenerator {
     private static final boolean isRestful = true;
     private static boolean overwrite = false;
 
-    public static void main(final String[] args) {
+    @SuppressWarnings("resource")
+	public static void main(final String[] args) {
         final Scanner scanner = new Scanner(System.in);
         System.out.print("可能已存在相关文件，是否覆盖？y/n:");
         if (scanner.next().equals("y")) {

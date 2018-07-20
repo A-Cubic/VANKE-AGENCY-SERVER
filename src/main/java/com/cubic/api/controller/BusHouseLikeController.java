@@ -50,7 +50,7 @@ public class BusHouseLikeController {
                        @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
         List<BusHouseLike> list = busHouseLikeService.findAll();
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<BusHouseLike> pageInfo = new PageInfo<BusHouseLike>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }
