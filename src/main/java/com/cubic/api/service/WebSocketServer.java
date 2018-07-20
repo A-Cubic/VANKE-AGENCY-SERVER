@@ -17,6 +17,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.cubic.api.mapper.MessageMapper;
@@ -36,23 +37,28 @@ public class WebSocketServer {
 	private static CopyOnWriteArraySet<Session> SessionSet = new CopyOnWriteArraySet<Session>();
 	private static Map<String, Session> UserMap = new ConcurrentHashMap<String, Session>();
 
-	@Resource
-	MessageService service;
-	@Autowired
-	private MessageMapper mapper;
+	private MessageService service;
+//	@Autowired
+//	private MessageMapper mapper;
+
+	private static ApplicationContext applicationContext;
+
+	public static void setApplicationContext(ApplicationContext context) {
+		applicationContext = context;
+	}
 
 	/**
 	 * 连接建立成功调用的方法
 	 */
 	@OnOpen
-	public void onOpen( Session session) {
+	public void onOpen(Session session) {
 		SessionSet.add(session);
 		String username = session.getUserPrincipal().getName();
 		UserMap.put(session.getUserPrincipal().getName(), session);
 		int cnt = OnlineCount.incrementAndGet(); // 在线数加1
 		log.info("有连接加入，当前连接数为：{}", cnt);
-//		String msg = String.valueOf(mapper.getCount(username));
-		String msg = "2";
+		service = applicationContext.getBean(MessageService.class);
+		String msg = String.valueOf(service.getCount(username));
 		try {
 			SendMessageByUserName(username, msg);
 		} catch (IOException e) {
@@ -65,13 +71,13 @@ public class WebSocketServer {
 	 */
 	@OnClose
 	public void onClose(Session session) {
-		for(String str : UserMap.keySet()) {
-			if(session == UserMap.get(str)) {
+		for (String str : UserMap.keySet()) {
+			if (session == UserMap.get(str)) {
 				UserMap.remove(str);
 			}
 		}
 		SessionSet.remove(session);
-		
+
 		int cnt = OnlineCount.decrementAndGet();
 		log.info("有连接关闭，当前连接数为：{}", cnt);
 	}
@@ -85,7 +91,7 @@ public class WebSocketServer {
 	@OnMessage
 	public void onMessage(String message, Session session) {
 		log.info("来自客户端的消息：{}", message);
-//		SendMessage(session, "收到消息，消息内容：" + message);
+		// SendMessage(session, "收到消息，消息内容：" + message);
 
 	}
 
@@ -138,13 +144,13 @@ public class WebSocketServer {
 	 * @throws IOException
 	 */
 	public static void SendMessageByUserName(String username, String message) throws IOException {
-//		Session session = null;
-//		for (Session s : SessionSet) {
-//			if (s.getId().equals(sessionId)) {
-//				session = s;
-//				break;
-//			}
-//		}
+		// Session session = null;
+		// for (Session s : SessionSet) {
+		// if (s.getId().equals(sessionId)) {
+		// session = s;
+		// break;
+		// }
+		// }
 		Session session = UserMap.get(username);
 		if (session != null) {
 			SendMessage(session, message);
