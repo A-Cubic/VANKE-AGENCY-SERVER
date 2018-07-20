@@ -88,6 +88,7 @@
 		  bh.record_time,
 		  bh.isshare,
 		  bh.isfine,
+		  bh.isspecial,
 		  bh.huxingshi,
 		  bh.huxingting,
 		  bh.huxingwei,
@@ -96,6 +97,7 @@
 		  bh.create_rel_name,
 		  bh.key_rel_name,
 		  bh.exploration_rel_name
+		 
 		  
 		FROM bus_house bh,base_store_range  bsr,sys_user su	
 		
@@ -182,6 +184,9 @@
 			<if test="state != null"><!-- 状态条件-->
 				 and bh.state = #{state}
 			</if>
+			<if test="isspecial != null"><!-- 特殊房源条件-->
+				 and bh.isspecial = #{isspecial}
+			</if>
 			<if test="type != null"><!-- 类型条件-->
 				 and bh.type = #{type}
 			</if>
@@ -250,6 +255,7 @@
 	              key_user_name,
 				  record_time,
 				  isfine,
+				  isspecial,
 				  searchtext,
 				  record_rel_name,
 				  create_rel_name
@@ -290,6 +296,7 @@
 			        #{keyUserName},			       
 			     	NOW(),
 			     	0,
+			     	0,
 			     	#{searchtext},
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName})  
@@ -309,7 +316,7 @@
 	 							group by house_id	
 	 							)   clickcount
 	 		FROM bus_house bh		
-	 		WHERE bh.id = #{houseId}	
+	 		WHERE bh.id = #{houseId}	and isshare = '0'
 	 </select>
 	 
 	  <select id="DetailAddress"  parameterType="Map" resultMap="BaseResultMap">
@@ -322,7 +329,7 @@
 	 							group by house_id		
 	 							)   clickcount
 	 		FROM bus_house	bh	
-	 		WHERE bh.id = #{houseId}	
+	 		WHERE bh.id = #{houseId}	and isshare = '0'
 	 </select>
 	 
 	 
@@ -351,8 +358,14 @@
 	 </update>
 	 
 	 
-	 <select id="listRecordTime">
-	 		SELECT record_time
-	 		FROM bus_house
+	 <select id="listRecordTime" resultMap="BaseResultMap">
+	 		SELECT (CASE 
+					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=10 AND (DATE(NOW())-DATE(record_time)) <15 THEN '1']]>
+					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=15 THEN '2']]>
+					END) casetype,id,record_user_name
+				FROM `bus_house`
+				WHERE 
+					<![CDATA[(DATE(NOW())-DATE(record_time))>=10]]>
+					AND isshare = '0'
 	 </select>
 </mapper>

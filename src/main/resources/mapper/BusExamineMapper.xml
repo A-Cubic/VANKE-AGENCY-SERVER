@@ -86,15 +86,16 @@
   </update>
   
   <select id="listBusExamine" resultMap="BaseResultMap">
-  	SELECT be.*
-	FROM `bus_examine` be ,`sys_user` su
+  	SELECT be.*,(SELECT surr.`role_id` FROM sys_user usu,`sys_user_role` surr WHERE username='test' AND  surr.`user_id`=usu.`id`) roleid
+	FROM `bus_examine` be ,`sys_user` su,`sys_user_role` sur
 	WHERE 
 		be.`user_name`=su.`username` 
+		AND su.id=sur.user_id
 		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
 		<if test="state!=null"><!-- 审核状态条件(0:未审核,1:审核中,2:已审核) -->
 			AND state=#{state}	
 		</if>
-		<if test="type!=null"><!-- 审核类型条件(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片,5:无效客源) -->
+		<if test="type!=null"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片,5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源) -->
 			AND type=#{type}	
 		</if>
 		<if test="result!=null"><!-- 审核结果条件(0:未通过,1:通过) -->

@@ -83,18 +83,41 @@ public class BusHouseController {
     /**
      * 提交房源状态更改申请
      * @param busHouse
-     * 状态:(0:普通,1:特殊,2:无效)
+     * 状态:(0:普通,1:无效)
      * */
     @PreAuthorize("hasAuthority('house:updateState')")
     @PostMapping("/updateState")
     public Result updateState(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
-    	if(busHouse.getState().equals("1")){
+		if(busHouse.getState().equals("1")){//设置为无效房源
+			busExamine.setType("3");    		
+		}else if(busHouse.getState().equals("0")){//取消无效房源
+			busExamine.setType("8"); 		
+		}
+    	
+    	busExamine.setHouseId(busHouse.getId());
+    	busExamine.setUserName(user.getName());
+    	busExamineService.insertBusExamine(busExamine);
+    	//提交到审核
+        return ResultGenerator.genOkResult("提交审核成功");
+    }
+    
+    /**
+     * 提交特殊房源申请
+     * @param busHouse
+     * 特殊房源状态:(0:否,1:是)
+     * */
+    @PreAuthorize("hasAuthority('house:updateIsSpecial')")
+    @PostMapping("/updateIsSpecial")
+    public Result updateIsSpecial(Principal user,@RequestBody BusHouse busHouse) {
+    	BusExamine busExamine =new BusExamine(); 
+    	if(busHouse.getIsspecial().equals("1")){//设置为特殊房源
     		busExamine.setType("1");
+    	}else if(busHouse.getIsspecial().equals("0")){//取消特殊房源
     		
-    	}else if(busHouse.getState().equals("2")){
-    		busExamine.setType("3");
+    		busExamine.setType("6");
     	}
+    	    		
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
@@ -111,7 +134,12 @@ public class BusHouseController {
     @PostMapping("/updateIsFine")
     public Result updateIsFine(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
-    	busExamine.setType("2");  
+    	if(busHouse.getIsfine().equals("0")){//取消优质房源
+    		busExamine.setType("7");
+    		
+    	}else if(busHouse.getIsfine().equals("1")){//设置为优质房源
+    		busExamine.setType("2");
+    	}  
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
@@ -153,6 +181,23 @@ public class BusHouseController {
     }
     
     
+    /**
+     * 获取共享池里的房源
+     * @param busHouse
+     * 
+     * */
+    @PreAuthorize("hasAuthority('house:updateIsShare')")
+    @PostMapping("/updateIsShare")
+    public Result updateIsShare(Principal user,@RequestBody BusHouse busHouse) {
+    	
+    	if(null != busHouse){
+	    		busHouse.setRecordUserName(user.getName());
+	    		busHouse.setIsshare("0");
+	    		busHouseService.updateRecordTime(busHouse);
+    			busHouseService.update(busHouse);  		
+    	}
+        return ResultGenerator.genOkResult("修改成功");
+    }
     /**
      * 录入实勘图片
      * @param busHouse

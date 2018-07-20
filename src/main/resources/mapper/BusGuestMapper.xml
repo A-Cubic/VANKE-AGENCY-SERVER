@@ -187,4 +187,15 @@
 	 		  bh.id=#{id}
 	 
 	 </update>
+	 
+	 <select id="listRecordTime" resultMap="BaseResultMap">
+	 		SELECT (CASE 
+					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=10 AND (DATE(NOW())-DATE(record_time)) <15 THEN '1']]>
+					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=15 THEN '2']]>
+					END) casetype,id,record_user_name
+				FROM `bus_guest`
+				WHERE 
+					<![CDATA[(DATE(NOW())-DATE(record_time))>=10]]>
+					AND isshare = '0'
+	 </select>
 </mapper>

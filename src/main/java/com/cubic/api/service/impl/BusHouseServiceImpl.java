@@ -96,4 +96,14 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		busHouseMapper.updateKey(busHouse);
 		
 	}
+	 /**
+     * 时间任务的查看所有上次维护时间距离现在时间大于10天或15天的房源
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusHouse> listRecordTime() {
+
+		return busHouseMapper.listRecordTime();
+	}
 }

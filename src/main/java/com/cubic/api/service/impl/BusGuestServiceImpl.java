@@ -63,4 +63,14 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 
 		return busGuestMapper.listBusGuest(map);
 	}
+	 /**
+     * 时间任务的查看所有上次维护时间距离现在时间大于10天或15天的客源
+     * 
+     * 
+     * */
+	@Override
+	public List<BusGuest> listRecordTime() {
+
+		return busGuestMapper.listRecordTime();
+	}
 }

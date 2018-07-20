@@ -62,11 +62,11 @@ public class BusExamineController {
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
 		    	if(busExamineNew.getType().equals("1")){
-		    		bushouse.setState("1");
+		    		bushouse.setIsspecial("1");
 		    	}else if(busExamineNew.getType().equals("2")){  		
 		    		bushouse.setIsfine("1");
 		    	}else if(busExamineNew.getType().equals("3")){
-		    		bushouse.setState("2");
+		    		bushouse.setState("1");
 		    	}else if(busExamineNew.getType().equals("4")){
 		    		bushouse.setShiimg(busExamineNew.getShiimg());
 		    		bushouse.setTingimg(busExamineNew.getTingimg());
@@ -76,12 +76,24 @@ public class BusExamineController {
 		    		bushouse.setOtherimg(busExamineNew.getOtherimg());
 		    		bushouse.setExplorationUserName(busExamineNew.getUserName());
 		    		bushouse.setExplorationrelName(busExamineNew.getUserRelName());
+		    	}else if(busExamineNew.getType().equals("6")){
+		    		bushouse.setIsspecial("0");
+		    	}else if(busExamineNew.getType().equals("7")){
+		    		bushouse.setIsfine("0");	    		
+		    	}else if(busExamineNew.getType().equals("8")){
+		    		bushouse.setState("0");	    		
 		    	}
+		    	
 		    	busHouseService.update(bushouse);
 	    	}else if(busExamineNew.getType().equals("5")){
 	    		BusGuest busGuest=new BusGuest();
 	    		busGuest.setId(busExamineNew.getGuestId());
 	    		busGuest.setIskey("1");
+	    		busGuestService.update(busGuest);
+	    	}else if(busExamineNew.getType().equals("9")){
+	    		BusGuest busGuest=new BusGuest();
+	    		busGuest.setId(busExamineNew.getGuestId());
+	    		busGuest.setIskey("0");
 	    		busGuestService.update(busGuest);
 	    	}
     	}
@@ -125,6 +137,17 @@ public class BusExamineController {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
     	map.put("username", user.getName());
     	List<BusExamine> list = busExamineService.listBusExamine(map);
+    	if(0!=list.size()){
+    		//判断登录用户权限为助理,只能看实勘的申请
+			if(list.get(0).getRoleid().equals("3")){
+				for(int i=0;i<list.size();i++){
+			    	if(!list.get(i).getType().equals("4")){
+			    		list.remove(i);
+			    	}
+		    	}
+			}
+		}
+    	
         PageInfo<BusExamine> pageInfo = new PageInfo<BusExamine>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

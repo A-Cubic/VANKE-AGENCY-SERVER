@@ -29,6 +29,16 @@ public class BusHouse {
      */
     @Transient
     private String title;
+    /**
+     * 维护时间的type(1:大于等于10天但是小于15天,2:大于等于15天)
+     */
+    @Transient
+    private String casetype;
+    /**
+     * 是否是特殊房源(0:否,1:是)
+     */
+    private String isspecial;
+    
 
     /**
      * 房主姓名
@@ -137,7 +147,7 @@ public class BusHouse {
     private String type;
 
     /**
-     * 房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * 房源状态(0:普通,1:无效)
      */
     private String state;
     
@@ -624,18 +634,18 @@ public class BusHouse {
     }
 
     /**
-     * 获取房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * 获取房源状态(0:普通,1:无效)
      *
-     * @return state - 房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * @return state - 房源状态(0:普通,1:无效)
      */
     public String getState() {
         return state;
     }
 
     /**
-     * 设置房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * 获取房源状态(0:普通,1:无效)
      *
-     * @param state 房源状态(0:普通,1:特殊,2:无效,3:已售出/已租出)
+     * @param  state - 房源状态(0:普通,1:无效)
      */
     public void setState(String state) {
         this.state = state;
@@ -649,7 +659,15 @@ public class BusHouse {
 	public Long getRegionId() {
 		return regionId;
 	}
-	 /**
+	 public String getIsspecial() {
+		return isspecial;
+	}
+
+	public void setIsspecial(String isspecial) {
+		this.isspecial = isspecial;
+	}
+
+	/**
      * 房屋区号地址code
      * 
      * @param regionId 
@@ -1155,6 +1173,14 @@ public class BusHouse {
 
 	public void setUser_ype(String user_ype) {
 		this.user_ype = user_ype;
+	}
+
+	public String getCasetype() {
+		return casetype;
+	}
+
+	public void setCasetype(String casetype) {
+		this.casetype = casetype;
 	}
 
     

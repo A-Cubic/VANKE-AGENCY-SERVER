@@ -41,6 +41,13 @@ public class BusExamine {
      * 审核未通过理由
      */
     private String content;
+    
+    /**
+     * 登录人权限
+     */
+	@Transient
+    private String roleid;
+    
 
     /**
      * 室审核图片
@@ -412,6 +419,14 @@ public class BusExamine {
 
 	public void setExamineRelName(String examineRelName) {
 		this.examineRelName = examineRelName;
+	}
+
+	public String getRoleid() {
+		return roleid;
+	}
+
+	public void setRoleid(String roleid) {
+		this.roleid = roleid;
 	}
     
     

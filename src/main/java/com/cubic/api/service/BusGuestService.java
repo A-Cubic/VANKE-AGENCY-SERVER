@@ -39,4 +39,11 @@ public interface BusGuestService extends Service<BusGuest> {
      * 
      * */
 	List<BusGuest> listBusGuest(Map<String,Object> map);
+	
+	 /**
+     * 时间任务的查看所有上次维护时间距离现在时间大于10天或15天的客源
+     * 
+     * 
+     * */
+	List<BusGuest> listRecordTime();
 }

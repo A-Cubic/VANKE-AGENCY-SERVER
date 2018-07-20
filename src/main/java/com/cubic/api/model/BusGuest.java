@@ -13,6 +13,11 @@ public class BusGuest {
      * 客源编号
      */
     private String number;
+    /**
+     * 维护时间的type(1:大于等于10天但是小于15天,2:大于等于15天)
+     */
+	@Transient
+	private String  casetype;
     
     /**
      * 客源姓名
@@ -128,6 +133,11 @@ public class BusGuest {
      * 需求几厨
      */
     private String huxingchu;
+    
+    /**
+     *是否是共享池里的数据
+     */
+    private String isshare;
     
     /**
      * 维护人真实姓名
@@ -529,6 +539,22 @@ public class BusGuest {
 
 	public void setCreateRelName(String createRelName) {
 		this.createRelName = createRelName;
+	}
+
+	public String getCasetype() {
+		return casetype;
+	}
+
+	public void setCasetype(String casetype) {
+		this.casetype = casetype;
+	}
+
+	public String getIsshare() {
+		return isshare;
+	}
+
+	public void setIsshare(String isshare) {
+		this.isshare = isshare;
 	}
     
     
