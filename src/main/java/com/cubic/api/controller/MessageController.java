@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cubic.api.component.WebSocketServer;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.SysMessage;
 import com.cubic.api.service.MessageService;
-import com.cubic.api.service.WebSocketServer;
 
 @RestController
 @RequestMapping("/vanke/message")

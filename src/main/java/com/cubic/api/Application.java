@@ -9,9 +9,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.cubic.api.service.WebSocketServer;
+import com.cubic.api.component.WebSocketServer;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 
 import tk.mybatis.spring.annotation.MapperScan;
@@ -24,6 +25,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 @SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
 @MapperScan(basePackages = MAPPER_PACKAGE)
+@EnableScheduling
 public class Application {
     public static void main(final String[] args) {
 //        SpringApplication.run(Application.class, args);

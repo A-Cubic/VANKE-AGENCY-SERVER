@@ -8,10 +8,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cubic.api.component.WebSocketServer;
 import com.cubic.api.mapper.MessageMapper;
 import com.cubic.api.model.SysMessage;
 import com.cubic.api.service.MessageService;
-import com.cubic.api.service.WebSocketServer;
 
 /**
  * @author cubic

@@ -1,4 +1,4 @@
-package com.cubic.api.service;
+package com.cubic.api.component;
 
 import java.io.IOException;
 import java.util.Map;
@@ -17,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import com.cubic.api.service.MessageService;
 
 /**
  * WebSocketServer服务端
@@ -98,7 +100,6 @@ public class WebSocketServer {
 	@OnError
 	public void onError(Session session, Throwable error) {
 		log.error("发生错误：{}，Session ID： {}", error.getMessage(), session.getId());
-		error.printStackTrace();
 	}
 
 	/**
@@ -112,7 +113,6 @@ public class WebSocketServer {
 			session.getBasicRemote().sendText(message);
 		} catch (IOException e) {
 			log.error("发送消息出错：{}", e.getMessage());
-			e.printStackTrace();
 		}
 	}
 
@@ -147,7 +147,9 @@ public class WebSocketServer {
 		// }
 		Session session = UserMap.get(username);
 		if (session != null) {
-			SendMessage(session, message);
+			if (session.isOpen()) {
+				SendMessage(session, message);
+			}
 		} else {
 			log.error("没有找到你指定会话：{}", username);
 		}
