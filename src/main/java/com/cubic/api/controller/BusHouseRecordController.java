@@ -68,10 +68,10 @@ public class BusHouseRecordController {
      * */
     @PreAuthorize("hasAuthority('houserecord:updateIsTopOne')")
     @PostMapping("/updateIsTopOne")
-    public Result updateIsTopOne(@RequestBody BusHouseRecord busHouseRecord) {
-    	busHouseRecord.setTopicon("");
-    	busHouseRecordService.updateHouseRecordIsTopOne(busHouseRecord);
-        return ResultGenerator.genOkResult("置顶成功");
+    public Result updateIsTopOne(Principal user,@RequestBody BusHouseRecord busHouseRecord) {	
+    		busHouseRecord.setTopicon("");
+        	busHouseRecordService.updateHouseRecordIsTopOne(busHouseRecord);
+            return ResultGenerator.genOkResult("置顶成功");	
     }
     /**
      * 取消跟进置顶

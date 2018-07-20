@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  * @date 2018/07/16
  */
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 @SuppressWarnings("SpringJavaAutowiringInspection")
 public class BusHouseRecordServiceImpl extends AbstractService<BusHouseRecord> implements BusHouseRecordService {
     @Resource

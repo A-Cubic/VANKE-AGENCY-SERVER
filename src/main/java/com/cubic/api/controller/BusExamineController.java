@@ -57,7 +57,7 @@ public class BusExamineController {
     	if(busExamineNew.getState().equals("2")){
     		  return ResultGenerator.genOkResult("已经有人审核过了");
     	}
-    	if(busExamineNew.getResult().equals("1")){
+    	if(busExamine.getResult().equals("1")){
 	    	if(!busExamineNew.getType().equals("5")){
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
@@ -103,9 +103,15 @@ public class BusExamineController {
     	busExamineService.updateResult(busExamine);
         return ResultGenerator.genOkResult();
     }
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusExamine busExamine = busExamineService.findById(id);
+    /**
+     * 审核详情查询
+     * @param map
+     * 
+     * */
+    @PreAuthorize("hasAuthority('examine:detail')")
+    @PostMapping("/detail")
+    public Result detail(@RequestBody Map<String,Object> map) {
+    	BusExamine busExamine = busExamineService.findById(map.get("id"));
         return ResultGenerator.genOkResult(busExamine);
     }
     /**

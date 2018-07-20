@@ -107,10 +107,15 @@ public class BusGuestController {
     	}
         return ResultGenerator.genOkResult("修改成功");
     }
-
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusGuest busGuest = busGuestService.findById(id);
+    /**
+     * 详情查询
+     * @param map
+     * 
+     * */
+    @PreAuthorize("hasAuthority('guest:detail')")
+    @PostMapping("/detail")
+    public Result detail(@RequestBody Map<String,Object> map) {
+    	BusGuest busGuest = busGuestService.findById(map.get("id"));
         return ResultGenerator.genOkResult(busGuest);
     }
     /**

@@ -349,4 +349,10 @@
 	 		WHERE 
 	 		  bh.id=#{id}
 	 </update>
+	 
+	 
+	 <select id="listRecordTime">
+	 		SELECT record_time
+	 		FROM bus_house
+	 </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusGuestLookrecord;
 import com.cubic.api.model.BusHouseLookrecord;
-import com.cubic.api.model.User;
 import com.cubic.api.service.BusGuestLookrecordService;
 import com.cubic.api.service.BusHouseLookrecordService;
 import com.cubic.api.service.UserService;
@@ -46,17 +46,21 @@ public class BusGuestLookrecordController {
     @PreAuthorize("hasAuthority('guestlookrecord:insert')")
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody List<BusGuestLookrecord> busGuestLookrecords) {
-    	
-    	for(BusGuestLookrecord busGuestLookrecord:busGuestLookrecords){
-	    	busGuestLookrecordService.save(busGuestLookrecord);
+    	//创建客源带看多条
+    	busGuestLookrecordService.save(busGuestLookrecords);
+    	List<BusHouseLookrecord> busHouseLookrecords=new ArrayList<BusHouseLookrecord>();
+    	for(BusGuestLookrecord busGuestLookrecord:busGuestLookrecords){	    	
 	    	//同时创建房源的带看信息
 	    	BusHouseLookrecord busHouseLookrecord=new BusHouseLookrecord();
 	    	busHouseLookrecord.setHouseId(busGuestLookrecord.getHouseId());
 	    	busHouseLookrecord.setUserName(user.getName());
 	    	busHouseLookrecord.setCreateTime(busGuestLookrecord.getCreateTime());
 	    	busHouseLookrecord.setEndtime(busGuestLookrecord.getEndtime());
-	    	busHouseLookrecordService.save(busHouseLookrecord);
+	    	busHouseLookrecords.add(busHouseLookrecord);
+	    	
     	}
+    	//创建房源带看多条
+    	busHouseLookrecordService.save(busHouseLookrecords);
         return ResultGenerator.genOkResult("添加成功");
     }
 

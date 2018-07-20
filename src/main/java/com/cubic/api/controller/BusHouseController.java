@@ -105,7 +105,7 @@ public class BusHouseController {
     /**
      *提交优质房源申请
      * @param busHouse
-     * 状态:(0:普通,1:特殊,2:无效)
+     * 状态:(0:否,1:是)
      * */
     @PreAuthorize("hasAuthority('house:updateIsFine')")
     @PostMapping("/updateIsFine")
