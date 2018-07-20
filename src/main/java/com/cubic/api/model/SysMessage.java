@@ -6,7 +6,7 @@ public class SysMessage {
 	private Long id;
 	private String content;
 	private String url;
-	private String sender;
+	private String sender="system";
 	private String receiver;
 	private Date create_time;
 	private Date last_time;

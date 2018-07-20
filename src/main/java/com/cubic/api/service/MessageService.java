@@ -15,4 +15,10 @@ public interface MessageService {
 	List<SysMessage> listMessage(String username);
 	void updateCount(String username);
 	String getCount(String username);
+	//发起审核通知
+	void sendMessage(String type,String content,String url,String username);
+	//系统通知
+	void sendMessageSystem(List<String> houseWarnList,List<String> houseShareList, List<String> guestWarnList, List<String> guestShareList);
+	//审核结果通知
+	void sendMessageResult(String content,String url,String username,String receiver);
 }

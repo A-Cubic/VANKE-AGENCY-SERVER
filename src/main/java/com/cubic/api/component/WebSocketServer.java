@@ -53,10 +53,8 @@ public class WebSocketServer {
 		UserMap.put(session.getUserPrincipal().getName(), session);
 		int cnt = OnlineCount.incrementAndGet(); // 在线数加1
 		log.info("有连接加入，当前连接数为：{}", cnt);
-		service = applicationContext.getBean(MessageService.class);
-		String msg = String.valueOf(service.getCount(username));
 		try {
-			SendMessageByUserName(username, msg);
+			SendMessageByUserName(username, this.getCount(username));
 		} catch (IOException e) {
 			log.error("发送消息错误：{}，user name: {}", e.getMessage(), username);
 		}
@@ -151,7 +149,13 @@ public class WebSocketServer {
 				SendMessage(session, message);
 			}
 		} else {
-			log.error("没有找到你指定会话：{}", username);
+			log.warn("没有找到你指定会话：{}", username);
 		}
+	}
+	
+	private String getCount(String username) {
+		service = applicationContext.getBean(MessageService.class);
+		String msg = service.getCount(username);
+		return msg;
 	}
 }

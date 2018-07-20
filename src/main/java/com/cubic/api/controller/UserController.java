@@ -46,7 +46,7 @@ public class UserController {
     @Resource
     private JwtUtil jwtUtil;
 
-    @PostMapping
+    @PostMapping("/register")
     public Result register(@RequestBody @Valid final User user,
                            final BindingResult bindingResult) {
         // {"username":"123456", "password":"123456", "email": "123456@qq.com"}
@@ -55,8 +55,9 @@ public class UserController {
             final String msg = bindingResult.getFieldError().getDefaultMessage();
             return ResultGenerator.genFailedResult(msg);
         } else {
-            this.userService.save(user);
-            return this.getToken(user);
+        	this.userService.save(user);
+        	return ResultGenerator.genOkResult("创建成功");
+//            return this.getToken(user);
         }
     }
 

@@ -26,5 +26,17 @@
         last_time = NOW()
         WHERE receiver = #{username}
     </update>
+    
+    <select id="listMessageUser" parameterType="String" resultType="String">
+		SELECT 
+		  u.username 
+		FROM 
+		  sys_user u,sys_role r,sys_user_role ur
+		WHERE 
+		  u.id = ur.user_id
+		AND r.id = ur.role_id
+		AND r.`name` = #{rolename}
+		AND u.store_id=(SELECT u.store_id FROM sys_user u WHERE u.username= #{username} )
+	</select>
 	
 </mapper>
