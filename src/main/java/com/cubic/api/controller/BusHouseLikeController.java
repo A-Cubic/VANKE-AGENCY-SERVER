@@ -6,10 +6,15 @@ import com.cubic.api.model.BusHouseLike;
 import com.cubic.api.service.BusHouseLikeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cubic
@@ -20,9 +25,15 @@ import java.util.List;
 public class BusHouseLikeController {
     @Resource
     private BusHouseLikeService busHouseLikeService;
-
-    @PostMapping
-    public Result add(@RequestBody BusHouseLike busHouseLike) {
+    /**
+     * 创建关注
+     * @param busHouseLike
+     * 
+     * */
+    @PreAuthorize("hasAuthority('houselike:insert')")
+    @PostMapping("/insert")
+    public Result add(Principal user,@RequestBody BusHouseLike busHouseLike) {
+    	busHouseLike.setUserName(user.getName());
     	busHouseLikeService.insertHouseLike(busHouseLike);
         return ResultGenerator.genOkResult();
     }
@@ -45,11 +56,11 @@ public class BusHouseLikeController {
         return ResultGenerator.genOkResult(busHouseLike);
     }
 
-    @GetMapping
-    public Result list(@RequestParam(defaultValue = "0") Integer page,
-                       @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<BusHouseLike> list = busHouseLikeService.findAll();
+    @PostMapping("/list")
+    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    	map.put("userName", user.getName());
+        PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+        List<BusHouseLike> list = busHouseLikeService.listHouseLike(map);
         PageInfo<BusHouseLike> pageInfo = new PageInfo<BusHouseLike>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

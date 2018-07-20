@@ -7,6 +7,9 @@ import com.cubic.api.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 /**
@@ -27,6 +30,11 @@ public class BusHouseLikeServiceImpl extends AbstractService<BusHouseLike> imple
 	public void insertHouseLike(BusHouseLike busHouseLike) {
 		busHouseLikeMapper.insertHouseLike(busHouseLike);
 		
+	}
+	@Override
+	public List<BusHouseLike> listHouseLike(Map<String, Object> map) {
+
+		return busHouseLikeMapper.listHouseLike(map);
 	}
 
 }

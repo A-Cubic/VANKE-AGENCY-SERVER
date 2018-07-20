@@ -1,6 +1,10 @@
 package com.cubic.api.service;
 
 import com.cubic.api.model.BusHouseLike;
+
+import java.util.List;
+import java.util.Map;
+
 import com.cubic.api.core.service.Service;
 
 /**
@@ -13,4 +17,9 @@ public interface BusHouseLikeService extends Service<BusHouseLike> {
 	 * @param busHouseLike
 	 * */
 	void  insertHouseLike(BusHouseLike busHouseLike);
+	/**
+	 * 查看房源关注
+	 * @param map
+	 * */
+	List<BusHouseLike> listHouseLike(Map<String, Object> map);
 }

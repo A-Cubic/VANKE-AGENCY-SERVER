@@ -8,7 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="house_id" jdbcType="BIGINT" property="houseId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="user_name" jdbcType="VARBINARY" property="userName" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
   </resultMap>
 	<insert id="insertHouseLike" parameterType="com.cubic.api.model.BusHouseLike">
 		INSERT INTO bus_house_like
@@ -23,5 +23,15 @@
 					NOW()
 					)
 	</insert>
+	
+	<select id="listHouseLike" parameterType="Map" resultMap="BaseResultMap">
+		SELECT * 
+		from bus_house_like 
+		where 
+			user_name=#{userName}
+	</select>
+	
+	
+	
   
 </mapper>

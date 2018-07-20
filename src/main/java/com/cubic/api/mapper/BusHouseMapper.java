@@ -67,5 +67,7 @@ public interface BusHouseMapper extends MyMapper<BusHouse> {
 	
 	
 	
+	
+	
 }
 

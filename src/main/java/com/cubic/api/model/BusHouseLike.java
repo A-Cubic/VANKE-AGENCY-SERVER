@@ -25,7 +25,7 @@ public class BusHouseLike {
      * 用户name
      */
     @Column(name = "user_name")
-    private byte[] userName;
+    private String userName;
 
     /**
      * @return id
@@ -82,7 +82,7 @@ public class BusHouseLike {
      *
      * @return user_name - 用户name
      */
-    public byte[] getUserName() {
+    public String getUserName() {
         return userName;
     }
 
@@ -91,7 +91,7 @@ public class BusHouseLike {
      *
      * @param userName 用户name
      */
-    public void setUserName(byte[] userName) {
+    public void setUserName(String userName) {
         this.userName = userName;
     }
 }
