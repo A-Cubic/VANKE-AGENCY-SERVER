@@ -1,5 +1,10 @@
 package com.cubic.api.util;
 
+/**
+ * 全局消息内容
+ * @author cubic
+ * @date 2018/07/20
+ */
 public class MessageConstant {
 	public static final String MESSAGE_HOUSE_SPECIAL = "提交了特殊房源申请";
 	public static final String MESSAGE_HOUSE_GOOD = "提交了优质房源申请";
