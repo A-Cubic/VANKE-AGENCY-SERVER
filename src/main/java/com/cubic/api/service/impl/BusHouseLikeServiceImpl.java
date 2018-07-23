@@ -31,10 +31,25 @@ public class BusHouseLikeServiceImpl extends AbstractService<BusHouseLike> imple
 		busHouseLikeMapper.insertHouseLike(busHouseLike);
 		
 	}
+	/***
+	 * 查询关注
+	 * @param map
+	 * 
+	 * */
 	@Override
 	public List<BusHouseLike> listHouseLike(Map<String, Object> map) {
 
 		return busHouseLikeMapper.listHouseLike(map);
+	}	
+	/***
+	 * 取消关注
+	 * @param busHouseLike
+	 * 
+	 * */
+	@Override
+	public void deleteHouseLike(BusHouseLike busHouseLike) {
+		busHouseLikeMapper.deleteHouseLike(busHouseLike);
+	
 	}
 
 }

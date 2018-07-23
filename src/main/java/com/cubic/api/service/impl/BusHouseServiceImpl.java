@@ -106,4 +106,14 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 
 		return busHouseMapper.listRecordTime();
 	}
+	 /**
+     * 查询我关注的房源
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusHouse> listMyLikeHouse(Map<String, Object> map) {
+
+		return busHouseMapper.listMyLikeHouse(map);
+	}
 }

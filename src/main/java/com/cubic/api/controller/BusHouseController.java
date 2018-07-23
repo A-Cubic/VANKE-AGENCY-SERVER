@@ -61,7 +61,8 @@ public class BusHouseController {
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
     	//搜索文本条件
-    	busHouse.setSearchtext("大连市"+busHouse.getRegionName()+busHouse.getStreetName()+busHouse.getXiaoquName()+busHouse.getAddress());
+    	busHouse.setSearchtext("大连市"+busHouse.getRegionName()+busHouse.getStreetName()+busHouse.getXiaoquName()+busHouse.getNumfloor()+busHouse.getNumunit()+busHouse.getNumhousehold()+busHouse.getAddress());
+    	
     	busHouseService.insertBusHouse(busHouse);
 
     	//根据id得到房源编号并更新
@@ -276,6 +277,7 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:detailPhone')")
     @PostMapping("/detailPhone")
     public Result detailPhone(Principal user,@RequestBody Map<String,Object> map) {
+    	map.put("clickusername", user.getName());
     	BusHouse busHouse = busHouseService.DetailContacts(map);
     	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询联系信息的次数已用完");   		
@@ -302,6 +304,33 @@ public class BusHouseController {
     @PostMapping("/detailAddress")
     public Result detailAddress(Principal user,@RequestBody Map<String,Object> map) {
     	BusHouse busHouse = busHouseService.DetailAddress(map);
+    	map.put("clickusername", user.getName());
+    	StringBuffer stringtext=new StringBuffer();
+    
+    	if(null!=busHouse.getRegionName()){
+    		stringtext.append(busHouse.getRegionName());
+    	}
+    	if(null!=busHouse.getStreetName()){
+    		stringtext.append(busHouse.getStreetName());
+    	}
+    	if(null!=busHouse.getXiaoquName()){
+    		stringtext.append(busHouse.getXiaoquName());
+    	}
+    	if(null!=busHouse.getNumfloor()){
+    		stringtext.append(busHouse.getNumfloor());
+    	}
+    	if(null!=busHouse.getNumunit()){
+    		stringtext.append(busHouse.getNumunit());
+    	}
+    	if(null!=busHouse.getNumhousehold()){
+    		
+    		stringtext.append(busHouse.getNumhousehold());
+    	}
+    	if(null!=busHouse.getAddress()){
+    		stringtext.append(busHouse.getAddress());
+    	}
+    	busHouse.setAddressText(stringtext.toString());
+    	
     	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询房屋地址的次数已用完");
     	}else if (busHouse.getClickcount()<20){
@@ -390,6 +419,36 @@ public class BusHouseController {
         }
         PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
         return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    /**
+     * 查询我的维护房源
+     * @param  page  size map
+     * @RequestBody Map<String,Object> map
+     * */
+    @PreAuthorize("hasAuthority('house:myRecordHouseList')")
+    @PostMapping("/myRecordHouseList")
+    public Result myRecordHouselist(Principal user,@RequestBody Map<String,Object> map) {
+	      map.put("recordUserName", user.getName());
+	      PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	      List<BusHouse> list = busHouseService.ListBusHouse(map);
+    	  PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
+          return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    /**
+     * 查询我关注的房源
+     * @param  page  size map
+     * @RequestBody Map<String,Object> map
+     * */
+    @PreAuthorize("hasAuthority('house:myLikeHouseList')")
+    @PostMapping("/myLikeHouseList")
+    public Result myLikeHouselist(Principal user,@RequestBody Map<String,Object> map) {
+	      map.put("userName", user.getName());
+	      PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	      List<BusHouse> list = busHouseService.listMyLikeHouse(map);
+    	  PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
+          return ResultGenerator.genOkResult(pageInfo);
     }
     
     /**

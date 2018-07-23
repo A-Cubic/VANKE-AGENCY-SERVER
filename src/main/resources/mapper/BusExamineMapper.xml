@@ -95,7 +95,7 @@
 		<if test="state!=null"><!-- 审核状态条件(0:未审核,1:审核中,2:已审核) -->
 			AND state=#{state}	
 		</if>
-		<if test="type!=null"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片,5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源) -->
+		<if test="type!=null"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片,5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源,10:成交审核) -->
 			AND type=#{type}	
 		</if>
 		<if test="result!=null"><!-- 审核结果条件(0:未通过,1:通过) -->
@@ -104,10 +104,10 @@
 		<if test="userName!=null"><!-- 提交审核的人 -->
 			AND user_name=#{userName}	
 		</if>	
-	    <if test="createTimeStart!=null and createTimeEnd!=null"><!-- 申请时间在两个时间值之间 -->
+	    <if test="(createTimeStart!=null )and (createTimeEnd!=null )"><!-- 申请时间在两个时间值之间 -->
 			<![CDATA[AND create_time > #{createTimeStart}	AND　create_time < #{createTimeEnd}]]>
 		</if>
-		<if test="examineTimeStart!=null and examineTimeEnd!=null"><!-- 审批时间在两个时间值之间 -->
+		<if test="(examineTimeStart!=null )and (examineTimeEnd!=null )"><!-- 审批时间在两个时间值之间 -->
 			<![CDATA[AND examine_time > #{examineTimeStart}	AND　examine_time < #{examineTimeEnd}]]>
 		</if>		
   		<if test="examineName!=null"><!-- 审批处理人 -->

@@ -128,8 +128,13 @@
 				FROM `vanke`.`bus_guest`
 				
 				<where>
-					 record_user_name=#{recordUserName}
-					 
+				1=1
+					<if test="(isShare ==null ) || isShare=0">
+						and  record_user_name=#{recordUserName}
+					 </if>
+					 <if test="(isShare !=null ) and isShare=1">
+						and  isshare=#{isShare}
+					 </if>
 					<if test="guestname!=null"><!-- 客源姓名 -->
 							and guestname like "%"#{guestname}"%"
 					</if>
@@ -162,15 +167,15 @@
 					</if>
 					
 					<if test="huxingting!=null"><!-- 需求户型几厅-->
-							and huxingshi=#{huxingshi}
+							and huxingting=#{huxingting}
 					</if>
 					
 					<if test="huxingwei!=null"><!-- 需求户型几卫-->
-							and huxingshi=#{huxingshi}
+							and huxingwei=#{huxingwei}
 					</if>
 					
 					<if test="huxingchu!=null"><!-- 需求户型几厨-->
-							and huxingshi=#{huxingshi}
+							and huxingchu=#{huxingchu}
 					</if>
 					
 					<if test="collaboratorName!=null"><!-- 查看当前登录人为合作人的客源-->

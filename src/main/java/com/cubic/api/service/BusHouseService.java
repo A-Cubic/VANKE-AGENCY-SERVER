@@ -71,4 +71,11 @@ public interface BusHouseService extends Service<BusHouse> {
      * 
      * */
 	List<BusHouse> listRecordTime();
+	
+	 /**
+     * 查询我关注的房源
+     * @param map
+     * 
+     * */
+	List<BusHouse> listMyLikeHouse(Map<String,Object> map);
 }

@@ -128,6 +128,14 @@ public class BusGuestController {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
     	map.put("recordUserName", user.getName());
     	List<BusGuest> list = busGuestService.listBusGuest(map);
+    		for(BusGuest busGuest:list){
+    			
+    			if(!busGuest.getRecordUserName().equals(user.getName())){
+    			
+    				
+    				busGuest.setCollaboratorType("1");
+    			}
+    		}
         PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

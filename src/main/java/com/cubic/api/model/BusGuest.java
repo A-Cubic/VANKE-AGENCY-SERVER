@@ -18,6 +18,12 @@ public class BusGuest {
      */
 	@Transient
 	private String  casetype;
+	
+	/**
+     * 是否是合作人(0:不是,1:是)
+     */
+	@Transient
+	private String collaboratorType="0";
     
     /**
      * 客源姓名
@@ -555,6 +561,14 @@ public class BusGuest {
 
 	public void setIsshare(String isshare) {
 		this.isshare = isshare;
+	}
+
+	public String getCollaboratorType() {
+		return collaboratorType;
+	}
+
+	public void setCollaboratorType(String collaboratorType) {
+		this.collaboratorType = collaboratorType;
 	}
     
     

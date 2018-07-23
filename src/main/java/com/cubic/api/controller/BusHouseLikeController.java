@@ -35,12 +35,18 @@ public class BusHouseLikeController {
     public Result add(Principal user,@RequestBody BusHouseLike busHouseLike) {
     	busHouseLike.setUserName(user.getName());
     	busHouseLikeService.insertHouseLike(busHouseLike);
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("关注成功");
     }
-
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busHouseLikeService.deleteById(id);
+    /**
+     * 取消关注
+     * @param busHouseLike
+     * 
+     * */
+    @PreAuthorize("hasAuthority('houselike:delete')")
+    @PostMapping("/delete")
+    public Result delete(Principal user,@RequestBody BusHouseLike busHouseLike) {
+    	busHouseLike.setUserName(user.getName());
+    	busHouseLikeService.deleteHouseLike(busHouseLike);
         return ResultGenerator.genOkResult();
     }
 

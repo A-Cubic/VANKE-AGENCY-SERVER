@@ -22,4 +22,10 @@ public interface BusHouseLikeService extends Service<BusHouseLike> {
 	 * @param map
 	 * */
 	List<BusHouseLike> listHouseLike(Map<String, Object> map);
+	
+	/**
+	 * 取消关注
+	 * @param busHouseLike
+	 * */
+	void deleteHouseLike(BusHouseLike busHouseLike);
 }

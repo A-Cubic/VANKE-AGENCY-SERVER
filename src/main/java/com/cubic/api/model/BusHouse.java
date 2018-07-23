@@ -25,6 +25,11 @@ public class BusHouse {
     @Transient
     private String user_ype;
     /**
+     * 详细地址文本
+     */
+    @Transient
+    private String addressText;
+    /**
      * 房屋标题
      */
     @Transient
@@ -1181,6 +1186,14 @@ public class BusHouse {
 
 	public void setCasetype(String casetype) {
 		this.casetype = casetype;
+	}
+
+	public String getAddressText() {
+		return addressText;
+	}
+
+	public void setAddressText(String addressText) {
+		this.addressText = addressText;
 	}
 
     

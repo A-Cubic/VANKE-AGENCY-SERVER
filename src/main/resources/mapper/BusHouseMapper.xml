@@ -104,19 +104,19 @@
 		
 		<where>
 		   1=1
-			<if test="priceUp == null and priceDown != null"><!-- 金额条件在XXX以下 -->
+			<if test="(priceUp == null) and (priceDown != null)"><!-- 金额条件在XXX以下 -->
 				<![CDATA[and bh.price <= #{priceDown} ]]>
 			</if>
 			
-			<if test="priceUp != null and priceDown == null"><!-- 金额条件在XXX以上 -->
+			<if test="(priceUp != null) and (priceDown == null)"><!-- 金额条件在XXX以上 -->
 				<![CDATA[and bh.price >= #{priceUp} ]]>
 			</if>
 			
-			<if test="priceUp != null and priceDown != null"><!-- 金额条件在XXX与XXX之间 -->
+			<if test="(priceUp != null) and (priceDown != null)"><!-- 金额条件在XXX与XXX之间 -->
 				<![CDATA[and bh.price >= #{priceUp} and bh.price <= #{priceDown}]]>
 			</if>
 			
-			<if test="floorType != null"><!-- 楼层条件-->
+			<if test="floorType != null "><!-- 楼层条件-->
 				<if test="floorType==1"><!-- 低楼层条件-->
 					<![CDATA[and CONVERT(bh.`floor`,SIGNED) <= (CONVERT(bh.`maxfloor`,SIGNED)/3)]]>
 				</if>
@@ -154,15 +154,15 @@
 				 and bh.huxingchu = #{huxingchu}
 			</if>
 			
-			<if test="areasUp == null and areasDown != null"><!-- 面积条件在XXX以下 -->
+			<if test="(areasUp == null) and (areasDown != null)"><!-- 面积条件在XXX以下 -->
 				<![CDATA[and bh.areas <= #{areasDown} ]]>
 			</if>
 			
-			<if test="areasUp != null and areasDown == null"><!-- 面积条件在XXX以上 -->
+			<if test="(areasUp != null) and (areasDown == null)"><!-- 面积条件在XXX以上 -->
 				<![CDATA[and bh.areas >= #{areasUp} ]]>
 			</if>
 			
-			<if test="areasUp != null and areasDown != null"><!-- 面积条件在XXX与XXX之间 -->
+			<if test="(areasUp != null) and (areasDown != null)"><!-- 面积条件在XXX与XXX之间 -->
 				<![CDATA[and bh.areas >= #{areasUp} and bh.areas <= #{areasDown}]]>
 			</if>
 			
@@ -205,12 +205,15 @@
 				 and bh.iskey = #{iskey}
 			</if>
 			
-			<if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->
+			<if test="(rangeType!=null) and rangeType==1"><!-- 范围盘条件-->
 					and  su.username=#{userName}	
 					and  bsr.store_id=su.store_id					
 					and  bh.region_name=bsr.region_name
 					and  bh.street_name=bsr.street_name
 				
+			</if>
+			<if test="recordUserName!=null"><!-- 维护人的条件 -->
+					and record_user_name=#{recordUserName}
 			</if>
 	
 		</where>
@@ -307,7 +310,7 @@
 	 
 	 
 	 <select id="DetailContacts"  parameterType="Map" resultMap="BaseResultMap">
-	 		SELECT bh.owner,bh.phone,bh.record_user_name,(select count(*) 
+	 		SELECT bh.owner,bh.phone,bh.record_user_name,(select COUNT(DISTINCT click_user_name) 
 	 							FROM bus_house_clicklog 
 	 							where click_user_name=#{clickusername} 
 	 									and DATE(create_time) = DATE(NOW())
@@ -320,7 +323,14 @@
 	 </select>
 	 
 	  <select id="DetailAddress"  parameterType="Map" resultMap="BaseResultMap">
-	 	SELECT bh.record_user_name,bh.address,(select count(*) 
+	 	SELECT bh.record_user_name,
+	 	 		bh.xiaoqu_name,
+	            bh.region_name,
+	            bh.street_name,
+	            bh.numfloor,
+				bh.numunit,
+				bh.numhousehold,
+				bh.address,(select COUNT(DISTINCT click_user_name)  
 	 							FROM bus_house_clicklog 
 	 							where click_user_name=#{clickusername} 
 	 									and DATE(create_time) = DATE(NOW())
@@ -368,4 +378,54 @@
 					<![CDATA[(DATE(NOW())-DATE(record_time))>=10]]>
 					AND isshare = '0'
 	 </select>
+	 
+	 
+	<select id="listMyLikeHouse" parameterType="Map" resultMap="BaseResultMap">
+				SELECT  bh.`id`,
+						  bh.`number`,
+						  bh.`owner`,
+						  bh.`price`,
+						  bh.`floor`,
+						  bh.maxfloor,
+						  bh.numfloor,
+						  bh.numunit,
+						  bh.numhousehold,
+						  bh.`areas`,
+						  bh.hiddenarea,
+						  bh.`chaoxiang`,
+						  bh.`grade`,
+						  bh.`record_user_name`,
+						  bh.`create_user_name`,
+						  bh.`create_time`,
+						  bh.`introduce`,
+						  bh.`type`,
+						  bh.`state`,
+						  bh.`iskey`,
+						  bh.key_user_name,
+						  bh.exploration_user_name,
+						  bh.shiimg,
+						  bh.tingimg,
+						  bh.weiimg,
+						  bh.chuimg,
+						  bh.huxingimg,
+						  bh.otherimg,
+						  bh.exclusive_user_name,
+						  bh.record_time,
+						  bh.isshare,
+						  bh.isfine,
+						  bh.isspecial,
+						  bh.huxingshi,
+						  bh.huxingting,
+						  bh.huxingwei,
+						  bh.huxingchu,
+						  bh.record_rel_name,
+						  bh.create_rel_name,
+						  bh.key_rel_name,
+						  bh.exploration_rel_name
+				FROM `bus_house` bh, bus_house_like bhl
+				WHERE 
+					bhl.user_name=#{userName}
+					and bhl.house_id=bh.id
+				ORDER BY bhl.create_time DESC	
+	</select>
 </mapper>

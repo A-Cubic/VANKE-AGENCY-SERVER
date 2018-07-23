@@ -97,7 +97,7 @@ public class BusExamineController {
 	    		busGuestService.update(busGuest);
 	    	}
     	}
-    	busExamine.setState("2");
+    	busExamine.setState("1");
     	busExamine.setUserName(user.getName());
     	busExamineService.updateResult(busExamine);
         return ResultGenerator.genOkResult("审核成功");
@@ -123,7 +123,7 @@ public class BusExamineController {
     @PreAuthorize("hasAuthority('examine:detail')")
     @PostMapping("/detail")
     public Result detail(@RequestBody Map<String,Object> map) {
-    	BusExamine busExamine = busExamineService.findById(map.get("id"));
+    	BusExamine busExamine = busExamineService.findById(Long.valueOf( map.get("id").toString()));
         return ResultGenerator.genOkResult(busExamine);
     }
     /**
