@@ -116,4 +116,14 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 
 		return busHouseMapper.listMyLikeHouse(map);
 	}
+	 /**
+     * 查询优质房源
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusHouse> listIsfine(Map<String, Object> map) {
+
+		return busHouseMapper.listIsfine(map);
+	}
 }

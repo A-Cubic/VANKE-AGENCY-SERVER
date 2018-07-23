@@ -78,4 +78,11 @@ public interface BusHouseService extends Service<BusHouse> {
      * 
      * */
 	List<BusHouse> listMyLikeHouse(Map<String,Object> map);
+	
+	 /**
+     * 查询优质房源
+     * @param map
+     * 
+     * */
+	List<BusHouse> listIsfine(Map<String,Object> map);
 }

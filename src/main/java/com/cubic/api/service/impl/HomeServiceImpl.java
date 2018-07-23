@@ -1,6 +1,7 @@
 package com.cubic.api.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -25,9 +26,9 @@ public class HomeServiceImpl implements HomeService {
 	private HomeMapper mapper;
 
 	@Override
-	public CurrentUser currentUser() {
-		// TODO Auto-generated method stub
-		return null;
+	public CurrentUser currentUser(Map<String,Object> map) {
+
+		return mapper.findByUser(map);
 	}
 
 	@Override

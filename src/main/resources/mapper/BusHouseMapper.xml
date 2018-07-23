@@ -52,11 +52,8 @@
     <result column="exploration_rel_name" jdbcType="VARCHAR" property="explorationrelName" />
   </resultMap>
   
-  
-  
-  <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">
-		SELECT
-		  bh.`id`,
+  <sql id="selectSql">
+   			bh.`id`,
 		  bh.`number`,
 		  bh.`owner`,
 		  bh.`price`,
@@ -97,6 +94,11 @@
 		  bh.create_rel_name,
 		  bh.key_rel_name,
 		  bh.exploration_rel_name
+  </sql>
+  
+  <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">
+		SELECT
+		 <include refid="selectSql"/>
 		 
 		  
 		FROM bus_house bh,base_store_range  bsr,sys_user su	
@@ -177,9 +179,7 @@
 				 and bh.street_id = #{streetId}
 			</if>
 			
-			<if test="isfine != null"><!-- 优质房源条件-->
-				 and bh.isfine = #{isfine}
-			</if>
+		
 			
 			<if test="state != null"><!-- 状态条件-->
 				 and bh.state = #{state}
@@ -381,51 +381,25 @@
 	 
 	 
 	<select id="listMyLikeHouse" parameterType="Map" resultMap="BaseResultMap">
-				SELECT  bh.`id`,
-						  bh.`number`,
-						  bh.`owner`,
-						  bh.`price`,
-						  bh.`floor`,
-						  bh.maxfloor,
-						  bh.numfloor,
-						  bh.numunit,
-						  bh.numhousehold,
-						  bh.`areas`,
-						  bh.hiddenarea,
-						  bh.`chaoxiang`,
-						  bh.`grade`,
-						  bh.`record_user_name`,
-						  bh.`create_user_name`,
-						  bh.`create_time`,
-						  bh.`introduce`,
-						  bh.`type`,
-						  bh.`state`,
-						  bh.`iskey`,
-						  bh.key_user_name,
-						  bh.exploration_user_name,
-						  bh.shiimg,
-						  bh.tingimg,
-						  bh.weiimg,
-						  bh.chuimg,
-						  bh.huxingimg,
-						  bh.otherimg,
-						  bh.exclusive_user_name,
-						  bh.record_time,
-						  bh.isshare,
-						  bh.isfine,
-						  bh.isspecial,
-						  bh.huxingshi,
-						  bh.huxingting,
-						  bh.huxingwei,
-						  bh.huxingchu,
-						  bh.record_rel_name,
-						  bh.create_rel_name,
-						  bh.key_rel_name,
-						  bh.exploration_rel_name
+				SELECT   
+				<include refid="selectSql"/>
 				FROM `bus_house` bh, bus_house_like bhl
 				WHERE 
 					bhl.user_name=#{userName}
 					and bhl.house_id=bh.id
 				ORDER BY bhl.create_time DESC	
+	</select>
+	
+	<select id="listIsfine" parameterType="Map" resultMap="BaseResultMap">
+		SELECT   
+				<include refid="selectSql"/>
+			FROM bus_house bh,base_store_range  bsr,sys_user su		
+	
+				WHERE   
+				 su.username=#{userName}	
+				 and  su.store_id=(SELECT store_id FROM `sys_user` WHERE username=bh.record_user_name)
+				 and bh.isfine = 1
+		group by  bh.id
+		order by  bh.create_time desc
 	</select>
 </mapper>

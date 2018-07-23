@@ -1,7 +1,9 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -32,8 +34,10 @@ public class HomeController {
      * 
      * */
     @PostMapping("/user/info")
-    public Result currentUser() {
-        CurrentUser user = service.currentUser();
+    public Result currentUser(Principal users) {
+    	Map<String,Object> map=new HashMap<String,Object>();
+    	map.put("username", users.getName());
+        CurrentUser user = service.currentUser(map);
         return ResultGenerator.genOkResult(user);
     }
     

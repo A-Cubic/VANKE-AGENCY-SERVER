@@ -33,4 +33,17 @@
 			h.street_name as address
 		from bus_house h
 	</select>
+	<select id="findByUser" parameterType="map" resultType="com.cubic.api.model.home.CurrentUser">
+		SELECT
+        u.*,
+        SUM(ba.`price`) current_score,
+        bs.store_name
+        FROM `sys_user` u
+        LEFT JOIN bus_achievement ba ON ba.user_name = u.username
+        LEFT JOIN base_store bs ON bs.id = u.store_id
+        <where>
+            <if test="username != null">u.username = #{username}</if>
+        </where>
+	
+	</select>
 </mapper>

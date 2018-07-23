@@ -105,10 +105,10 @@
 			AND user_name=#{userName}	
 		</if>	
 	    <if test="(createTimeStart!=null )and (createTimeEnd!=null )"><!-- 申请时间在两个时间值之间 -->
-			<![CDATA[AND create_time > #{createTimeStart}	AND　create_time < #{createTimeEnd}]]>
+			<![CDATA[AND DATE(create_time) > #{createTimeStart}	AND　DATE(create_time) < #{createTimeEnd}]]>
 		</if>
 		<if test="(examineTimeStart!=null )and (examineTimeEnd!=null )"><!-- 审批时间在两个时间值之间 -->
-			<![CDATA[AND examine_time > #{examineTimeStart}	AND　examine_time < #{examineTimeEnd}]]>
+			<![CDATA[AND DATE(examine_time) > #{examineTimeStart}	AND　DATE(examine_time) < #{examineTimeEnd}]]>
 		</if>		
   		<if test="examineName!=null"><!-- 审批处理人 -->
 			AND examine_name=#{examineName}	

@@ -451,6 +451,23 @@ public class BusHouseController {
           return ResultGenerator.genOkResult(pageInfo);
     }
     
+    
+    /**
+     * 查询优质房源
+     * @param  page  size map
+     * @RequestBody Map<String,Object> map
+     * */
+    @PreAuthorize("hasAuthority('house:listIsfine')")
+    @PostMapping("/listIsfine")
+    public Result listIsfine(Principal user,@RequestBody Map<String,Object> map) {
+    	
+    	  Object relo=user.getClass();
+	      map.put("userName", user.getName());
+	      PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	      List<BusHouse> list = busHouseService.listIsfine(map);
+    	  PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
+          return ResultGenerator.genOkResult(pageInfo);
+    }
     /**
      * 测试接口
      * @param map

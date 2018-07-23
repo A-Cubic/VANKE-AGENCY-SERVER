@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusAchievementMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusAchievement">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="house_id" jdbcType="BIGINT" property="houseId" />
+    <result column="transaction_id" jdbcType="BIGINT" property="transactionId" />
+    <result column="rolenum" jdbcType="VARCHAR" property="rolenum" />
+    <result column="proportion" jdbcType="VARCHAR" property="proportion" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="examine_type" jdbcType="VARCHAR" property="examineType" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+  
+  <select id="listMyAchievement" parameterType="Map" resultMap="BaseResultMap">
+	  SELECT
+	  `id`,
+	  `user_name`,
+	  `house_id`,
+	  `transaction_id`,
+	  `rolenum`,
+	  `proportion`,
+	  `price`,
+	  `examine_type`,
+	  `create_time`
+	FROM `vanke`.`bus_achievement`
+	WHERE 
+		user_name=#{userName} 
+		AND examine_type=1
+		<if test="createTimeStart!=null and createTimeEnd!=null">
+			<![CDATA[AND  DATE(create_time) > #{createTimeStart} AND DATE(create_time) < #{createTimeEnd}]]>
+		</if>
+		ORDER BY  create_time DESC
+  </select>
+    
+    <select id="listAchievement" parameterType="Map" resultMap="BaseResultMap">
+	  SELECT
+	  ba.`id`,
+	  su.relname userrelname,
+	  SUM(price) sumprice
+	FROM `vanke`.`bus_achievement` ba,`sys_user` su
+	WHERE 
+		ba.user_name=su.username
+		AND ba.examine_type=1
+		<if test="type!=null">
+			<if test="type==1">
+				<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
+			</if>
+			<if test="type==2">
+				<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 31 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
+			</if>
+		</if>
+		GROUP BY ba.user_name
+		ORDER BY SUM(price) DESC
+    </select>
+  
+</mapper>
