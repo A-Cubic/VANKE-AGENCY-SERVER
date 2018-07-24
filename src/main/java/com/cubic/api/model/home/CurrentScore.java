@@ -8,14 +8,14 @@ public class CurrentScore {
 	private String real_name;
 	private Long store_id;
 	private String store_name;
-	private String store_value;
+	private String score;
 
-	public String getStore_value() {
-		return store_value;
+	public String getScore() {
+		return score;
 	}
 
-	public void setStore_value(String store_value) {
-		this.store_value = store_value;
+	public void setScore_value(String score) {
+		this.score = score;
 	}
 
 	public Long getId() {

@@ -9,7 +9,56 @@
 		<collection property="children" ofType="com.cubic.api.model.BaseStreet" select="getStreets" column="region_code">
 		</collection>
 	</resultMap>
-	
+	<resultMap id="BaseHouseMap" type="com.cubic.api.model.BusHouse">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="owner" jdbcType="VARCHAR" property="owner" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="price" jdbcType="VARCHAR" property="price" />
+    <result column="floor" jdbcType="VARCHAR" property="floor" />
+    <result column="maxfloor" jdbcType="VARCHAR" property="maxfloor" />
+    <result column="huxing" jdbcType="VARCHAR" property="huxing" />
+    <result column="areas" jdbcType="VARCHAR" property="areas" />
+    <result column="hiddenarea" jdbcType="VARCHAR" property="hiddenarea" />
+    <result column="chaoxiang" jdbcType="VARCHAR" property="chaoxiang" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="record_user_name" jdbcType="VARCHAR" property="recordUserName" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="introduce" jdbcType="VARCHAR" property="introduce" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="region_id" jdbcType="BIGINT" property="regionId" />
+    <result column="street_id" jdbcType="BIGINT" property="street_id" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="iskey" jdbcType="VARCHAR" property="iskey" />
+    <result column="key_user_name" jdbcType="VARCHAR" property="keyUserName" />
+    <result column="exploration_user_name" jdbcType="VARCHAR" property="explorationUserName" />
+    <result column="shiimg" jdbcType="VARCHAR" property="shiimg" />
+    <result column="tingimg" jdbcType="VARCHAR" property="tingimg" />
+    <result column="weiimg" jdbcType="VARCHAR" property="weiimg" />
+    <result column="chuimg" jdbcType="VARCHAR" property="chuimg" />
+    <result column="huxingimg" jdbcType="VARCHAR" property="huxingimg" />
+    <result column="otherimg" jdbcType="VARCHAR" property="otherimg" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
+    <result column="exclusive_user_name" jdbcType="VARCHAR" property="exclusiveUserName" />
+    <result column="numfloor" jdbcType="VARCHAR" property="numfloor" />
+    <result column="numunit" jdbcType="VARCHAR" property="numunit" />
+    <result column="numhousehold" jdbcType="VARCHAR" property="numhousehold" />
+    <result column="searchtext" jdbcType="VARCHAR" property="searchtext" />
+    <result column="xiaoqu_name" jdbcType="VARCHAR" property="xiaoquName" />
+    <result column="region_name" jdbcType="VARCHAR" property="regionName" />
+    <result column="street_name" jdbcType="VARCHAR" property="streetName" />
+    <result column="isfine" jdbcType="VARCHAR" property="isfine" />
+    <result column="isshare" jdbcType="VARCHAR" property="isshare" />
+    <result column="record_rel_name" jdbcType="VARCHAR" property="recordrelName" />
+    <result column="create_rel_name" jdbcType="VARCHAR" property="createrelName" />
+    <result column="key_rel_name" jdbcType="VARCHAR" property="keyrelName" />
+    <result column="exploration_rel_name" jdbcType="VARCHAR" property="explorationrelName" />
+  </resultMap>
 	
 	<select id="listRegions" parameterType="com.cubic.api.model.BaseRegion" resultMap="regionMaps">
 		select 
@@ -37,13 +86,83 @@
 		SELECT
         u.*,
         SUM(ba.`price`) current_score,
-        bs.store_name
+        bs.store_name,
+        sr.desc
         FROM `sys_user` u
         LEFT JOIN bus_achievement ba ON ba.user_name = u.username
         LEFT JOIN base_store bs ON bs.id = u.store_id
+        LEFT JOIN sys_user_role sur ON sur.user_id= u.id
+        LEFT JOIN sys_role sr ON sr.id = sur.role_id
+        
         <where>
             <if test="username != null">u.username = #{username}</if>
         </where>
 	
+	</select>
+	
+	
+	<select id="listLatentScore" parameterType="map" resultMap="BaseHouseMap">
+			SELECT 		
+			 bh.price,
+			 bh.record_user_name,
+			 bh.`key_user_name`,
+			 bh.`create_user_name`,
+			 bh.`exploration_user_name`
+			 FROM 	bus_house bh
+			 WHERE 
+				bh.`record_user_name`=#{username}
+				OR bh.`key_user_name`=#{username}
+				OR bh.`create_user_name`=#{username}
+				OR bh.`exploration_user_name`=#{username}
+	
+	</select>
+	
+	<select id="findMyinfo" parameterType="map" resultType="com.cubic.api.model.home.CurrentUser">
+			SELECT
+		        u.*,
+		         bs.store_name,
+			        sr.desc
+			        FROM `sys_user` u
+			        LEFT JOIN bus_achievement ba ON ba.user_name = u.username
+			        LEFT JOIN base_store bs ON bs.id = u.store_id
+			        LEFT JOIN sys_user_role sur ON sur.user_id= u.id
+			        LEFT JOIN sys_role sr ON sr.id = sur.role_id
+
+		        WHERE 
+					u.username=#{username}
+				GROUP BY u.`id`	
+		
+		
+	
+	</select>
+	
+	<update id="updatePassword" parameterType="map">
+		UPDATE `sys_user` 
+		SET password=#{password}
+		WHERE 
+			username=#{username}
+	</update>
+	
+	<select id="listRankings" parameterType="map"  resultType="com.cubic.api.model.home.CurrentScore">
+		  SELECT a.*,@rownum:=@rownum+1 AS rank FROM (SELECT
+		  ba.`id`,
+		  su.relname real_name,
+		  SUM(price) score,
+		  bs.`store_name`
+		FROM `vanke`.`bus_achievement` ba,`sys_user` su ,base_store bs
+		WHERE 
+			ba.user_name=su.username
+			AND bs.`id`=su.store_id
+			AND ba.examine_type=1
+			<if test="type!=null">
+				<if test="type==1">
+					<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
+				</if>
+				<if test="type==2">
+					<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
+				</if>
+			</if>
+		GROUP BY ba.user_name
+		ORDER BY SUM(price) DESC) a,(SELECT @rownum:=0) r
 	</select>
 </mapper>

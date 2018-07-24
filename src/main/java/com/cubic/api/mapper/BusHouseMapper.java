@@ -78,7 +78,7 @@ public interface BusHouseMapper extends MyMapper<BusHouse> {
      * @param map
      * 
      * */
-	List<BusHouse> listIsfine(Map<String,Object> map);
+	List<BusHouse> listIsfine(Map<String,String> map);
 	
 	
 	

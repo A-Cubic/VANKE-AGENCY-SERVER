@@ -23,7 +23,7 @@
     <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="collaboratorids" jdbcType="VARCHAR" property="collaboratorids" />
-    <result column="record_time" jdbcType="TIMESTAMP" property="record_time" />
+    <result column="record_time" jdbcType="TIMESTAMP" property="recordTime" />
     <result column="huxingshi" jdbcType="VARCHAR" property="huxingshi" />
     <result column="huxingting" jdbcType="VARCHAR" property="huxingting" />
     <result column="huxingwei" jdbcType="VARCHAR" property="huxingwei" />
@@ -97,7 +97,7 @@
 	 </update>
 	 
 	 
-	 <select id="listBusGuest" resultMap="BaseResultMap">
+	 <select id="listBusGuest" parameterType="map" resultMap="BaseResultMap">
 	 				
 				SELECT
 				  `id`,
@@ -129,10 +129,10 @@
 				
 				<where>
 				1=1
-					<if test="(isShare ==null ) || isShare=0">
+					<if test="isShare ==null || isShare==0">
 						and  record_user_name=#{recordUserName}
 					 </if>
-					 <if test="(isShare !=null ) and isShare=1">
+					 <if test="isShare !=null and isShare==1">
 						and  isshare=#{isShare}
 					 </if>
 					<if test="guestname!=null"><!-- 客源姓名 -->
@@ -150,34 +150,7 @@
 					<if test="type!=null"><!-- 客源类型(0买,1租)-->
 							and type=#{type}
 					</if>
-					
-					<if test="heartprice!=null"><!-- 客源心里价位-->
-							and heartprice=#{heartprice}
-					</if>
-					
-					<if test="areas!=null"><!-- 客源需求面积-->
-							and areas=#{areas}
-					</if>
-					<if test="iskey!=null"><!-- 是否是无效客源-->
-							and iskey=#{iskey}
-					</if>
-					
-					<if test="huxingshi!=null"><!-- 需求户型几室-->
-							and huxingshi=#{huxingshi}
-					</if>
-					
-					<if test="huxingting!=null"><!-- 需求户型几厅-->
-							and huxingting=#{huxingting}
-					</if>
-					
-					<if test="huxingwei!=null"><!-- 需求户型几卫-->
-							and huxingwei=#{huxingwei}
-					</if>
-					
-					<if test="huxingchu!=null"><!-- 需求户型几厨-->
-							and huxingchu=#{huxingchu}
-					</if>
-					
+								
 					<if test="collaboratorName!=null"><!-- 查看当前登录人为合作人的客源-->
 							and collaboratorids like "%"#{recordUserName}"%"
 					</if>

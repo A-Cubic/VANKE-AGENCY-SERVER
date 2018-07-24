@@ -72,7 +72,7 @@ public class BusGuestController {
         return ResultGenerator.genOkResult();
     }
     /**
-     * 设置为无效房源
+     * 设置为无效房客源
      * @param busGuest
      * 
      * */
@@ -82,14 +82,19 @@ public class BusGuestController {
     	//审核信息
     	BusExamine busExamine=new BusExamine();
     	busExamine.setGuestId(busGuest.getId());
-    	busExamine.setType("5");
+    	if("1".equals(busGuest.getIskey())){
+    		busExamine.setType("5");
+    	}else if("0".equals(busGuest.getIskey())){
+    		busExamine.setType("9");
+    	}
+    	
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
         return ResultGenerator.genOkResult("提交审核成功");
     }
     
     /**
-     * 设置为无效房源
+     * 转让客源
      * @param busGuest
      * 
      * */
@@ -114,7 +119,7 @@ public class BusGuestController {
     @PreAuthorize("hasAuthority('guest:detail')")
     @PostMapping("/detail")
     public Result detail(@RequestBody Map<String,Object> map) {
-    	BusGuest busGuest = busGuestService.findById(map.get("id"));
+    	BusGuest busGuest = busGuestService.findById(Long.valueOf(map.get("id").toString()));
         return ResultGenerator.genOkResult(busGuest);
     }
     /**

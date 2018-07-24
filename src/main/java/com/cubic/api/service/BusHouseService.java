@@ -84,5 +84,5 @@ public interface BusHouseService extends Service<BusHouse> {
      * @param map
      * 
      * */
-	List<BusHouse> listIsfine(Map<String,Object> map);
+	List<BusHouse> listIsfine(Map<String,String> map);
 }

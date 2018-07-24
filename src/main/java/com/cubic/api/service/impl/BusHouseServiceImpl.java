@@ -122,7 +122,7 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
      * 
      * */
 	@Override
-	public List<BusHouse> listIsfine(Map<String, Object> map) {
+	public List<BusHouse> listIsfine(Map<String, String> map) {
 
 		return busHouseMapper.listIsfine(map);
 	}

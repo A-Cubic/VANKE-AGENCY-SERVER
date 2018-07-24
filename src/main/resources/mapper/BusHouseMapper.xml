@@ -93,7 +93,8 @@
 		  bh.record_rel_name,
 		  bh.create_rel_name,
 		  bh.key_rel_name,
-		  bh.exploration_rel_name
+		  bh.exploration_rel_name,
+		  bh.xiaoqu_name
   </sql>
   
   <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">
@@ -136,12 +137,12 @@
 				 and bh.searchtext like "%"#{searchText}"%"
 			</if>
 			
-			<if test="huxingshi != null"><!-- 户型几室条件-->
-				<if test="huxingshi == 6 "><!-- 户型5室以上条件-->
+			<if test="huxingType != null"><!-- 户型几室条件-->
+				<if test="huxingType == 6 "><!-- 户型5室以上条件-->
 					 and CONVERT(bh.huxingshi,SIGNED) >= 5
 				</if>
-				<if test="huxingshi != 6 "><!-- 户型几室条件-->
-					and bh.huxingshi = #{huxingshi}
+				<if test="huxingType != 6 "><!-- 户型几室条件-->
+					and bh.huxingshi = #{huxingType}
 				</if>
 				 
 			</if>
@@ -190,12 +191,12 @@
 			<if test="type != null"><!-- 类型条件-->
 				 and bh.type = #{type}
 			</if>
-			<if test="isShare != null"><!-- 共享房源条件-->
+			<if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->
 				 and  su.username=#{userName}	
 				 and  bsr.store_id=su.store_id					
 				 and  bh.region_name=bsr.region_name
 				 and  bh.street_name=bsr.street_name
-				 and bh.isshare = #{isShare}
+				 and bh.isshare = 1
 			</if>
 			
 			<if test="grade != null"><!-- 房源等级条件-->
@@ -399,6 +400,7 @@
 				 su.username=#{userName}	
 				 and  su.store_id=(SELECT store_id FROM `sys_user` WHERE username=bh.record_user_name)
 				 and bh.isfine = 1
+				 and bh.state=0
 		group by  bh.id
 		order by  bh.create_time desc
 	</select>

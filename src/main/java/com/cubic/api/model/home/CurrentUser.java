@@ -1,5 +1,9 @@
 package com.cubic.api.model.home;
 
+import java.util.Date;
+
+import javax.persistence.Column;
+
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class CurrentUser {
@@ -68,6 +72,47 @@ public class CurrentUser {
      * 潜在业绩
      */
     private String latent_score;
+    
+    /**
+     * 用户编号
+     */
+    private String user_no;
+    
+    /**
+     * 角色名
+     */
+    private String desc;
+    
+    /**
+     * 注册时间
+     */
+    private String register_time;
+
+    
+    
+	public String getRegister_time() {
+		return register_time;
+	}
+
+	public void setRegister_time(String register_time) {
+		this.register_time = register_time;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public String getUser_no() {
+		return user_no;
+	}
+
+	public void setUser_no(String user_no) {
+		this.user_no = user_no;
+	}
 
 	public Long getId() {
 		return id;
