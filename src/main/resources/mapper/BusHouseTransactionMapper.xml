@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusHouseTransactionMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusHouseTransaction">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="house_id" jdbcType="BIGINT" property="houseId" />
+    <result column="guest_id" jdbcType="BIGINT" property="guestId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="buy_intermediary_price" jdbcType="VARCHAR" property="buyIntermediaryPrice" />
+    <result column="sell_intermediary_price" jdbcType="VARCHAR" property="sellIntermediaryPrice" />
+    <result column="buy_loan_price" jdbcType="VARCHAR" property="buyLoanPrice" />
+    <result column="buy_intermediary_payment" jdbcType="VARCHAR" property="buyIntermediaryPayment" />
+    <result column="sell_intermediary_payment" jdbcType="VARCHAR" property="sellIntermediaryPayment" />
+    <result column="buy_loan_payment" jdbcType="VARCHAR" property="buyLoanPayment" />
+    <result column="buy_intermediary_lack" jdbcType="VARCHAR" property="buyIntermediaryLack" />
+    <result column="sell_intermediary_lack" jdbcType="VARCHAR" property="sellIntermediaryLack" />
+    <result column="buy_loan_lack" jdbcType="VARCHAR" property="buyLoanLack" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="contract_img" jdbcType="LONGVARCHAR" property="contractImg" />
+    <result column="house_prove_img" jdbcType="LONGVARCHAR" property="houseProveImg" />
+    <result column="loan_contract_img" jdbcType="LONGVARCHAR" property="loanContractImg" />
+    <result column="identity_prove_img" jdbcType="LONGVARCHAR" property="identityProveImg" />
+    <result column="receipt_img" jdbcType="LONGVARCHAR" property="receiptImg" />
+    <result column="agreement_img" jdbcType="LONGVARCHAR" property="agreementImg" />
+  </resultMap>
+</mapper>
