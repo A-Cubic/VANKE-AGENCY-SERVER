@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cubic.api.mapper.HomeMapper;
 import com.cubic.api.model.BaseXiaoQu;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.User;
 import com.cubic.api.model.home.CurrentScore;
 import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.HomeService;
@@ -59,10 +60,23 @@ public class HomeServiceImpl implements HomeService {
 	}
 
 	@Override
-	public void updatePassword(Map<String, Object> map) {
+	public String updatePassword(Map<String, Object> map) {
 		String pwd = (String)map.get("password");
 		map.put("password", this.passwordEncoder.encode(pwd.trim()));
-		mapper.updatePassword(map);
+		
+    	if(null!=map.get("oldpassword")&&!"".equals(map.get("oldpassword"))){  
+    		String oldpwd=(String)map.get("oldpassword");
+    		
+    		User us=(User) map.get("userBean");
+    		 //判断输入的旧密码和原来的密码一不一致
+    	     boolean bl=passwordEncoder.matches(oldpwd, us.getPassword());
+    		 if(bl){
+    			mapper.updatePassword(map);
+    			return "修改成功";
+		     }
+	    }
+    	return "当前密码不正确";
+		
 		
 	}
 
@@ -70,6 +84,12 @@ public class HomeServiceImpl implements HomeService {
 	public List<CurrentScore> listRankings(Map<String, Object> map) {
 
 		return mapper.listRankings(map);
+	}
+
+	@Override
+	public void upadateInfo(User user) {
+		mapper.upadateInfo(user);
+		
 	}
 	 
 

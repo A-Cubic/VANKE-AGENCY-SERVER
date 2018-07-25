@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.cubic.api.model.BaseXiaoQu;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.User;
 import com.cubic.api.model.home.CurrentScore;
 import com.cubic.api.model.home.CurrentUser;
 
@@ -15,9 +16,10 @@ import com.cubic.api.model.home.CurrentUser;
 public interface HomeService {
 	CurrentUser currentUser(Map<String,Object> map);
 	CurrentUser findMyinfo(Map<String,Object> map);
-	void updatePassword(Map<String,Object> map);
+	String updatePassword(Map<String,Object> map);
 	List<CurrentScore> listScore();
 	List<BaseXiaoQu> listHouseGood();
 	List<BusHouse> listLatentScore(Map<String,Object> map);
 	List<CurrentScore> listRankings(Map<String,Object> map);
+	void upadateInfo(User user);
 }

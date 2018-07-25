@@ -1,7 +1,6 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,9 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.User;
 import com.cubic.api.model.home.CurrentScore;
 import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.HomeService;
+import com.cubic.api.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -35,7 +36,8 @@ import com.github.pagehelper.PageInfo;
 public class HomeController {
     @Resource
     private HomeService service;
-    
+    @Resource
+    private UserService userService;
 
     /**
      * 首页用户信息
@@ -95,10 +97,18 @@ public class HomeController {
     @PostMapping("/user/updatePassword")
     public Result updatePassword(final Principal user,@RequestBody Map<String,Object> map) {
     	map.put("username", user.getName());
-    	
-    	
-    	service.updatePassword(map);
-        return ResultGenerator.genOkResult("修改成功");
+    	map.put("userBean",userService.findBy("username", user.getName()));   	
+        return ResultGenerator.genOkResult(service.updatePassword(map));
+    }
+    
+    /**
+     * 修改用户信息(用户姓名,用户电话)
+     * */
+    @PostMapping("/user/upadateInfo")
+    public  Result upadateInfo(final Principal user,@RequestBody User users){
+    	users.setUsername(user.getName());
+    	service.upadateInfo(users);
+    	return ResultGenerator.genOkResult("修改成功");
     }
     /**
      * 首页排行榜

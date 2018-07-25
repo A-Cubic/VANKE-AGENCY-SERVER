@@ -17,6 +17,7 @@ public class BusGuestLookrecord {
     /**
      * 带看人真实姓名
      */
+    @Transient
     private String userRelName;
 
     /**

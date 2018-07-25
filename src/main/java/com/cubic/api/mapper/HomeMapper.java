@@ -6,6 +6,7 @@ import java.util.Map;
 import com.cubic.api.model.BaseRegion;
 import com.cubic.api.model.BaseXiaoQu;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.User;
 import com.cubic.api.model.home.CurrentScore;
 import com.cubic.api.model.home.CurrentUser;
 
@@ -17,4 +18,5 @@ public interface HomeMapper {
 	List<BaseXiaoQu> listXiaoQu();
 	List<BusHouse> listLatentScore(Map<String,Object> map);
 	List<CurrentScore> listRankings(Map<String,Object> map);
+	void upadateInfo(User user);
 }

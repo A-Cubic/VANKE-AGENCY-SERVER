@@ -143,6 +143,24 @@
 			username=#{username}
 	</update>
 	
+	
+	<update id="upadateInfo" parameterType="com.cubic.api.model.User">
+		<if test="relname!=null or phone!=null">
+		
+			UPDATE 
+				`sys_user`
+			<if test="relname!=null">
+				SET relname= #{relname}
+			</if>
+			<if test="phone!=null">
+				SET	phone = #{phone}
+			</if>
+			
+			WHERE 
+				username=#{username}
+			
+		</if>	
+	</update>
 	<select id="listRankings" parameterType="map"  resultType="com.cubic.api.model.home.CurrentScore">
 		  SELECT a.*,@rownum:=@rownum+1 AS rank FROM (SELECT
 		  ba.`id`,

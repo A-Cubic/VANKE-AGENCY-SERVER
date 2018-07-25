@@ -1,6 +1,7 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -587,6 +588,10 @@ public class BusHouseController {
      * */
     @PostMapping("/test")
     public Result test(@RequestBody Map<String,Object> map) {
-        return ResultGenerator.genOkResult(map);
+    	List<BusHouse> add=new ArrayList<BusHouse>();
+    	BusHouse bs=new BusHouse();
+    			bs.setId( Long.parseLong(map.get("id").toString()));
+    	
+        return ResultGenerator.genOkResult(add);
     }
 }
