@@ -12,7 +12,6 @@
     <result column="price" jdbcType="VARCHAR" property="price" />
     <result column="floor" jdbcType="VARCHAR" property="floor" />
     <result column="maxfloor" jdbcType="VARCHAR" property="maxfloor" />
-    <result column="huxing" jdbcType="VARCHAR" property="huxing" />
     <result column="areas" jdbcType="VARCHAR" property="areas" />
     <result column="hiddenarea" jdbcType="VARCHAR" property="hiddenarea" />
     <result column="chaoxiang" jdbcType="VARCHAR" property="chaoxiang" />
@@ -50,6 +49,7 @@
     <result column="create_rel_name" jdbcType="VARCHAR" property="createrelName" />
     <result column="key_rel_name" jdbcType="VARCHAR" property="keyrelName" />
     <result column="exploration_rel_name" jdbcType="VARCHAR" property="explorationrelName" />
+   <result column="titleimg" jdbcType="VARCHAR" property="titleimg" />
   </resultMap>
   
   <sql id="selectSql">
@@ -86,6 +86,7 @@
 		  bh.isshare,
 		  bh.isfine,
 		  bh.isspecial,
+		  CONCAT(bh.huxingshi,'-',bh.huxingting,'-',bh.huxingwei,'-',bh.huxingchu) AS huxing,
 		  bh.huxingshi,
 		  bh.huxingting,
 		  bh.huxingwei,
@@ -94,7 +95,8 @@
 		  bh.create_rel_name,
 		  bh.key_rel_name,
 		  bh.exploration_rel_name,
-		  bh.xiaoqu_name
+		  bh.xiaoqu_name,
+		  bh.titleimg
   </sql>
   
   <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">

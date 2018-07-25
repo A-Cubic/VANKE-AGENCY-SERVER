@@ -189,7 +189,14 @@ public class BusHouse {
     /**
      * 房屋详细地址
      */
+  
     private String address;
+    
+    /**
+     * 缩略图
+     */
+    private String titleimg;
+    
 
     /**
      * 房屋钥匙状态在不在维护人手里(0:不在,1:在)
@@ -459,7 +466,7 @@ public class BusHouse {
      * @param huxing 房屋户型
      */
     public void setHuxing(String huxing) {
-        this.huxing = huxing;
+        this.huxing =huxing;
     }
 
     public String getHuxingshi() {
@@ -1194,6 +1201,14 @@ public class BusHouse {
 
 	public void setAddressText(String addressText) {
 		this.addressText = addressText;
+	}
+
+	public String getTitleimg() {
+		return titleimg;
+	}
+
+	public void setTitleimg(String titleimg) {
+		this.titleimg = titleimg;
 	}
 
     
