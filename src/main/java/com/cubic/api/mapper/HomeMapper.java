@@ -19,4 +19,5 @@ public interface HomeMapper {
 	List<BusHouse> listLatentScore(Map<String,Object> map);
 	List<CurrentScore> listRankings(Map<String,Object> map);
 	void upadateInfo(User user);
+	void upadateImg(String avatar,String username);
 }

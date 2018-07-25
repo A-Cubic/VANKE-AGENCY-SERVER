@@ -22,4 +22,5 @@ public interface HomeService {
 	List<BusHouse> listLatentScore(Map<String,Object> map);
 	List<CurrentScore> listRankings(Map<String,Object> map);
 	void upadateInfo(User user);
+	void upadateImg(String url,String username);
 }

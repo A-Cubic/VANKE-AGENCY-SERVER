@@ -91,6 +91,11 @@ public class HomeServiceImpl implements HomeService {
 		mapper.upadateInfo(user);
 		
 	}
+
+	@Override
+	public void upadateImg(String url,String username) {
+		mapper.upadateImg(url,username);
+	}
 	 
 
 }
