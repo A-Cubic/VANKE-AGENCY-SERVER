@@ -33,4 +33,12 @@ public interface UserMapper extends MyMapper<User> {
      * @param username 用户名
      */
     void updateLoginTimeByUsername(@Param("username") String username);
+    
+    /**
+     * 按照真实姓名查询列表
+     *
+     * @param param 参数map
+     * @return 用户
+     */    
+    List<User> listUserInfo(Map<String, Object> param);
 }

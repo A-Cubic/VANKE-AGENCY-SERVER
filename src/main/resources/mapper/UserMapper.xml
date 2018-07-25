@@ -62,5 +62,14 @@
         login_time = NOW()
         WHERE username = #{username}
     </update>
+    
+    <select id="listUserInfo" parameterType="map" resultMap="UserMap">
+    	SELECT 
+    		*
+    	FROM 	`sys_user`
+    	WHERE 
+    		relname like "%"#{relname}"%"	
+    
+    </select>
 
 </mapper>

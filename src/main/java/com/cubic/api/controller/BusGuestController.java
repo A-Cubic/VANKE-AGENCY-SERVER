@@ -19,8 +19,10 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusGuest;
+import com.cubic.api.model.User;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusGuestService;
+import com.cubic.api.service.UserService;
 import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -37,6 +39,8 @@ public class BusGuestController {
     private BusGuestService busGuestService;
     @Resource
     private BusExamineService busExamineService;
+    @Resource
+    private UserService userService;
     /**
      * 创建客源
      * @param busGuest
@@ -143,5 +147,19 @@ public class BusGuestController {
     		}
         PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
         return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    /**
+     * 查询要转让人列表
+     * @param  page  size map
+     * @RequestBody Map<String,Object> map
+     * */
+    @PreAuthorize("hasAuthority('guest:listUser')")
+    @PostMapping("/listUser")
+    public Result listUser(@RequestBody Map<String,Object> map){
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	      List<User> list = userService.listUserInfo(map);
+	      PageInfo<User> pageInfo = new PageInfo<User>(list);
+    	 return ResultGenerator.genOkResult(pageInfo);
     }
 }

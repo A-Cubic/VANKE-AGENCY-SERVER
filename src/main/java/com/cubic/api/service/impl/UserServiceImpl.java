@@ -113,4 +113,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
     public void updateLoginTimeByUsername(final String username) {
         this.userMapper.updateLoginTimeByUsername(username);
     }
+
+	@Override
+	public List<User> listUserInfo(Map<String, Object> param) {
+
+		return userMapper.listUserInfo(param);
+	}
 }

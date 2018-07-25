@@ -5,6 +5,7 @@ import com.cubic.api.model.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fei.yu
@@ -52,4 +53,13 @@ public interface UserService extends Service<User> {
      * @return boolean
      */
     boolean verifyPassword(String rawPassword, String encodedPassword);
+    
+    
+    /**
+     * 按照真实姓名查询列表
+     *
+     * @param param 参数map
+     * @return 用户
+     */    
+    List<User> listUserInfo(Map<String, Object> param);
 }

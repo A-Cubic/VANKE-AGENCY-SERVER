@@ -179,7 +179,12 @@
 			<if test="streetId != null"><!-- 街道条件-->
 				 and bh.street_id = #{streetId}
 			</if>
-			
+			<if test="xiaoquName != null"><!--  小区查询-->
+				and  xiaoqu_name like "%"#{xiaoquName}"%"
+			</if>
+			<if test="number != null"><!--  编号查询-->
+				and  number like "%"#{number}"%"
+			</if>
 		
 			
 			<if test="state != null"><!-- 状态条件-->

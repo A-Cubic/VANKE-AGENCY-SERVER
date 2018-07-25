@@ -22,6 +22,7 @@ import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseClicklog;
+import com.cubic.api.model.User;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
@@ -580,6 +581,19 @@ public class BusHouseController {
 	      map.put("userName", user.getName());
 	      List<BusHouse> list = busHouseService.listIsfine(map);
           return ResultGenerator.genOkResult(list);
+    }
+    /**
+     * 查询要转让人列表
+     * @param  page  size map
+     * @RequestBody Map<String,Object> map
+     * */
+    @PreAuthorize("hasAuthority('house:listUser')")
+    @PostMapping("/listUser")
+    public Result listUser(@RequestBody Map<String,Object> map){
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	      List<User> list = userService.listUserInfo(map);
+	      PageInfo<User> pageInfo = new PageInfo<User>(list);
+    	 return ResultGenerator.genOkResult(pageInfo);
     }
     /**
      * 测试接口

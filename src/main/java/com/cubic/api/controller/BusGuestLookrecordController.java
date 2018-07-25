@@ -47,20 +47,23 @@ public class BusGuestLookrecordController {
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody List<BusGuestLookrecord> busGuestLookrecords) {
     	//创建客源带看多条
-    	busGuestLookrecordService.save(busGuestLookrecords);
-    	List<BusHouseLookrecord> busHouseLookrecords=new ArrayList<BusHouseLookrecord>();
-    	for(BusGuestLookrecord busGuestLookrecord:busGuestLookrecords){	    	
+    	
+    
+    	for(BusGuestLookrecord busGuestLookrecord:busGuestLookrecords){
+    		busGuestLookrecord.setUserName(user.getName());
+    		busGuestLookrecordService.save(busGuestLookrecord);
 	    	//同时创建房源的带看信息
 	    	BusHouseLookrecord busHouseLookrecord=new BusHouseLookrecord();
 	    	busHouseLookrecord.setHouseId(busGuestLookrecord.getHouseId());
 	    	busHouseLookrecord.setUserName(user.getName());
 	    	busHouseLookrecord.setCreateTime(busGuestLookrecord.getCreateTime());
 	    	busHouseLookrecord.setEndtime(busGuestLookrecord.getEndtime());
-	    	busHouseLookrecords.add(busHouseLookrecord);
+	    
+	    	//创建房源带看多条
+	    	busHouseLookrecordService.save(busHouseLookrecord);
 	    	
     	}
-    	//创建房源带看多条
-    	busHouseLookrecordService.save(busHouseLookrecords);
+    	
         return ResultGenerator.genOkResult("添加成功");
     }
 
