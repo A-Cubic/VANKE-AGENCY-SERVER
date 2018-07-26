@@ -118,6 +118,17 @@ public class BusHouse {
      */
     @Column(name = " region_code")
     private String regionCode;
+    /**
+     * 房主姓名1
+     * 
+     */
+    private String owner1;
+    /**
+     * 房主电话1
+     * 
+     */
+    private String phone1;
+    
     
     @Transient
     private int clickcount = 0;
@@ -1216,6 +1227,30 @@ public class BusHouse {
 
 	public void setTitleimg(String titleimg) {
 		this.titleimg = titleimg;
+	}
+
+	public String getRegionCode() {
+		return regionCode;
+	}
+
+	public void setRegionCode(String regionCode) {
+		this.regionCode = regionCode;
+	}
+
+	public String getOwner1() {
+		return owner1;
+	}
+
+	public void setOwner1(String owner1) {
+		this.owner1 = owner1;
+	}
+
+	public String getPhone1() {
+		return phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
 	}
 
     

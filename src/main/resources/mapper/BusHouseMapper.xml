@@ -50,6 +50,8 @@
     <result column="key_rel_name" jdbcType="VARCHAR" property="keyrelName" />
     <result column="exploration_rel_name" jdbcType="VARCHAR" property="explorationrelName" />
    <result column="titleimg" jdbcType="VARCHAR" property="titleimg" />
+    <result column="owner1" jdbcType="VARCHAR" property="owner1" />
+     <result column="phone1" jdbcType="VARCHAR" property="phone1" />
   </resultMap>
   
   <sql id="selectSql">
@@ -96,7 +98,10 @@
 		  bh.key_rel_name,
 		  bh.exploration_rel_name,
 		  bh.xiaoqu_name,
-		  bh.titleimg
+		  bh.titleimg,
+		  bh.owner1,
+		  bh.phone1
+		  
   </sql>
   
   <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">
