@@ -112,6 +112,13 @@ public class BusHouse {
      */
     private String grade;
     
+    /**
+     * 区域code
+     * 
+     */
+    @Column(name = " region_code")
+    private String regionCode;
+    
     @Transient
     private int clickcount = 0;
 

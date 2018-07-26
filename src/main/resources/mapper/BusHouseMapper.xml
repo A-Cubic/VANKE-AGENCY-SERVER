@@ -269,7 +269,8 @@
 				  isspecial,
 				  searchtext,
 				  record_rel_name,
-				  create_rel_name
+				  create_rel_name,
+				  region_code
 				  <if test="iskey==1">
 				  	,key_rel_name
 				  </if>
@@ -310,7 +311,8 @@
 			     	0,
 			     	#{searchtext},
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
-			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName})  
+			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
+			     	#{regionCode} 
 			     	<if test="iskey==1">
 				  	,(SELECT relname FROM sys_user WHERE username=#{recordUserName})
 				    </if>			);
