@@ -167,7 +167,7 @@
 		  su.relname real_name,
 		  SUM(price) score,
 		  bs.`store_name`
-		FROM `vanke`.`bus_achievement` ba,`sys_user` su ,base_store bs
+		FROM bus_achievement ba,sys_user su ,base_store bs
 		WHERE 
 			ba.user_name=su.username
 			AND bs.`id`=su.store_id

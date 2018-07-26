@@ -35,7 +35,7 @@
   
   
   <insert id="insertBusGuest" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusGuest">
-  INSERT INTO `vanke`.`bus_guest`
+  INSERT INTO bus_guest
             (
              `guestname`,
              `sex`,
@@ -125,7 +125,7 @@
 				  `isshare`,
 				   record_rel_name,
                    create_rel_name
-				FROM `vanke`.`bus_guest`
+				FROM bus_guest
 				
 				<where>
 				1=1

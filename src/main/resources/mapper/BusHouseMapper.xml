@@ -232,7 +232,7 @@
   
   
 	 <insert id="insertBusHouse" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusHouse">
-	 	INSERT INTO `vanke`.`bus_house`
+	 	INSERT INTO bus_house
 	            (
 	             `owner`,
 	             `phone`,

@@ -28,19 +28,19 @@ public class BusAchievementController {
 
     @PostMapping
     public Result add(@RequestBody BusAchievement busAchievement) {
-busAchievementService.save(busAchievement);
+    	busAchievementService.save(busAchievement);
         return ResultGenerator.genOkResult();
     }
 
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-busAchievementService.deleteById(id);
+    	busAchievementService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
     @PutMapping
     public Result update(@RequestBody BusAchievement busAchievement) {
-busAchievementService.update(busAchievement);
+    	busAchievementService.update(busAchievement);
         return ResultGenerator.genOkResult();
     }
 

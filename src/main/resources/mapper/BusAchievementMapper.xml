@@ -28,7 +28,7 @@
 	  `price`,
 	  `examine_type`,
 	  `create_time`
-	FROM `vanke`.`bus_achievement`
+	FROM bus_achievement
 	WHERE 
 		user_name=#{userName} 
 		AND examine_type=1
@@ -43,7 +43,7 @@
 	  ba.`id`,
 	  su.relname userrelname,
 	  SUM(price) sumprice
-	FROM `vanke`.`bus_achievement` ba,`sys_user` su
+	FROM bus_achievement ba,sys_user su
 	WHERE 
 		ba.user_name=su.username
 		AND ba.examine_type=1
