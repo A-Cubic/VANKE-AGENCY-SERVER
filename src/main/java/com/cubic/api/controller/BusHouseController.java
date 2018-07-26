@@ -352,23 +352,12 @@ public class BusHouseController {
     /**
      * 查询详细信息
      * @param  
-     * @RequestBody busHouse
+     * @RequestBody map
      * */
     @PreAuthorize("hasAuthority('house:detail')")
     @PostMapping("/detail")
-    public Result detail(Principal user,@RequestBody BusHouse busHouse) {
-    	BusHouse busHouseNew=busHouseService.findById(busHouse.getId());
-    	busHouseNew.setAddress(null);
-    	busHouseNew.setRegionId(null);
-    	busHouseNew.setRegionName(null);
-    	busHouseNew.setStreetId(null);
-    	busHouseNew.setStreetName(null);
-    	busHouseNew.setXiaoquName(null);
-    	busHouseNew.setOwner(null);
-    	busHouseNew.setPhone(null);
-    	busHouseNew.setNumfloor(null);
-    	busHouseNew.setNumhousehold(null);
-    	busHouseNew.setNumunit(null);
+    public Result detail(Principal user,@RequestBody Map<String,String> map) {
+    	BusHouse busHouseNew=busHouseService.detailHouse(map);
     	//是否是维护人
     	if(user.getName().equals(busHouseNew.getRecordUserName())){
     		busHouseNew.setUser_ype("1");
@@ -576,7 +565,7 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:listIsfine')")
     @PostMapping("/listIsfine")
     public Result listIsfine(Principal user) {
-//    	  Object relo=user.getClass();
+
     		Map<String,String> map = new HashMap<String,String>();
 	      map.put("userName", user.getName());
 	      List<BusHouse> list = busHouseService.listIsfine(map);
@@ -601,11 +590,11 @@ public class BusHouseController {
      * 
      * */
     @PostMapping("/test")
-    public Result test(@RequestBody Map<String,Object> map) {
+    public Result test(Principal user,@RequestBody Map<String,Object> map) {
     	List<BusHouse> add=new ArrayList<BusHouse>();
-    	BusHouse bs=new BusHouse();
-    			bs.setId( Long.parseLong(map.get("id").toString()));
-    	
-        return ResultGenerator.genOkResult(add);
+////    	BusHouse bs=new BusHouse();
+////    			bs.setId( Long.parseLong(map.get("id").toString()));
+//    	Object ob=;
+        return ResultGenerator.genOkResult("");
     }
 }

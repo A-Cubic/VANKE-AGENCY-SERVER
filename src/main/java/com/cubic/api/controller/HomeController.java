@@ -52,7 +52,6 @@ public class HomeController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("username", users.getName());
 		CurrentUser user = service.currentUser(map);
-
 		List<BusHouse> list = service.listLatentScore(map);
 		int latent = 0;
 		// 计算潜在业绩
@@ -122,6 +121,10 @@ public class HomeController {
 	@PostMapping("/score/list")
 	public Result listScore(final Principal user, @RequestBody Map<String, Object> map) {
 		PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf(map.get("size").toString()));
+		if(user.toString().indexOf("ROLE_ADMIN")==-1){
+			map.put("userName", user.getName());
+			map.put("role", "2");
+		}
 		List<CurrentScore> list = service.listRankings(map);
 		PageInfo<CurrentScore> pageInfo = new PageInfo<CurrentScore>(list);
 		return ResultGenerator.genOkResult(pageInfo);

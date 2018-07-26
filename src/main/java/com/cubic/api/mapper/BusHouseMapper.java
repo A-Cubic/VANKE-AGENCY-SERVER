@@ -79,6 +79,12 @@ public interface BusHouseMapper extends MyMapper<BusHouse> {
      * 
      * */
 	List<BusHouse> listIsfine(Map<String,String> map);
+	 /**
+     * 查询详细房源
+     * @param map
+     * 
+     * */
+	BusHouse detailHouse(Map<String,String> map);
 	
 	
 	

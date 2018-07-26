@@ -136,17 +136,11 @@ public class BusExamineController {
     public Result list(Principal user,@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
     	map.put("username", user.getName());
+    	if(user.toString().indexOf("ROLE_SEC")!=-1){//登录人是助理只能看实勘
+    		map.put("role","3");
+    	}
     	List<BusExamine> list = busExamineService.listBusExamine(map);
-    	if(0!=list.size()){
-    		//判断登录用户权限为助理,只能看实勘的申请
-			if(list.get(0).getRoleid().equals("3")){
-				for(int i=0;i<list.size();i++){
-			    	if(!list.get(i).getType().equals("4")){
-			    		list.remove(i);
-			    	}
-		    	}
-			}
-		}
+    	
     	
         PageInfo<BusExamine> pageInfo = new PageInfo<BusExamine>(list);
         return ResultGenerator.genOkResult(pageInfo);

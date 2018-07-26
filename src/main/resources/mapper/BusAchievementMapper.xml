@@ -32,7 +32,10 @@
 
 	FROM bus_achievement busa,`bus_house_transaction` bht,`sys_user` su,`bus_house` bh
 	WHERE 
-		busa.user_name=#{userName}
+	1=1
+		<if test="userNameOne!=null">
+		AND  busa.user_name=#{userNameOne}
+		</if>
 		AND busa.examine_type=1
 		AND bht.`id`=busa.`transaction_id`
 		AND su.`username`=busa.`user_name`
@@ -40,7 +43,13 @@
 		<if test="createTimeStart!=null and createTimeEnd!=null">
 			<![CDATA[AND  DATE(create_time) > #{createTimeStart} AND DATE(create_time) < #{createTimeEnd}]]>
 		</if>
+		<if test="userName!=null"><!-- 店长权限能看自己门店的-->
+		 AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
+		</if>
 		GROUP BY busa.transaction_id
+		<if test="userName!=null"><!-- 店长权限排序个人的-->
+			,busa.`user_name`
+		</if>
 		ORDER BY  busa.create_time DESC
   </select>
     
@@ -61,6 +70,7 @@
 				<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 31 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
 			</if>
 		</if>
+
 		GROUP BY ba.user_name
 		ORDER BY SUM(price) DESC
     </select>

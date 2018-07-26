@@ -66,7 +66,7 @@ public class CurrentUser {
     /**
      * 当前业绩
      */
-    private String current_score;
+    private String current_score="0";
     
     /**
      * 潜在业绩

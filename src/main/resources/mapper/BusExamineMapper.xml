@@ -86,12 +86,16 @@
   </update>
   
   <select id="listBusExamine" resultMap="BaseResultMap">
-  	SELECT be.*,(SELECT surr.`role_id` FROM sys_user usu,`sys_user_role` surr WHERE username='test' AND  surr.`user_id`=usu.`id`) roleid
+  	SELECT be.*
 	FROM `bus_examine` be ,`sys_user` su,`sys_user_role` sur
 	WHERE 
 		be.`user_name`=su.`username` 
 		AND su.id=sur.user_id
 		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
+		
+		<if test="role!=null"><!-- 验证权限(助理只能看实勘的) -->
+			AND sur.role_id=#{role}
+		</if>
 		<if test="state!=null"><!-- 审核状态条件(0:未审核,1:审核中,2:已审核) -->
 			AND state=#{state}	
 		</if>

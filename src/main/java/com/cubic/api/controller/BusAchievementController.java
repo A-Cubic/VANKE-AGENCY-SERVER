@@ -56,7 +56,14 @@ public class BusAchievementController {
     @PostMapping("/listMyAchievement")
     public Result listMyAchievement(Principal user,@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-    	map.put("userName", user.getName());
+    	 if(user.toString().indexOf("ROLE_USER")!=-1){    		
+    		map.put("userNameOne", user.getName());
+    	}else if(user.toString().indexOf("ROLE_MANAGER")!=-1){    		
+    		map.put("userName", user.getName());
+    	}else{
+    		map.put("userNameOne", user.getName());
+    	}
+    	
         List<BusAchievement> list = busAchievementService.listMyAchievement(map);
         for(BusAchievement busAchievement:list){
         	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){

@@ -180,6 +180,9 @@
 					<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
 				</if>
 			</if>
+			<if test="role!=null and role==2">
+				AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
+		    </if>
 		GROUP BY ba.user_name
 		ORDER BY SUM(price) DESC) a,(SELECT @rownum:=0) r
 	</select>

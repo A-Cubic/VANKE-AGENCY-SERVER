@@ -61,9 +61,6 @@
 		  bh.`price`,
 		  bh.`floor`,
 		  bh.maxfloor,
-		  bh.numfloor,
-		  bh.numunit,
-		  bh.numhousehold,
 		  bh.`areas`,
 		  bh.hiddenarea,
 		  bh.`chaoxiang`,
@@ -98,9 +95,7 @@
 		  bh.key_rel_name,
 		  bh.exploration_rel_name,
 		  bh.xiaoqu_name,
-		  bh.titleimg,
-		  bh.owner1,
-		  bh.phone1
+		  bh.titleimg
 		  
   </sql>
   
@@ -417,5 +412,14 @@
 				 and bh.state=0
 		group by  bh.id
 		order by  bh.create_time desc
+	</select>
+	
+	
+	<select id="detailHouse" parameterType="map" resultMap="BaseResultMap">
+			SELECT
+				 <include refid="selectSql"/>
+				FROM bus_house bh
+				WHERE 
+					bh.id=#{id}
 	</select>
 </mapper>
