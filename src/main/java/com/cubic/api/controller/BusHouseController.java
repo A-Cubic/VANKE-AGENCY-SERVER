@@ -433,7 +433,7 @@ public class BusHouseController {
 			   
 		   }
 		   if(null !=map.get("priceType")){
-			   if(null!=map.get("tpye")&&"1".equals(map.get("tpye").toString())){//买卖房源
+			   if(map.get("type") != null && "1".equals(map.get("type").toString())){//买卖房源
 				   if("1".equals(map.get("priceType").toString())){//30万以下
 					   map.put("priceDown",300000);
 				   }else if("2".equals(map.get("priceType").toString())){//30万-40万
@@ -457,11 +457,11 @@ public class BusHouseController {
 				   }else if("8".equals(map.get("priceType").toString())){//150万-200万
 					   map.put("priceUp",1500000);
 					   map.put("priceDown",2000000);
-				   }else if("8".equals(map.get("priceType").toString())){//200万以上
+				   }else if("9".equals(map.get("priceType").toString())){//200万以上
 					   map.put("priceUp",2000000);
 				   }
 				   
-			   }else if(null!=map.get("tpye")&&"2".equals(map.get("tpye").toString())){
+			   }else if(map.get("type") != null && "2".equals(map.get("type").toString())){
 				   if("1".equals(map.get("priceType").toString())){//500以下
 					   map.put("priceDown",500);
 				   }else if("2".equals(map.get("priceType").toString())){//500元-800元
