@@ -58,6 +58,20 @@ public class BusAchievementController {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
     	map.put("userName", user.getName());
         List<BusAchievement> list = busAchievementService.listMyAchievement(map);
+        for(BusAchievement busAchievement:list){
+        	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){
+        		String rolenametext=busAchievement.getRoleName();
+        		rolenametext=rolenametext.replaceAll("1","录入人");
+        		rolenametext=rolenametext.replaceAll("2","维护人");
+        		rolenametext=rolenametext.replaceAll("3","钥匙人");
+        		rolenametext=rolenametext.replaceAll("4","实勘人");
+        		rolenametext=rolenametext.replaceAll("5","独家人");
+        		rolenametext=rolenametext.replaceAll("6","促成人");
+        		rolenametext=rolenametext.replaceAll("7","促成合作人");
+        		rolenametext = rolenametext.substring(0,rolenametext.length() - 1);
+        		busAchievement.setRoleName(rolenametext);
+        	}
+        }
         PageInfo<BusAchievement> pageInfo = new PageInfo<BusAchievement>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

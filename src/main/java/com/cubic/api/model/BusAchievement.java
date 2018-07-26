@@ -65,6 +65,29 @@ public class BusAchievement {
     @Column(name = "create_time")
     private Date createTime;
 
+    
+    /**
+     * 小区名称
+     */
+    
+    @Transient
+    private String xiaoquName;
+    /**
+     * 成交编号
+     */
+    @Transient
+    private String dealNum;
+    /**
+     * 合同编号
+     */
+    @Transient
+    private String contractNum;
+    /**
+     * 角色名
+     */
+    @Transient
+    private String roleName;
+    
     /**
      * @return id
      */
@@ -237,6 +260,38 @@ public class BusAchievement {
 
 	public void setSumprice(String sumprice) {
 		this.sumprice = sumprice;
+	}
+
+	public String getXiaoquName() {
+		return xiaoquName;
+	}
+
+	public void setXiaoquName(String xiaoquName) {
+		this.xiaoquName = xiaoquName;
+	}
+
+	public String getDealNum() {
+		return dealNum;
+	}
+
+	public void setDealNum(String dealNum) {
+		this.dealNum = dealNum;
+	}
+
+	public String getContractNum() {
+		return contractNum;
+	}
+
+	public void setContractNum(String contractNum) {
+		this.contractNum = contractNum;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
     
     

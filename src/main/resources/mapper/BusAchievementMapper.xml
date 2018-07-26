@@ -18,24 +18,30 @@
   
   
   <select id="listMyAchievement" parameterType="Map" resultMap="BaseResultMap">
-	  SELECT
-	  `id`,
-	  `user_name`,
-	  `house_id`,
-	  `transaction_id`,
-	  `rolenum`,
-	  `proportion`,
-	  `price`,
-	  `examine_type`,
-	  `create_time`
-	FROM bus_achievement
+  SELECT
+
+	  busa.`user_name`,
+	  bht.`number`,
+	  bht.`contractnumber`,
+	  busa.`transaction_id`,
+	  su.`relname` userrelname,
+	  bh.`xiaoqu_name` xiaoquName,
+	  CONCAT (GROUP_CONCAT(busa.`rolenum`),",") roleName,
+	  SUM( busa.`proportion`) proportion,
+	  SUM(busa.`price`) sumprice
+
+	FROM bus_achievement busa,`bus_house_transaction` bht,`sys_user` su,`bus_house` bh
 	WHERE 
-		user_name=#{userName} 
-		AND examine_type=1
+		busa.user_name=#{userName}
+		AND busa.examine_type=1
+		AND bht.`id`=busa.`transaction_id`
+		AND su.`username`=busa.`user_name`
+		AND bh.`id`=busa.`house_id`	
 		<if test="createTimeStart!=null and createTimeEnd!=null">
 			<![CDATA[AND  DATE(create_time) > #{createTimeStart} AND DATE(create_time) < #{createTimeEnd}]]>
 		</if>
-		ORDER BY  create_time DESC
+		GROUP BY busa.transaction_id
+		ORDER BY  busa.create_time DESC
   </select>
     
     <select id="listAchievement" parameterType="Map" resultMap="BaseResultMap">

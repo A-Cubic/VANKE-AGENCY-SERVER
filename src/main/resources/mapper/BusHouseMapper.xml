@@ -104,7 +104,7 @@
 		 <include refid="selectSql"/>
 		 
 		  
-		FROM bus_house bh,base_store_range  bsr,sys_user su	
+		FROM bus_house bh,base_store_range  bsr,sys_user su,
 		
 		
 		<where>
@@ -121,7 +121,7 @@
 				<![CDATA[and bh.price >= #{priceUp} and bh.price <= #{priceDown}]]>
 			</if>
 			
-			<if test="floorType != null "><!-- 楼层条件-->
+			<if test="floorType != null and floorType != 0 "><!-- 楼层条件-->
 				<if test="floorType==1"><!-- 低楼层条件-->
 					<![CDATA[and CONVERT(bh.`floor`,SIGNED) <= (CONVERT(bh.`maxfloor`,SIGNED)/3)]]>
 				</if>
@@ -139,7 +139,7 @@
 				 and bh.searchtext like "%"#{searchText}"%"
 			</if>
 			
-			<if test="huxingType != null"><!-- 户型几室条件-->
+			<if test="huxingType != null and huxingType != 0"><!-- 户型几室条件-->
 				<if test="huxingType == 6 "><!-- 户型5室以上条件-->
 					 and CONVERT(bh.huxingshi,SIGNED) >= 5
 				</if>
@@ -175,8 +175,8 @@
 				 and bh.chaoxiang = #{chaoxiang}
 			</if>
 			
-			<if test="regionId != null"><!-- 区条件-->
-				 and bh.region_id = #{regionId}
+			<if test="positionType != null and positionType!=0"><!-- 区条件-->
+				 and bh.region_code = #{positionType}
 			</if>
 			<if test="streetId != null"><!-- 街道条件-->
 				 and bh.street_id = #{streetId}
