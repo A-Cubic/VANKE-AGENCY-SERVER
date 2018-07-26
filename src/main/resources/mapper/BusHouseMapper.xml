@@ -104,7 +104,7 @@
 		 <include refid="selectSql"/>
 		 
 		  
-		FROM bus_house bh,base_store_range  bsr,sys_user su,
+		FROM bus_house bh,base_store_range  bsr,sys_user su
 		
 		
 		<where>
