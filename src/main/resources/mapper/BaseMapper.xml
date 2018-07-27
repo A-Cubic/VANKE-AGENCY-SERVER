@@ -13,7 +13,7 @@
 	
 	<select id="listRegions" parameterType="com.cubic.api.model.BaseRegion" resultMap="regionMaps">
 		select 
-			s.id as value,
+			s.region_code as value,
 			s.region_name as label,
 			s.region_code
 		from base_region s

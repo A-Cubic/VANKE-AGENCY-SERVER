@@ -448,8 +448,13 @@ public class BusHouseController {
 		   }
 		   //如果是买卖房源乘以10000,变成以万为单位
 		   if(map.get("type") != null && "1".equals(map.get("type").toString())){
-			   map.put("priceUp", (Integer.parseInt(map.get("priceUp").toString())*10000));			
-			   map.put("priceDown", (Integer.parseInt(map.get("priceDown").toString())*10000));		   		
+			   if(map.get("priceUp")!=null && !"".equals(map.get("priceUp"))){
+				   map.put("priceUp", (Integer.parseInt(map.get("priceUp").toString())*10000));			
+			   }
+			   if(map.get("priceDown")!=null && !"".equals(map.get("priceDown"))){
+				   map.put("priceDown", (Integer.parseInt(map.get("priceDown").toString())*10000));			
+			   }
+			   
 		   }
 //		   if(null !=map.get("priceType")){
 //			   if(map.get("type") != null && "1".equals(map.get("type").toString())){//买卖房源
