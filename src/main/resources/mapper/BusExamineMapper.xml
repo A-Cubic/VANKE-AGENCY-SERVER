@@ -24,41 +24,45 @@
     <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />   
     <result column="user_rel_name" jdbcType="VARCHAR" property="userRelName" />
     <result column="examine_rel_name" jdbcType="VARCHAR" property="examineRelName" />
+       <result column="transaction_id" jdbcType="BIGINT" property="transactionId" />
   </resultMap>
   
   
   <insert id="insertBusExamine" parameterType="com.cubic.api.model.BusExamine">
   		INSERT INTO bus_examine
   					(
-  					house_id,
-  					guest_id,
-  					type,
-  					shiimg,
-  					tingimg,
-  					weiimg,
-  					chuimg,
-  					huxingimg,
-  					otherimg,
-  					user_name,
-  					state,
-  					create_time  ,
-  					user_rel_name				
+  					 house_id,
+  					 guest_id,
+  					 transaction_id,				
+  					 type,
+	  				 shiimg,
+	  				 tingimg,
+	  				 weiimg,
+	  				 chuimg,
+	  				 huxingimg,
+	  				 otherimg,				
+  					 user_name,
+  					 state,
+  					 create_time  ,
+  					 user_rel_name				
   					)
-  		  VALUES(
-	  		  #{houseId},
-	  		  #{guestId},
-	  		  #{type},
-	  		  #{shiimg},
-	  		  #{tingimg},
-	  		  #{weiimg},
-	  		  #{chuimg},
-	  		  #{huxing},
-	  		  #{otherimg},
-	  		  #{userName},
-	  		  0,
-	  		  NOW(),
-	  		  (select su.relname from sys_user su	where su.username=#{userName})
-  					
+  		      VALUES(
+  	
+  					  #{houseId},
+  					  #{guestId},
+  					  #{transactionId},	  		  
+	  		          #{type},
+                      #{shiimg},
+				  	  #{tingimg},
+				  	  #{weiimg},
+				  	  #{chuimg},
+				  	  #{huxing},
+				  	  #{otherimg},						  		 
+	  		          #{userName},
+		  		  	  0,
+		  		      NOW(),
+		  		      (select su.relname from sys_user su	where su.username=#{userName})
+	  					
   					)
   </insert>
     <update id="updateState" parameterType="com.cubic.api.model.BusExamine">
@@ -93,13 +97,16 @@
 		AND su.id=sur.user_id
 		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
 		
-		<if test="role!=null"><!-- 验证权限(助理只能看实勘的) -->
-			AND sur.role_id=#{role}
+		<if test="role!=null and role==3"><!-- 验证权限(助理只能看实勘的) AND sur.role_id=#{role}-->
+			AND type = '4'
+		</if>
+		<if test="role==null or role!=3"><!-- 不是助理的不能看实勘-->
+			AND type != '4'
 		</if>
 		<if test="state!=null"><!-- 审核状态条件(0:未审核,1:审核中,2:已审核) -->
 			AND state=#{state}	
 		</if>
-		<if test="type!=null"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片,5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源,10:成交审核) -->
+		<if test="type!=null and  role!=3"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片(助理能看),5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源,10:成交审核) -->
 			AND type=#{type}	
 		</if>
 		<if test="result!=null"><!-- 审核结果条件(0:未通过,1:通过) -->

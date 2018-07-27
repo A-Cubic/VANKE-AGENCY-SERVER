@@ -175,8 +175,8 @@
 				 and bh.chaoxiang = #{chaoxiang}
 			</if>
 			
-			<if test="positionType != null and positionType!=0"><!-- 区条件-->
-				 and bh.region_code = #{positionType}
+			<if test="regionCode != null and regionCode!=0"><!-- 区条件-->
+				 and bh.region_code = #{regionCode}
 			</if>
 			<if test="streetId != null"><!-- 街道条件-->
 				 and bh.street_id = #{streetId}
@@ -263,17 +263,22 @@
 	              street_name,
 	             `address`,
 	             `iskey`,
-	              key_user_name,
+	             
 				  record_time,
 				  isfine,
+				  isshare,
 				  isspecial,
 				  searchtext,
 				  record_rel_name,
 				  create_rel_name,
-				  region_code
+				  region_code,
+				  `owner1`,
+				  `phone1`
 				  <if test="iskey==1">
 				  	,key_rel_name
+				  	 ,key_user_name
 				  </if>
+	             
 	             )
 			VALUES (
 			        #{owner},
@@ -298,6 +303,7 @@
 			        #{introduce},
 			        #{type},
 			        0,
+			        0,
 			        #{regionId},
 			        #{streetId},
 			        #{xiaoquName},
@@ -312,10 +318,15 @@
 			     	#{searchtext},
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
-			     	#{regionCode} 
+			     	#{regionCode} ,
+			     	#{owner1},
+				  	#{phone1}
 			     	<if test="iskey==1">
 				  	,(SELECT relname FROM sys_user WHERE username=#{recordUserName})
-				    </if>			);
+				  	,{recordUserName}
+					</if>
+				  
+				);
 	 </insert>
 	 
 	 

@@ -9,14 +9,9 @@ import com.cubic.api.model.BusAchievement;
 public interface BusAchievementMapper extends MyMapper<BusAchievement> {
 	
 	/**
-	 * 查询自己的业绩
+	 * 查询我的业绩信息OR店长权限的人查询本店的业绩信息
 	 * @param map
 	 * */
 	List<BusAchievement> listMyAchievement(Map<String,Object> map);
 	
-	/**
-	 * 查询排行
-	 * @param map
-	 * */
-	List<BusAchievement>  listAchievement(Map<String,Object> map);
 }

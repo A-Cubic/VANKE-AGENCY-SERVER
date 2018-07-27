@@ -59,13 +59,42 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:save')")
     @PostMapping("/save")
     public Result add(Principal user,@RequestBody BusHouse busHouse) {
+    	
     	//创建人账号名
     	busHouse.setCreateUserName(user.getName());
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
     	//搜索文本条件
     	busHouse.setSearchtext("大连市"+busHouse.getRegionName()+busHouse.getStreetName()+busHouse.getXiaoquName()+busHouse.getNumfloor()+busHouse.getNumunit()+busHouse.getNumhousehold()+busHouse.getAddress());
-    	
+    	   if(null!=busHouse.getChaoxiang()){//朝向
+			   if("1".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("正南");
+			   }else  if("2".equals(busHouse.getChaoxiang())){			
+				   busHouse.setChaoxiang("正北");
+			   }else  if("3".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("正东");
+			   }else  if("4".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("正西");
+			   }else  if("5".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东南");
+			   }else  if("6".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("西南");
+			   }else  if("7".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东北");
+			   }else  if("8".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("西北");
+			   }
+		   }
+    	   if(null!=busHouse.getGrade()){//房屋等级
+    		   if("1".equals(busHouse.getGrade())){    			   
+    			   busHouse.setGrade("A");
+    		   }else if ("2".equals(busHouse.getGrade())){
+    			   busHouse.setGrade("B");
+    		   }else if ("3".equals(busHouse.getGrade())){
+    			   busHouse.setGrade("C");
+    		   }    		   
+    	   }
+    	   
     	busHouseService.insertBusHouse(busHouse);
 
     	//根据id得到房源编号并更新
@@ -383,16 +412,13 @@ public class BusHouseController {
          //显示图片
         for(BusHouse bushouses:list){        	
         	     StringBuffer urltext=new StringBuffer();
-        	     if(null!=bushouses.getShiimg()){
-        	    	 
+        	     if(null!=bushouses.getShiimg()){       	    	 
         	    	 urltext.append(bushouses.getShiimg());
         	     }
-			     if(null!=bushouses.getTingimg()){
-		        	    	 
+			     if(null!=bushouses.getTingimg()){		        	    	 
 		            urltext.append(","+bushouses.getTingimg());
 		        	     }
-			     if(null!=bushouses.getWeiimg()){
-			    	 
+			     if(null!=bushouses.getWeiimg()){	    	 
 			    	 urltext.append(","+bushouses.getWeiimg());
 			     }
 			     if(null!=bushouses.getChuimg()){
@@ -406,73 +432,77 @@ public class BusHouseController {
 				 if(null!=bushouses.getOtherimg()){
 				  	 
 				  	 urltext.append(","+bushouses.getOtherimg());
-				   }
-				 
+				   }				 
 				 bushouses.setImgurl(Arrays.asList(urltext.toString().split(",")));
         }
         PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
     
-    
+    //房源条件筛选转换
    public Map<String,Object> resMap(Map<String,Object> map){
 	   if(null != map){
-		   if(null!=map.get("positionType")){
-			   map.put("regionId", map.get("positionType"));
+		   if(null!=map.get("positionType")){//位置条件
+			   map.put("regionCode", map.get("positionType"));
 			   
 		   }
-		   if(null !=map.get("priceType")){
-			   if(map.get("type") != null && "1".equals(map.get("type").toString())){//买卖房源
-				   if("1".equals(map.get("priceType").toString())){//30万以下
-					   map.put("priceDown",300000);
-				   }else if("2".equals(map.get("priceType").toString())){//30万-40万
-					   map.put("priceUp",300000);
-					   map.put("priceDown",400000);
-				   }else if("3".equals(map.get("priceType").toString())){//40万-50万
-					   map.put("priceUp",400000);
-					   map.put("priceDown",500000);
-				   }else if("4".equals(map.get("priceType").toString())){//50万-60万
-					   map.put("priceUp",500000);
-					   map.put("priceDown",600000);
-				   }else if("5".equals(map.get("priceType").toString())){//60万-80万
-					   map.put("priceUp",600000);
-					   map.put("priceDown",800000);
-				   }else if("6".equals(map.get("priceType").toString())){//80万-100万
-					   map.put("priceUp",800000);
-					   map.put("priceDown",1000000);
-				   }else if("7".equals(map.get("priceType").toString())){//100万-150万
-					   map.put("priceUp",1000000);
-					   map.put("priceDown",1500000);
-				   }else if("8".equals(map.get("priceType").toString())){//150万-200万
-					   map.put("priceUp",1500000);
-					   map.put("priceDown",2000000);
-				   }else if("9".equals(map.get("priceType").toString())){//200万以上
-					   map.put("priceUp",2000000);
-				   }
-				   
-			   }else if(map.get("type") != null && "2".equals(map.get("type").toString())){
-				   if("1".equals(map.get("priceType").toString())){//500以下
-					   map.put("priceDown",500);
-				   }else if("2".equals(map.get("priceType").toString())){//500元-800元
-					   map.put("priceUp",500);
-					   map.put("priceDown",800);
-				   }else if("3".equals(map.get("priceType").toString())){//800元-1500元
-					   map.put("priceUp",800);
-					   map.put("priceDown",1500);
-				   }else if("4".equals(map.get("priceType").toString())){//1500元-2000元
-					   map.put("priceUp",1500);
-					   map.put("priceDown",2000);
-				   }else if("5".equals(map.get("priceType").toString())){//2000元-3000元
-					   map.put("priceUp",2000);
-					   map.put("priceDown",3000);
-				   }else if("6".equals(map.get("priceType").toString())){//3000元-5000元
-					   map.put("priceUp",3000);
-					   map.put("priceDown",5000);
-				   }else if("7".equals(map.get("priceType").toString())){//5000元以上
-					   map.put("priceUp",5000);
-				   }
-			   }
+		   //如果是买卖房源乘以10000,变成以万为单位
+		   if(map.get("type") != null && "1".equals(map.get("type").toString())){
+			   map.put("priceUp", (Integer.parseInt(map.get("priceUp").toString())*10000));			
+			   map.put("priceDown", (Integer.parseInt(map.get("priceDown").toString())*10000));		   		
 		   }
+//		   if(null !=map.get("priceType")){
+//			   if(map.get("type") != null && "1".equals(map.get("type").toString())){//买卖房源
+//				   if("1".equals(map.get("priceType").toString())){//30万以下
+//					   map.put("priceDown",300000);
+//				   }else if("2".equals(map.get("priceType").toString())){//30万-40万
+//					   map.put("priceUp",300000);
+//					   map.put("priceDown",400000);
+//				   }else if("3".equals(map.get("priceType").toString())){//40万-50万
+//					   map.put("priceUp",400000);
+//					   map.put("priceDown",500000);
+//				   }else if("4".equals(map.get("priceType").toString())){//50万-60万
+//					   map.put("priceUp",500000);
+//					   map.put("priceDown",600000);
+//				   }else if("5".equals(map.get("priceType").toString())){//60万-80万
+//					   map.put("priceUp",600000);
+//					   map.put("priceDown",800000);
+//				   }else if("6".equals(map.get("priceType").toString())){//80万-100万
+//					   map.put("priceUp",800000);
+//					   map.put("priceDown",1000000);
+//				   }else if("7".equals(map.get("priceType").toString())){//100万-150万
+//					   map.put("priceUp",1000000);
+//					   map.put("priceDown",1500000);
+//				   }else if("8".equals(map.get("priceType").toString())){//150万-200万
+//					   map.put("priceUp",1500000);
+//					   map.put("priceDown",2000000);
+//				   }else if("9".equals(map.get("priceType").toString())){//200万以上
+//					   map.put("priceUp",2000000);
+//				   }
+//				   
+//			   }else if(map.get("type") != null && "2".equals(map.get("type").toString())){
+//				   if("1".equals(map.get("priceType").toString())){//500以下
+//					   map.put("priceDown",500);
+//				   }else if("2".equals(map.get("priceType").toString())){//500元-800元
+//					   map.put("priceUp",500);
+//					   map.put("priceDown",800);
+//				   }else if("3".equals(map.get("priceType").toString())){//800元-1500元
+//					   map.put("priceUp",800);
+//					   map.put("priceDown",1500);
+//				   }else if("4".equals(map.get("priceType").toString())){//1500元-2000元
+//					   map.put("priceUp",1500);
+//					   map.put("priceDown",2000);
+//				   }else if("5".equals(map.get("priceType").toString())){//2000元-3000元
+//					   map.put("priceUp",2000);
+//					   map.put("priceDown",3000);
+//				   }else if("6".equals(map.get("priceType").toString())){//3000元-5000元
+//					   map.put("priceUp",3000);
+//					   map.put("priceDown",5000);
+//				   }else if("7".equals(map.get("priceType").toString())){//5000元以上
+//					   map.put("priceUp",5000);
+//				   }
+//			   }
+//		   }
 		   
 		   if(null !=map.get("areaType")){
 			   if("1".equals(map.get("areaType").toString())){//50平以下
@@ -500,7 +530,8 @@ public class BusHouseController {
 				
 			   }
 		   }
-		   if(null!=map.get("chaoxiangType")){
+		   
+		   if(null!=map.get("chaoxiangType")){//朝向条件
 			   if("1".equals(map.get("chaoxiangType"))){
 				   map.put("chaoxiang", "正南");
 			   }else  if("2".equals(map.get("chaoxiangType"))){

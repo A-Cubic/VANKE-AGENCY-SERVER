@@ -19,9 +19,5 @@ public interface BusAchievementService extends Service<BusAchievement> {
 	List<BusAchievement> listMyAchievement(Map<String,Object> map);
 	
 	
-	/**
-	 * 查询排行
-	 * @param map
-	 * */
-	List<BusAchievement>  listAchievement(Map<String,Object> map);
+	
 }

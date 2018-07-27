@@ -22,17 +22,16 @@ import javax.annotation.Resource;
 public class BusAchievementServiceImpl extends AbstractService<BusAchievement> implements BusAchievementService {
     @Resource
     private BusAchievementMapper busAchievementMapper;
-
+	/**
+	 * 查询我的业绩信息OR店长权限的人查询本店的业绩信息
+	 * @param map
+	 * */
 	@Override
 	public List<BusAchievement> listMyAchievement(Map<String, Object> map) {
 
 		return busAchievementMapper.listMyAchievement(map);
 	}
 
-	@Override
-	public List<BusAchievement> listAchievement(Map<String, Object> map) {
-	
-		return busAchievementMapper.listAchievement(map);
-	}
+
 
 }

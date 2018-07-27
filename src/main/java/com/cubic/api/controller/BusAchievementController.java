@@ -49,18 +49,19 @@ public class BusAchievementController {
     	BusAchievement busAchievement = busAchievementService.findById(id);
         return ResultGenerator.genOkResult(busAchievement);
     }
-    /**
-     * 查询自己的业绩
-     * */
+	/**
+	 * 查询我的业绩信息OR店长权限的人查询本店的业绩信息
+	 * @param map
+	 * */
     @PreAuthorize("hasAuthority('achievement:listMyAchievement')")
     @PostMapping("/listMyAchievement")
     public Result listMyAchievement(Principal user,@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-    	 if(user.toString().indexOf("ROLE_USER")!=-1){    		
+    	 if(user.toString().indexOf("ROLE_USER")!=-1){ //经济人权限只能看自己的业绩   		
     		map.put("userNameOne", user.getName());
-    	}else if(user.toString().indexOf("ROLE_MANAGER")!=-1){    		
+    	}else if(user.toString().indexOf("ROLE_MANAGER")!=-1){//店长权限看本店的业绩		
     		map.put("userName", user.getName());
-    	}else{
+    	}else{//测试数据用
     		map.put("userNameOne", user.getName());
     	}
     	
@@ -83,15 +84,5 @@ public class BusAchievementController {
         return ResultGenerator.genOkResult(pageInfo);
     }
     
-    /**
-     * 查询排行榜
-     * */
-    @PreAuthorize("hasAuthority('achievement:listAchievement')")
-    @PostMapping("/listAchievement")
-    public Result listAchievement(Principal user,@RequestBody Map<String,Object> map) {
-    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-        List<BusAchievement> list = busAchievementService.listAchievement(map);
-        PageInfo<BusAchievement> pageInfo = new PageInfo<BusAchievement>(list);
-        return ResultGenerator.genOkResult(pageInfo);
-    }
+
 }
