@@ -1,5 +1,8 @@
 package com.cubic.api.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouseLookrecord;
+import com.cubic.api.model.BusHouseRecord;
 import com.cubic.api.service.BusHouseLookrecordService;
 import com.cubic.api.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -61,12 +65,19 @@ public class BusHouseLookrecordController {
     	/**
     	 * 查询带看记录
     	 * @param   map
+    	 * @throws ParseException 
     	 * */
     @PreAuthorize("hasAuthority('houselookrecord:list')")
     @PostMapping("/list")
-    public Result list(@RequestBody Map<String,Object> map) {
+    public Result list(@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseLookrecord> list = busHouseLookrecordService.listBusHouseLookrecord(map);
+        for(BusHouseLookrecord busHouseLookrecord:list){        	
+         	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         	Date date = fmt.parse(busHouseLookrecord.getCreateTime());
+    		String  sre= fmt.format(date);    		
+    		busHouseLookrecord.setCreateTime(sre);
+        }
         PageInfo<BusHouseLookrecord> pageInfo = new PageInfo<BusHouseLookrecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

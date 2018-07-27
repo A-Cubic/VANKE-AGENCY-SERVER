@@ -1,6 +1,9 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -93,13 +96,20 @@ public class BusHouseRecordController {
     /**
      * 查询跟进信息
      * @param map
+     * @throws ParseException 
      * 
      * */
     @PreAuthorize("hasAuthority('houserecord:list')")
     @PostMapping("/list")
-    public Result list(@RequestBody Map<String,Object> map) {
+    public Result list(@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseRecord> list = busHouseRecordService.listHouseRecord(map);
+        for(BusHouseRecord busHouseRecord:list){        	
+         	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         	Date date = fmt.parse(busHouseRecord.getCreateTime());
+    		String  sre= fmt.format(date);    		
+    		busHouseRecord.setCreateTime(sre);
+        }
         PageInfo<BusHouseRecord> pageInfo = new PageInfo<BusHouseRecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

@@ -1,6 +1,5 @@
 package com.cubic.api.model;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -59,6 +58,16 @@ public class BusHouse {
      * 房屋金额
      */
     private String price;
+    /**
+     * 房屋金额文本
+     */
+    @Transient
+    private String priceText;
+    /**
+     * 房屋买卖金额文本(一平多少钱)
+     */
+    @Transient
+    private String priceOneText;
 
     /**
      * 房屋楼层
@@ -73,6 +82,7 @@ public class BusHouse {
     /**
      * 房屋户型
      */
+    @Transient
     private String huxing;
     /**
      * 房屋几室
@@ -157,7 +167,7 @@ public class BusHouse {
      * 房屋提交时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 房屋介绍
@@ -224,6 +234,7 @@ public class BusHouse {
     /**
      * 房屋信息图片(多个逗号间隔)
      */
+    @Transient
     private List<String> imgurl;
     
     /**
@@ -261,11 +272,14 @@ public class BusHouse {
      */
     @Column(name = "exclusive_user_name")
     private String exclusiveUserName;
+    
+    @Column(name = "exclusive_rel_name")
+    private String exclusiverelName;
     /**
      * 上次维护时间
      */
     @Column(name = "record_time")
-    private Date recordTime;
+    private String recordTime;
     /**
      * 几室的实勘图片
      */
@@ -614,7 +628,7 @@ public class BusHouse {
      *
      * @return create_time - 房屋提交时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -623,7 +637,7 @@ public class BusHouse {
      *
      * @param createTime 房屋提交时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -849,7 +863,7 @@ public class BusHouse {
      * 
      * @return recordTime
      */
-	public Date getRecordTime() {
+	public String getRecordTime() {
 		return recordTime;
 	}
 	 /**
@@ -857,7 +871,7 @@ public class BusHouse {
      * 
      * @param recordTime
      */
-	public void setRecordTime(Date recordTime) {
+	public void setRecordTime(String recordTime) {
 		this.recordTime = recordTime;
 	}
 	 /**
@@ -1251,6 +1265,30 @@ public class BusHouse {
 
 	public void setPhone1(String phone1) {
 		this.phone1 = phone1;
+	}
+
+	public String getExclusiverelName() {
+		return exclusiverelName;
+	}
+
+	public void setExclusiverelName(String exclusiverelName) {
+		this.exclusiverelName = exclusiverelName;
+	}
+
+	public String getPriceText() {
+		return priceText;
+	}
+
+	public void setPriceText(String priceText) {
+		this.priceText = priceText;
+	}
+
+	public String getPriceOneText() {
+		return priceOneText;
+	}
+
+	public void setPriceOneText(String priceOneText) {
+		this.priceOneText = priceOneText;
 	}
 
     

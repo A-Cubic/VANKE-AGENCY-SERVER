@@ -1,6 +1,5 @@
 package com.cubic.api.model;
 
-import java.util.Date;
 import javax.persistence.*;
 
 @Table(name = "bus_house_record")
@@ -35,7 +34,7 @@ public class BusHouseRecord {
      * 跟进时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 置顶状态(0:不置顶,1:置顶)
@@ -45,7 +44,7 @@ public class BusHouseRecord {
     /**
      * 置顶时间
      */
-    private Date toptime;
+    private String toptime;
 
     /**
      * 置顶icon
@@ -125,7 +124,7 @@ public class BusHouseRecord {
      *
      * @return create_time - 跟进时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -134,7 +133,7 @@ public class BusHouseRecord {
      *
      * @param createTime 跟进时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -161,7 +160,7 @@ public class BusHouseRecord {
      *
      * @return toptime - 置顶时间
      */
-    public Date getToptime() {
+    public String getToptime() {
         return toptime;
     }
 
@@ -170,7 +169,7 @@ public class BusHouseRecord {
      *
      * @param toptime 置顶时间
      */
-    public void setToptime(Date toptime) {
+    public void setToptime(String toptime) {
         this.toptime = toptime;
     }
 

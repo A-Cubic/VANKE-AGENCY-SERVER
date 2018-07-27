@@ -1,6 +1,6 @@
 package com.cubic.api.model;
 
-import java.util.Date;
+
 import javax.persistence.*;
 
 @Table(name = "bus_house_lookrecord")
@@ -28,12 +28,12 @@ public class BusHouseLookrecord {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 结束时间
      */
-    private Date endtime;
+    private String endtime;
 
     /**
      * @return id
@@ -90,7 +90,7 @@ public class BusHouseLookrecord {
      *
      * @return create_time - 创建时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -99,7 +99,7 @@ public class BusHouseLookrecord {
      *
      * @param createTime 创建时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -108,7 +108,7 @@ public class BusHouseLookrecord {
      *
      * @return endtime - 结束时间
      */
-    public Date getEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
@@ -117,7 +117,7 @@ public class BusHouseLookrecord {
      *
      * @param endtime 结束时间
      */
-    public void setEndtime(Date endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 

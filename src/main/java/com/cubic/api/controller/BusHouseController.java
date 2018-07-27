@@ -1,8 +1,13 @@
 package com.cubic.api.controller;
 
+import java.math.BigDecimal;
 import java.security.Principal;
+import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -206,11 +211,29 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:update')")
     @PostMapping("/update")
     public Result update(@RequestBody BusHouse busHouse) {
-    	
     	if(null != busHouse){
+    		if(null!=busHouse.getChaoxiang()){//朝向
+ 			   if("1".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("正南");
+ 			   }else  if("2".equals(busHouse.getChaoxiang())){			
+ 				   busHouse.setChaoxiang("正北");
+ 			   }else  if("3".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("正东");
+ 			   }else  if("4".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("正西");
+ 			   }else  if("5".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("东南");
+ 			   }else  if("6".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("西南");
+ 			   }else  if("7".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("东北");
+ 			   }else  if("8".equals(busHouse.getChaoxiang())){
+ 				   busHouse.setChaoxiang("西北");
+ 			   }
+ 		   }
     			busHouseService.update(busHouse);  		
     	}
-        return ResultGenerator.genOkResult("修改成功");
+        return ResultGenerator.genOkResult("1");
     }
     
     
@@ -297,9 +320,10 @@ public class BusHouseController {
     public Result updateKey(Principal user,@RequestBody BusHouse busHouse) {
     		busHouse.setIskey("1");
     		busHouse.setKeyUserName(user.getName());
-  			busHouseService.updateKey(busHouse);  		
+  			busHouseService.updateKey(busHouse);
+  			busHouse=busHouseService.findById(busHouse.getId());
 
-        return ResultGenerator.genOkResult("更改成功");
+        return ResultGenerator.genOkResult(busHouse.getKeyrelName());
     }
 	 /**
      * 点击查看详细联系方式及房主姓名
@@ -335,8 +359,8 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:detailAddress')")
     @PostMapping("/detailAddress")
     public Result detailAddress(Principal user,@RequestBody Map<String,Object> map) {
-    	BusHouse busHouse = busHouseService.DetailAddress(map);
     	map.put("clickusername", user.getName());
+    	BusHouse busHouse = busHouseService.DetailAddress(map);
     	StringBuffer stringtext=new StringBuffer();
     
     	if(null!=busHouse.getRegionName()){
@@ -381,12 +405,65 @@ public class BusHouseController {
     /**
      * 查询详细信息
      * @param  
+     * @throws ParseException 
      * @RequestBody map
      * */
     @PreAuthorize("hasAuthority('house:detail')")
     @PostMapping("/detail")
-    public Result detail(Principal user,@RequestBody Map<String,String> map) {
+    public Result detail(Principal user,@RequestBody Map<String,String> map) throws ParseException {
     	BusHouse busHouseNew=busHouseService.detailHouse(map);
+    	//转换时间格式
+     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+     	Date date = fmt.parse(busHouseNew.getCreateTime());
+		String  sre= fmt.format(date);
+		
+		busHouseNew.setCreateTime(sre);
+		
+		if("1".equals(busHouseNew.getType())){
+			if(null !=busHouseNew.getPrice()&& null !=busHouseNew.getAreas()){
+				double d = Double.parseDouble(busHouseNew.getPrice())/10000;
+				BigDecimal bd = new BigDecimal(d);
+				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				busHouseNew.setPriceText(d1+"万");
+				
+				double doione = Double.parseDouble(busHouseNew.getPrice())/Integer.parseInt(busHouseNew.getAreas());
+				BigDecimal bdone = new BigDecimal(doione);
+				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				busHouseNew.setPriceOneText(done+"元/平");
+			}
+		}else if("2".equals(busHouseNew.getType())){			
+			if(null !=busHouseNew.getPrice()){
+				busHouseNew.setPriceText(busHouseNew.getPrice()+"元/月");
+			}
+		}
+		//图片显示
+		StringBuffer urltext=new StringBuffer();
+	     if(null!=busHouseNew.getShiimg() && !"".equals(busHouseNew.getShiimg())){       	    	 
+	    	 urltext.append(busHouseNew.getShiimg());
+	     }
+	     if(null!=busHouseNew.getTingimg() && !"".equals(busHouseNew.getTingimg())){		        	    	 
+           urltext.append(","+busHouseNew.getTingimg());
+       	     }
+	     if(null!=busHouseNew.getWeiimg() && !"".equals(busHouseNew.getWeiimg())){	    	 
+	    	 urltext.append(","+busHouseNew.getWeiimg());
+	     }
+	     if(null!=busHouseNew.getChuimg() && !"".equals(busHouseNew.getChuimg())){
+	    	 
+	    	 urltext.append(","+busHouseNew.getChuimg());
+	     }
+		 if(null!=busHouseNew.getHuxingimg() && !"".equals(busHouseNew.getHuxingimg())){
+					    	 
+			urltext.append(","+busHouseNew.getHuxingimg());
+					     }
+		 if(null!=busHouseNew.getOtherimg() && !"".equals(busHouseNew.getOtherimg())){
+		  	 
+		  	 urltext.append(","+busHouseNew.getOtherimg());
+		   }				 
+		 busHouseNew.setImgurl(Arrays.asList(urltext.toString().split(",")));
+		 
+		 if(urltext.toString()==null || "".equals(urltext.toString())){			 
+			 busHouseNew.setImgurl(Arrays.asList(busHouseNew.getTitleimg()));
+		 }
     	//是否是维护人
     	if(user.getName().equals(busHouseNew.getRecordUserName())){
     		busHouseNew.setUser_ype("1");
@@ -400,17 +477,36 @@ public class BusHouseController {
     /**
      * 按条件查询列表 返回分页数据
      * @param  page  size map
+     * @throws ParseException 
      * @RequestBody Map<String,Object> map
      * */
     @PreAuthorize("hasAuthority('house:list')")
     @PostMapping("/list")
-    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    public Result list(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	map.put("userName", user.getName());
         PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         Map<String,Object> mapnew=resMap(map);
         List<BusHouse> list = busHouseService.ListBusHouse(mapnew);
+        
          //显示图片
-        for(BusHouse bushouses:list){        	
+        for(BusHouse bushouses:list){  
+    		if("1".equals(bushouses.getType())){
+    			if(null !=bushouses.getPrice()&& null !=bushouses.getAreas()){
+    				double d = Double.parseDouble(bushouses.getPrice())/10000;
+    				BigDecimal bd = new BigDecimal(d);
+    				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    				bushouses.setPriceText(d1+"万");
+    				
+    				double doione = Double.parseDouble(bushouses.getPrice())/Integer.parseInt(bushouses.getAreas());
+    				BigDecimal bdone = new BigDecimal(doione);
+    				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    				bushouses.setPriceOneText(done+"元/平");
+    			}
+    		}else if("2".equals(bushouses.getType())){			
+    			if(null !=bushouses.getPrice()){
+    				bushouses.setPriceText(bushouses.getPrice()+"元/月");
+    			}
+    		}
         	     StringBuffer urltext=new StringBuffer();
         	     if(null!=bushouses.getShiimg()){       	    	 
         	    	 urltext.append(bushouses.getShiimg());
@@ -573,7 +669,27 @@ public class BusHouseController {
 	      map.put("recordUserName", user.getName());
 	      PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
 	      List<BusHouse> list = busHouseService.ListBusHouse(map);
-    	  PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
+    	  for(BusHouse busHouse:list){
+    		  
+      		if("1".equals(busHouse.getType())){
+    			if(null !=busHouse.getPrice()&& null !=busHouse.getAreas()){
+    				double d = Double.parseDouble(busHouse.getPrice())/10000;
+    				BigDecimal bd = new BigDecimal(d);
+    				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    				busHouse.setPriceText(d1+"万");
+    				
+    				double doione = Double.parseDouble(busHouse.getPrice())/Integer.parseInt(busHouse.getAreas());
+    				BigDecimal bdone = new BigDecimal(doione);
+    				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    				busHouse.setPriceOneText(done+"元/平");
+    			}
+    		}else if("2".equals(busHouse.getType())){			
+    			if(null !=busHouse.getPrice()){
+    				busHouse.setPriceText(busHouse.getPrice()+"元/月");
+    			}
+    		}
+    	  }
+	      PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
           return ResultGenerator.genOkResult(pageInfo);
     }
     
@@ -588,6 +704,25 @@ public class BusHouseController {
 	      map.put("userName", user.getName());
 	      PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
 	      List<BusHouse> list = busHouseService.listMyLikeHouse(map);
+	      for(BusHouse busHouse:list){  		  
+	     		if("1".equals(busHouse.getType())){
+	    			if(null !=busHouse.getPrice()&& null !=busHouse.getAreas()){
+	    				double d = Double.parseDouble(busHouse.getPrice())/10000;
+	    				BigDecimal bd = new BigDecimal(d);
+	    				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	    				busHouse.setPriceText(d1+"万");
+	    				
+	    				double doione = Double.parseDouble(busHouse.getPrice())/Integer.parseInt(busHouse.getAreas());
+	    				BigDecimal bdone = new BigDecimal(doione);
+	    				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	    				busHouse.setPriceOneText(done+"元/平");
+	    			}
+	    		}else if("2".equals(busHouse.getType())){			
+	    			if(null !=busHouse.getPrice()){
+	    				busHouse.setPriceText(busHouse.getPrice()+"元/月");
+	    			}
+	    		}
+	    	  }
     	  PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
           return ResultGenerator.genOkResult(pageInfo);
     }
