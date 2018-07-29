@@ -63,13 +63,15 @@
         WHERE username = #{username}
     </update>
     
-    <select id="listUserInfo" parameterType="map" resultMap="UserMap">
-    	SELECT 
-    		*
-    	FROM 	`sys_user`
-    	WHERE 
-    		relname like "%"#{relname}"%"	
-    
+    <select id="listUserInfo" parameterType="map" resultMap="UserMap"> 
+	    	SELECT 
+	    		  `id`,
+				  `user_no`,			
+				  `username`,			
+				  `relname`
+	    	FROM 	`sys_user`
+	    	WHERE 
+	    		relname = #{usertext}  or user_no = "VK000"#{usertext}
     </select>
 
 </mapper>

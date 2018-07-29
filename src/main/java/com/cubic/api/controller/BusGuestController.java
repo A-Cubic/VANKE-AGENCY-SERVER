@@ -22,6 +22,7 @@ import com.cubic.api.model.BusGuest;
 import com.cubic.api.model.User;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusGuestService;
+import com.cubic.api.service.MessageService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
@@ -41,6 +42,8 @@ public class BusGuestController {
     private BusExamineService busExamineService;
     @Resource
     private UserService userService;
+    @Resource
+    private MessageService messageService;
     /**
      * 创建客源
      * @param busGuest
@@ -78,7 +81,7 @@ public class BusGuestController {
     /**
      * 设置为无效房客源
      * @param busGuest
-     * 
+     * (0:普通,1:无效,2:提交待审核)
      * */
     @PreAuthorize("hasAuthority('guest:updateState')")
     @PostMapping("/updateState")
@@ -91,10 +94,14 @@ public class BusGuestController {
     	}else if("0".equals(busGuest.getIskey())){
     		busExamine.setType("9");
     	}
-    	
+    	//提交审核消息
+    	messageService.sendMessage("1", "提交无效客源申请", ""+busGuest.getId(), user.getName());
+    	//客源无效状态2:提交待审核
+    	busGuest.setIskey("2");
+    	busGuestService.update(busGuest);
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
-        return ResultGenerator.genOkResult("提交审核成功");
+        return ResultGenerator.genOkResult(busGuest.getIskey());
     }
     
     /**

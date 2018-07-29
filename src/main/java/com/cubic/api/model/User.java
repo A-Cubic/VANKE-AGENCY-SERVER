@@ -28,7 +28,12 @@ public class User {
 //    @NotEmpty(message = "邮箱不能为空")
     @Email
     private String email;
-
+    
+    /**
+     * 编号
+     */
+    @Column(name = "user_no")
+    private String user_no;
     /**
      * 用户名
      */
@@ -225,4 +230,16 @@ public class User {
     public void setLoginTime(Timestamp loginTime) {
         this.loginTime = loginTime;
     }
+
+	public String getUser_no() {
+		return user_no;
+	}
+
+	public void setUser_no(String user_no) {
+		this.user_no = user_no;
+	}
+
+
+    
+    
 }

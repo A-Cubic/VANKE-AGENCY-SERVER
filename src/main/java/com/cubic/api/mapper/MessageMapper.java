@@ -2,6 +2,8 @@ package com.cubic.api.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cubic.api.model.SysMessage;
 
 /**
@@ -13,5 +15,5 @@ public interface MessageMapper {
 	int getCount(String username);
 	void updateMessage(String username);
 	void insertMessage(SysMessage message);
-	List<String> listMessageUser(String username,String rolename);
+	List<String> listMessageUser(@Param("username") String username,@Param("rolename") String rolename);
 }

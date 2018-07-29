@@ -19,6 +19,11 @@ public class BusHouse {
      */
     private String number;
     /**
+     * 关注状态
+     */
+    @Transient
+    private String likeType;
+    /**
      * 用户是否是维护人
      */
     @Transient
@@ -1291,6 +1296,14 @@ public class BusHouse {
 
 	public void setUser_type(String user_type) {
 		this.user_type = user_type;
+	}
+
+	public String getLikeType() {
+		return likeType;
+	}
+
+	public void setLikeType(String likeType) {
+		this.likeType = likeType;
 	}
 
     

@@ -1,42 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cubic.api.mapper.MessageMapper">
-	
-	<select id="listMessage" parameterType="String" resultType="com.cubic.api.model.SysMessage">
-		SELECT 
-		  t.* 
-		FROM 
-		  sys_message t 
-		where 
-		  t.receiver = #{username} 
+
+	<select id="listMessage" parameterType="String"
+		resultType="com.cubic.api.model.SysMessage">
+		SELECT
+		t.*
+		FROM
+		sys_message t
+		where
+		t.receiver = #{username}
 	</select>
-	
+
 	<select id="getCount" parameterType="String" resultType="Integer">
-		SELECT 
-		  COUNT(*) count 
-		FROM 
-		  sys_message a 
-		where 
-		  a.receiver = #{username} 
-		  and a.last_time IS NULL
+		SELECT
+		COUNT(*) count
+		FROM
+		sys_message a
+		where
+		a.receiver = #{username}
+		and a.last_time IS NULL
 	</select>
-	
-	 <update id="updateMessage">
-        UPDATE sys_message SET
-        last_time = NOW()
-        WHERE receiver = #{username}
-    </update>
-    
-    <select id="listMessageUser" parameterType="String" resultType="String">
-		SELECT 
-		  u.username 
-		FROM 
-		  sys_user u,sys_role r,sys_user_role ur
-		WHERE 
-		  u.id = ur.user_id
+
+	<update id="updateMessage">
+		UPDATE sys_message SET
+		last_time = NOW()
+		WHERE receiver = #{username}
+	</update>
+
+	<select id="listMessageUser" parameterType="String" resultType="String">
+		SELECT
+		u.username
+		FROM
+		sys_user u,sys_role r,sys_user_role ur
+		WHERE
+		u.id = ur.user_id
 		AND r.id = ur.role_id
 		AND r.`name` = #{rolename}
-		AND u.store_id=(SELECT u.store_id FROM sys_user u WHERE u.username= #{username} )
+		AND
+		u.store_id=(SELECT u.store_id FROM sys_user u WHERE u.username=
+		#{username} )
 	</select>
-	
+
+	<insert id="insertMessage" parameterType="com.cubic.api.model.SysMessage">
+		INSERT INTO `sys_message`
+		(
+		`content`,
+		`url`,
+		`sender`,
+		`receiver`)
+		VALUES (
+		#{content},
+		#{url},
+		#{sender},
+		#{receiver});
+	</insert>
 </mapper>

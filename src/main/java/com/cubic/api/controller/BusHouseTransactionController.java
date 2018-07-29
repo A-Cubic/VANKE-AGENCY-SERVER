@@ -23,8 +23,11 @@ import java.util.Map;
 public class BusHouseTransactionController {
     @Resource
     private BusHouseTransactionService busHouseTransactionService;
-
-    @PostMapping
+    /**
+     * 创建成交信息
+     * @param busHouseTransaction
+     * */
+    @PostMapping("/insert")
     public Result add(@RequestBody BusHouseTransaction busHouseTransaction) {
     	busHouseTransactionService.save(busHouseTransaction);
     	//计算业绩

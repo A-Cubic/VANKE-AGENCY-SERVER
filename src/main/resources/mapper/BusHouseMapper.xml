@@ -433,6 +433,12 @@
 	<select id="detailHouse" parameterType="map" resultMap="BaseResultMap">
 			SELECT
 				 <include refid="selectSql"/>
+				 ,(SELECT  COUNT(1) 
+				           FROM `bus_house_like` 
+				            WHERE 
+				             house_id=bh.id 
+				             AND user_name=#{username}
+				) likeType
 				FROM bus_house bh
 				WHERE 
 					bh.id=#{id}

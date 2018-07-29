@@ -2,7 +2,6 @@ package com.cubic.api.controller;
 
 import java.math.BigDecimal;
 import java.security.Principal;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ import com.cubic.api.model.User;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
+import com.cubic.api.service.MessageService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.util.NumberUtil;
 import com.cubic.api.util.OSSUtil;
@@ -55,6 +55,8 @@ public class BusHouseController {
     private UserService userService;
     @Resource
     private BusExamineService busExamineService;
+    @Resource
+    private MessageService messageService;
 
    /**
     * 创建房源信息
@@ -121,29 +123,34 @@ public class BusHouseController {
     /**
      * 提交房源状态更改申请
      * @param busHouse
-     * 状态:(0:普通,1:无效)
+     * 状态:(0:普通,1:无效,2:提交无效待审核,3:提交取消无效待审核)
      * */
     @PreAuthorize("hasAuthority('house:updateState')")
     @PostMapping("/updateState")
     public Result updateState(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
 		if(busHouse.getState().equals("1")){//设置为无效房源
-			busExamine.setType("3");    		
+			busExamine.setType("3");   
+			busHouse.setState("2");
 		}else if(busHouse.getState().equals("0")){//取消无效房源
-			busExamine.setType("8"); 		
+			busExamine.setType("8"); 
+			busHouse.setState("3");
 		}
-    	
+		//提交审核消息
+		messageService.sendMessage("1", "提交无效房源申请", ""+busHouse.getId(), user.getName());
+		//待审核状态
+		busHouseService.update(busHouse);
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
     	//提交到审核
-        return ResultGenerator.genOkResult("提交审核成功");
+        return ResultGenerator.genOkResult(busHouse.getState());
     }
     
     /**
      * 提交特殊房源申请
      * @param busHouse
-     * 特殊房源状态:(0:否,1:是)
+     * 特殊房源状态:(0:否,1:是,2:提交特殊房源待审核,3:提交取消特殊待审核)
      * */
     @PreAuthorize("hasAuthority('house:updateIsSpecial')")
     @PostMapping("/updateIsSpecial")
@@ -151,22 +158,27 @@ public class BusHouseController {
     	BusExamine busExamine =new BusExamine(); 
     	if(busHouse.getIsspecial().equals("1")){//设置为特殊房源
     		busExamine.setType("1");
+    		busHouse.setIsspecial("2");
     	}else if(busHouse.getIsspecial().equals("0")){//取消特殊房源
     		
     		busExamine.setType("6");
+    		busHouse.setIsspecial("3");
     	}
-    	    		
+    	//提交审核消息
+		messageService.sendMessage("1", "提交特殊房源申请", ""+busHouse.getId(), user.getName());
+		//待审核状态
+		busHouseService.update(busHouse);
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
     	//提交到审核
-        return ResultGenerator.genOkResult("提交审核成功");
+        return ResultGenerator.genOkResult(busHouse.getIsspecial());
     }
     
     /**
      *提交优质房源申请
      * @param busHouse
-     * 状态:(0:否,1:是)
+     * 状态:(0:否,1:是,2:提交优质待审核,3:提交取消优质待审核)
      * */
     @PreAuthorize("hasAuthority('house:updateIsFine')")
     @PostMapping("/updateIsFine")
@@ -174,15 +186,21 @@ public class BusHouseController {
     	BusExamine busExamine =new BusExamine(); 
     	if(busHouse.getIsfine().equals("0")){//取消优质房源
     		busExamine.setType("7");
+            busHouse.setIsfine("3");
     		
     	}else if(busHouse.getIsfine().equals("1")){//设置为优质房源
     		busExamine.setType("2");
+            busHouse.setIsfine("2");
     	}  
+    	//提交审核消息
+		messageService.sendMessage("1", "提交优质房源申请", ""+busHouse.getId(), user.getName());
+		//待审核状态
+    	busHouseService.update(busHouse);
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
     	//提交到审核
-        return ResultGenerator.genOkResult("提交审核成功");
+        return ResultGenerator.genOkResult(busHouse.getIsfine());
     }
     
     /**
@@ -300,7 +318,8 @@ public class BusHouseController {
     	}
     	busExamine.setOtherimg(url.toString());
     	url.setLength(0);
-    	
+    	//提交审核消息
+		messageService.sendMessage("2", "提交房源实勘图片录入申请", ""+busHouse.getId(), user.getName());
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setType("4");
     	busExamine.setUserName(user.getName());
@@ -411,7 +430,12 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:detail')")
     @PostMapping("/detail")
     public Result detail(Principal user,@RequestBody Map<String,String> map) throws ParseException {
+    	map.put("username", user.getName());
     	BusHouse busHouseNew=busHouseService.detailHouse(map);
+    	//关注状态(0:未关注,1:关注)
+	    if(!"0".equals(busHouseNew.getLikeType())){
+	    	busHouseNew.setLikeType("1");
+	    }
     	//转换时间格式
      	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
      	Date date = fmt.parse(busHouseNew.getCreateTime());
@@ -749,11 +773,12 @@ public class BusHouseController {
      * */
     @PreAuthorize("hasAuthority('house:listUser')")
     @PostMapping("/listUser")
-    public Result listUser(@RequestBody Map<String,Object> map){
-    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-	      List<User> list = userService.listUserInfo(map);
-	      PageInfo<User> pageInfo = new PageInfo<User>(list);
-    	 return ResultGenerator.genOkResult(pageInfo);
+    public Result listUser(@RequestBody Map<String,Object> map){  
+    	List<User> list= new ArrayList<User>();
+    	if(map.get("usertext")!=null && !"".equals(map.get("usertext"))){
+	      list = userService.listUserInfo(map);
+    	}
+    	 return ResultGenerator.genOkResult(list);
     }
     /**
      * 测试接口

@@ -47,7 +47,7 @@ public class BusHouseLikeController {
     public Result delete(Principal user,@RequestBody BusHouseLike busHouseLike) {
     	busHouseLike.setUserName(user.getName());
     	busHouseLikeService.deleteHouseLike(busHouseLike);
-        return ResultGenerator.genOkResult();
+        return ResultGenerator.genOkResult("取消关注");
     }
 
     @PutMapping

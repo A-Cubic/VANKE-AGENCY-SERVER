@@ -57,17 +57,20 @@ public class BusExamineController {
     	if(busExamineNew.getState().equals("2")){
     		  return ResultGenerator.genOkResult("已经有人审核过了");
     	}
+    	
+    	//审核通过
     	if(busExamine.getResult().equals("1")){
-	    	if(!busExamineNew.getType().equals("5")){
+    		//审核类型不是5:客源无效审核或9:取消无效客源审核
+	    	if(!busExamineNew.getType().equals("5")||!busExamineNew.getType().equals("9")){
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
-		    	if(busExamineNew.getType().equals("1")){
+		    	if(busExamineNew.getType().equals("1")){//审核类型为特殊房源审核
 		    		bushouse.setIsspecial("1");
-		    	}else if(busExamineNew.getType().equals("2")){  		
+		    	}else if(busExamineNew.getType().equals("2")){  //审核类型为优质房源审核		
 		    		bushouse.setIsfine("1");
-		    	}else if(busExamineNew.getType().equals("3")){
+		    	}else if(busExamineNew.getType().equals("3")){//审核类型为无效房源审核
 		    		bushouse.setState("1");
-		    	}else if(busExamineNew.getType().equals("4")){
+		    	}else if(busExamineNew.getType().equals("4")){//审核类型为录入实勘图房源审核
 		    		bushouse.setShiimg(busExamineNew.getShiimg());
 		    		bushouse.setTingimg(busExamineNew.getTingimg());
 		    		bushouse.setWeiimg(busExamineNew.getWeiimg());
@@ -76,26 +79,60 @@ public class BusExamineController {
 		    		bushouse.setOtherimg(busExamineNew.getOtherimg());
 		    		bushouse.setExplorationUserName(busExamineNew.getUserName());
 		    		bushouse.setExplorationrelName(busExamineNew.getUserRelName());
-		    	}else if(busExamineNew.getType().equals("6")){
+		    	}else if(busExamineNew.getType().equals("6")){//审核类型为取消特殊房源审核
 		    		bushouse.setIsspecial("0");
-		    	}else if(busExamineNew.getType().equals("7")){
+		    	}else if(busExamineNew.getType().equals("7")){//审核类型为取消优质房源审核
 		    		bushouse.setIsfine("0");	    		
-		    	}else if(busExamineNew.getType().equals("8")){
+		    	}else if(busExamineNew.getType().equals("8")){//审核类型为取消无效房源审核
 		    		bushouse.setState("0");	    		
+		    	}
+		    	
+		    	busHouseService.update(bushouse);
+	    	}else if(busExamineNew.getType().equals("5")){//客源无效审核
+	    		BusGuest busGuest=new BusGuest();
+	    		busGuest.setId(busExamineNew.getGuestId());
+	    		busGuest.setIskey("1");
+	    		busGuestService.update(busGuest);
+	    	}else if(busExamineNew.getType().equals("9")){//取消客源无效审核
+	    		BusGuest busGuest=new BusGuest();
+	    		busGuest.setId(busExamineNew.getGuestId());
+	    		busGuest.setIskey("0");
+	    		busGuestService.update(busGuest);
+	    	}
+    	}else if(busExamine.getResult().equals("0")){//审核未通过
+    		//判断不为客源类型的审核
+        	if(!busExamineNew.getType().equals("5")||!busExamineNew.getType().equals("9")){
+		    	BusHouse bushouse=new BusHouse();
+		    	bushouse.setId(busExamineNew.getHouseId());
+		    	if(busExamineNew.getType().equals("1")){//提交特殊房源审核未通过,状态从2:提交待审核变回0:不是特殊房源
+		    		bushouse.setIsspecial("0");
+		    	}else if(busExamineNew.getType().equals("2")){  //提交优质房源审核未通过,状态从2:提交待审核变回0:不是优质房源		
+		    		bushouse.setIsfine("0");
+		    	}else if(busExamineNew.getType().equals("3")){//提交无效房源审核未通过,状态从2:提交待审核变回0:不是无效房源
+		    		bushouse.setState("0");
+		    	}else if(busExamineNew.getType().equals("4")){//发送消息
+		    			 //
+		    	}else if(busExamineNew.getType().equals("6")){//提交取消特殊房源审核未通过,状态从2:提交待审核变回1:特殊房源
+		    		bushouse.setIsspecial("1");
+		    	}else if(busExamineNew.getType().equals("7")){//提交取消优质房源审核未通过,状态从2:提交待审核变回1:优质房源
+		    		bushouse.setIsfine("1");	    		
+		    	}else if(busExamineNew.getType().equals("8")){//提交取消无效房源审核未通过,状态从2:提交待审核变回1:无效房源
+		    		bushouse.setState("1");	    		
 		    	}
 		    	
 		    	busHouseService.update(bushouse);
 	    	}else if(busExamineNew.getType().equals("5")){
 	    		BusGuest busGuest=new BusGuest();
 	    		busGuest.setId(busExamineNew.getGuestId());
-	    		busGuest.setIskey("1");
+	    		busGuest.setIskey("0");
 	    		busGuestService.update(busGuest);
 	    	}else if(busExamineNew.getType().equals("9")){
 	    		BusGuest busGuest=new BusGuest();
 	    		busGuest.setId(busExamineNew.getGuestId());
-	    		busGuest.setIskey("0");
+	    		busGuest.setIskey("1");
 	    		busGuestService.update(busGuest);
 	    	}
+    		
     	}
     	busExamine.setState("1");
     	busExamine.setUserName(user.getName());

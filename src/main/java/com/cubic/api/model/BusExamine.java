@@ -20,6 +20,11 @@ public class BusExamine {
      */
     @Column(name = "guest_id")
     private Long guestId;
+    /**
+     * 客源id
+     */
+    @Column(name = "transaction_id")
+    private Long transactionId;
 
     /**
      * 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片,5:无效客源)
@@ -427,6 +432,14 @@ public class BusExamine {
 
 	public void setRoleid(String roleid) {
 		this.roleid = roleid;
+	}
+
+	public Long getTransactionId() {
+		return transactionId;
+	}
+
+	public void setTransactionId(Long transactionId) {
+		this.transactionId = transactionId;
 	}
     
     
