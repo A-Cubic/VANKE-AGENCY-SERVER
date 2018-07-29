@@ -22,7 +22,7 @@ public class BusHouse {
      * 用户是否是维护人
      */
     @Transient
-    private String user_ype;
+    private String user_type;
     /**
      * 详细地址文本
      */
@@ -1211,13 +1211,7 @@ public class BusHouse {
 		this.otherImgList = otherImgList;
 	}
 
-	public String getUser_ype() {
-		return user_ype;
-	}
 
-	public void setUser_ype(String user_ype) {
-		this.user_ype = user_ype;
-	}
 
 	public String getCasetype() {
 		return casetype;
@@ -1289,6 +1283,14 @@ public class BusHouse {
 
 	public void setPriceOneText(String priceOneText) {
 		this.priceOneText = priceOneText;
+	}
+
+	public String getUser_type() {
+		return user_type;
+	}
+
+	public void setUser_type(String user_type) {
+		this.user_type = user_type;
 	}
 
     

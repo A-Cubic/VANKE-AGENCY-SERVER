@@ -464,11 +464,11 @@ public class BusHouseController {
 		 if(urltext.toString()==null || "".equals(urltext.toString())){			 
 			 busHouseNew.setImgurl(Arrays.asList(busHouseNew.getTitleimg()));
 		 }
-    	//是否是维护人
+    	//是否是维护人(1:是,0:否)
     	if(user.getName().equals(busHouseNew.getRecordUserName())){
-    		busHouseNew.setUser_ype("1");
+    		busHouseNew.setUser_type("1");
     	}else{
-    		busHouseNew.setUser_ype("0");
+    		busHouseNew.setUser_type("0");
     	}
     	return ResultGenerator.genOkResult(busHouseNew);
     }
