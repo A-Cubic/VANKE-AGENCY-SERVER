@@ -41,12 +41,12 @@ public class BusGuestLookrecord {
      * 带看时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 结束时间
      */
-    private Date endtime;
+    private String endtime;
 
     /**
      * @return id
@@ -139,7 +139,7 @@ public class BusGuestLookrecord {
      *
      * @return create_time - 带看时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -148,7 +148,7 @@ public class BusGuestLookrecord {
      *
      * @param createTime 带看时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -157,7 +157,7 @@ public class BusGuestLookrecord {
      *
      * @return endtime - 结束时间
      */
-    public Date getEndtime() {
+    public String getEndtime() {
         return endtime;
     }
 
@@ -166,7 +166,7 @@ public class BusGuestLookrecord {
      *
      * @param endtime 结束时间
      */
-    public void setEndtime(Date endtime) {
+    public void setEndtime(String endtime) {
         this.endtime = endtime;
     }
 
