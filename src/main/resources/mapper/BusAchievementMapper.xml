@@ -21,14 +21,16 @@
   SELECT
 
 	  busa.`user_name`,
-	  bht.`number`,
-	  bht.`contractnumber`,
+	  bht.`number` dealNum,
+	  bht.`contractnumber` contractNum,
 	  busa.`transaction_id`,
 	  su.`relname` userrelname,
 	  bh.`xiaoqu_name` xiaoquName,
 	  CONCAT (GROUP_CONCAT(busa.`rolenum`),",") roleName,
 	  SUM( busa.`proportion`) proportion,
-	  SUM(busa.`price`) sumprice
+	  SUM(busa.`price`) sumprice,
+	  bht.create_time
+	  
 
 	FROM bus_achievement busa,`bus_house_transaction` bht,`sys_user` su,`bus_house` bh
 	WHERE 
@@ -40,8 +42,14 @@
 		AND bht.`id`=busa.`transaction_id`
 		AND su.`username`=busa.`user_name`
 		AND bh.`id`=busa.`house_id`	
-		<if test="createTimeStart!=null and createTimeEnd!=null">
-			<![CDATA[AND  DATE(create_time) > #{createTimeStart} AND DATE(create_time) < #{createTimeEnd}]]>
+		<if test="(createTimeStart!=null and createTimeStart!='') and (createTimeEnd!=null and createTimeEnd!='')">
+			<![CDATA[AND  DATE(busa.create_time) > #{createTimeStart} AND DATE(busa.create_time) < #{createTimeEnd}]]>
+		</if>
+		<if test="(createTimeStart!=null and createTimeStart!='')  and (createTimeEnd==null or createTimeEnd=='')">
+			<![CDATA[AND  DATE(busa.create_time) > #{createTimeStart}]]>
+		</if>
+		<if test="(createTimeStart==null or createTimeStart=='') and (createTimeEnd!=null and createTimeEnd!='')">
+			<![CDATA[ AND DATE(busa.create_time) < #{createTimeEnd}]]>
 		</if>
 		<if test="userName!=null"><!-- 店长权限能看自己门店的-->
 		 AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
@@ -74,5 +82,27 @@
 		GROUP BY ba.user_name
 		ORDER BY SUM(price) DESC
     </select>
+  <select id="examineAchievement" parameterType="Map" resultMap="BaseResultMap">
+  	 SELECT
+	  busa.`user_name`,
+	  su.`relname` userrelname,
+	  CONCAT (GROUP_CONCAT(busa.`rolenum`),",") roleName,
+	  SUM( busa.`proportion`) proportion,
+	  SUM(busa.`price`) sumprice	  
+	FROM bus_achievement busa,`bus_house_transaction` bht,`sys_user` su
+	WHERE 
+	    busa.transaction_id=#{transactionId}
+	 	AND bht.`id`=busa.`transaction_id`
+		AND su.`username`=busa.`user_name`
+		GROUP BY busa.transaction_id,busa.`user_name`	
+  </select>
   
+  
+  <update  id="updateExamineType" parameterType="com.cubic.api.model.BusAchievement">
+  	UPDATE bus_achievement
+  	SET examine_type = 1;
+  	WHERE 
+  		transaction_id=#{transactionId}
+  	
+  </update>
 </mapper>

@@ -2,8 +2,10 @@ package com.cubic.api.controller;
 
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
+import com.cubic.api.model.BusAchievement;
 import com.cubic.api.model.BusHouseTransaction;
 import com.cubic.api.service.BusHouseTransactionService;
+import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -28,11 +30,17 @@ public class BusHouseTransactionController {
      * @param busHouseTransaction
      * */
     @PostMapping("/insert")
-    public Result add(@RequestBody BusHouseTransaction busHouseTransaction) {
+    public Result add(Principal user,@RequestBody BusHouseTransaction busHouseTransaction,@RequestBody BusAchievement busAchievement) {
     	busHouseTransactionService.save(busHouseTransaction);
     	//计算业绩
     	
     	
+    	//根据添加的id生成成交编号
+    	String num = NumberUtil.geoEquipmentNo("C",busHouseTransaction.getId());
+    	BusHouseTransaction busHouseTransactionNew=new BusHouseTransaction();
+    	busHouseTransactionNew.setId(busHouseTransaction.getId());
+    	busHouseTransactionNew.setNumber(num);
+    	busHouseTransactionService.update(busHouseTransactionNew);
         return ResultGenerator.genOkResult();
     }
 

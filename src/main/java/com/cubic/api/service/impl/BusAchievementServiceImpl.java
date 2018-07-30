@@ -31,6 +31,25 @@ public class BusAchievementServiceImpl extends AbstractService<BusAchievement> i
 
 		return busAchievementMapper.listMyAchievement(map);
 	}
+	/**
+	 * 审核成交业绩查询
+	 * @param map
+	 * */
+	@Override
+	public List<BusAchievement> examineAchievement(Map<String, Object> map) {
+
+		return busAchievementMapper.examineAchievement(map);
+	}
+	
+	/**
+	 * 修改审核状态
+	 * @param BusAchievement
+	 * */
+	@Override
+	public void updateExamineType(BusAchievement busAchievement) {
+		busAchievementMapper.updateExamineType(busAchievement);
+		
+	}
 
 
 

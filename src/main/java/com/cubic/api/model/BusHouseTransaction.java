@@ -26,6 +26,14 @@ public class BusHouseTransaction {
      */
     @Column(name = "create_user_name")
     private String createUserName;
+    /**
+     * 成交编号
+     */
+    private String number;
+    /**
+     * 合同编号
+     */
+    private String  contractnumber;
 
     /**
      * 创建时间
@@ -501,4 +509,22 @@ public class BusHouseTransaction {
     public void setAgreementImg(String agreementImg) {
         this.agreementImg = agreementImg;
     }
+
+	public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getContractnumber() {
+		return contractnumber;
+	}
+
+	public void setContractnumber(String contractnumber) {
+		this.contractnumber = contractnumber;
+	}
+    
+    
 }

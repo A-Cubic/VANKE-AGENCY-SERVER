@@ -1,7 +1,13 @@
 package com.cubic.api.model;
 
-import java.util.Date;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "bus_examine")
 public class BusExamine {
@@ -58,31 +64,60 @@ public class BusExamine {
      * 室审核图片
      */
     private String shiimg;
+    /**
+     * 室审核图片list
+     */
+    @Transient
+    private List<String> shiImglist;
 
     /**
      * 厅审核图片
      */
     private String tingimg;
+    /**
+     * 厅审核图片list
+     */
+    @Transient
+    private List<String>  tingImglist;
 
     /**
      * 卫审核图片
      */
     private String weiimg;
+    /**
+     * 卫审核图片list
+     */
+    @Transient
+    private List<String> weiImglist;
 
     /**
      * 厨审核图片
      */
     private String chuimg;
-
+    /**
+     * 厨审核图片list
+     */
+    @Transient
+    private List<String> chuImglist;
     /**
      * 户型审核图片
      */
     private String huxingimg;
+    /**
+     * 户型审核图片list
+     */
+    @Transient
+    private List<String> huxingImglist;
 
     /**
      * 其他审核图片
      */
     private String otherimg;
+    /**
+     * 其他审核图片list
+     */
+    @Transient
+    private List<String> otherImglist;
 
     /**
      * 申请人账号名
@@ -99,7 +134,7 @@ public class BusExamine {
      * 申请审核时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 审核结果(0:未通过,1:通过)
@@ -116,7 +151,7 @@ public class BusExamine {
      * 审批时间
      */
     @Column(name = "examine_time")
-    private Date examineTime;
+    private String examineTime;
 
     /**
      * @return id
@@ -343,7 +378,7 @@ public class BusExamine {
      *
      * @return create_time - 申请审核时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -352,7 +387,7 @@ public class BusExamine {
      *
      * @param createTime 申请审核时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -397,7 +432,7 @@ public class BusExamine {
      *
      * @return examine_time - 审批时间
      */
-    public Date getExamineTime() {
+    public String getExamineTime() {
         return examineTime;
     }
 
@@ -406,7 +441,7 @@ public class BusExamine {
      *
      * @param examineTime 审批时间
      */
-    public void setExamineTime(Date examineTime) {
+    public void setExamineTime(String examineTime) {
         this.examineTime = examineTime;
     }
 
@@ -440,6 +475,54 @@ public class BusExamine {
 
 	public void setTransactionId(Long transactionId) {
 		this.transactionId = transactionId;
+	}
+
+	public List<String> getShiImglist() {
+		return shiImglist;
+	}
+
+	public void setShiImglist(List<String> shiImglist) {
+		this.shiImglist = shiImglist;
+	}
+
+	public List<String> getTingImglist() {
+		return tingImglist;
+	}
+
+	public void setTingImglist(List<String> tingImglist) {
+		this.tingImglist = tingImglist;
+	}
+
+	public List<String> getWeiImglist() {
+		return weiImglist;
+	}
+
+	public void setWeiImglist(List<String> weiImglist) {
+		this.weiImglist = weiImglist;
+	}
+
+	public List<String> getChuImglist() {
+		return chuImglist;
+	}
+
+	public void setChuImglist(List<String> chuImglist) {
+		this.chuImglist = chuImglist;
+	}
+
+	public List<String> getHuxingImglist() {
+		return huxingImglist;
+	}
+
+	public void setHuxingImglist(List<String> huxingImglist) {
+		this.huxingImglist = huxingImglist;
+	}
+
+	public List<String> getOtherImglist() {
+		return otherImglist;
+	}
+
+	public void setOtherImglist(List<String> otherImglist) {
+		this.otherImglist = otherImglist;
 	}
     
     

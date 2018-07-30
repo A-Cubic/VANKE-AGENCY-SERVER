@@ -103,26 +103,26 @@
 		<if test="role==null or role!=3"><!-- 不是助理的不能看实勘-->
 			AND type != '4'
 		</if>
-		<if test="state!=null"><!-- 审核状态条件(0:未审核,1:审核中,2:已审核) -->
+		<if test="state!=null and state!=''"><!-- 审核状态条件(0:未审核,1:已审核) -->
 			AND state=#{state}	
 		</if>
-		<if test="type!=null and  role!=3"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片(助理能看),5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源,10:成交审核) -->
+		<if test="type!=null and  role!=3 and type!=''"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片(助理能看),5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源,10:成交审核) -->
 			AND type=#{type}	
 		</if>
-		<if test="result!=null"><!-- 审核结果条件(0:未通过,1:通过) -->
+		<if test="result!=null and result!=''"><!-- 审核结果条件(0:未通过,1:通过) -->
 			AND result=#{result}	
 		</if>
-		<if test="userName!=null"><!-- 提交审核的人 -->
-			AND user_name=#{userName}	
-		</if>	
+
 	    <if test="(createTimeStart!=null )and (createTimeEnd!=null )"><!-- 申请时间在两个时间值之间 -->
 			<![CDATA[AND DATE(create_time) > #{createTimeStart}	AND　DATE(create_time) < #{createTimeEnd}]]>
 		</if>
 		<if test="(examineTimeStart!=null )and (examineTimeEnd!=null )"><!-- 审批时间在两个时间值之间 -->
 			<![CDATA[AND DATE(examine_time) > #{examineTimeStart}	AND　DATE(examine_time) < #{examineTimeEnd}]]>
 		</if>		
-  		<if test="examineName!=null"><!-- 审批处理人 -->
-			AND examine_name=#{examineName}	
-		</if>
+
+		ORDER BY be.state ,be.`create_time`DESC
   </select>
+  
+  
+
 </mapper>

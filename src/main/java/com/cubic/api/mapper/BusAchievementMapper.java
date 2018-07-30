@@ -13,5 +13,15 @@ public interface BusAchievementMapper extends MyMapper<BusAchievement> {
 	 * @param map
 	 * */
 	List<BusAchievement> listMyAchievement(Map<String,Object> map);
+	/**
+	 * 审核成交业绩查询
+	 * @param map
+	 * */
+	List<BusAchievement> examineAchievement(Map<String,Object> map);
+	/**
+	 * 修改审核状态
+	 * @param BusAchievement
+	 * */
+	void updateExamineType(BusAchievement busAchievement);
 	
 }

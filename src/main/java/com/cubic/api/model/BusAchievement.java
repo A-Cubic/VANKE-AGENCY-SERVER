@@ -63,7 +63,7 @@ public class BusAchievement {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String  createTime;
 
     
     /**
@@ -233,7 +233,7 @@ public class BusAchievement {
      *
      * @return create_time - 创建时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -242,7 +242,7 @@ public class BusAchievement {
      *
      * @param createTime 创建时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
