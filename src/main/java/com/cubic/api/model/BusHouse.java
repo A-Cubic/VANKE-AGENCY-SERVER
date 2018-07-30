@@ -143,7 +143,12 @@ public class BusHouse {
      * 
      */
     private String phone1;
-    
+    /**
+     * 审核状态(0:提交未审核,1:审核中,2:已审核)
+     * 
+     */
+    @Transient
+    private String examineState;
     
     @Transient
     private int clickcount = 0;
@@ -241,6 +246,11 @@ public class BusHouse {
      */
     @Transient
     private List<String> imgurl;
+    /**
+     * (创建房源后24小时内只有自己可以添加实勘人)状态(0:所有人都可以添加,1:只有维护人可以添加)
+     */
+    @Transient
+    private String explorationTimeType;
     
     /**
      * 维护人真实姓名
@@ -1304,6 +1314,22 @@ public class BusHouse {
 
 	public void setLikeType(String likeType) {
 		this.likeType = likeType;
+	}
+
+	public String getExplorationTimeType() {
+		return explorationTimeType;
+	}
+
+	public void setExplorationTimeType(String explorationTimeType) {
+		this.explorationTimeType = explorationTimeType;
+	}
+
+	public String getExamineState() {
+		return examineState;
+	}
+
+	public void setExamineState(String examineState) {
+		this.examineState = examineState;
 	}
 
     

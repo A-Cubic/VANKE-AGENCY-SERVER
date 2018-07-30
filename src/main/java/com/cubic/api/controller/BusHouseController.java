@@ -436,6 +436,10 @@ public class BusHouseController {
 	    if(!"0".equals(busHouseNew.getLikeType())){
 	    	busHouseNew.setLikeType("1");
 	    }
+	    //如果存在待审核的实勘图则返回3:没有待审核的实勘图
+	    if(busHouseNew.getExamineState()==null){
+	    	busHouseNew.setExamineState("3");
+	    }
     	//转换时间格式
      	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
      	Date date = fmt.parse(busHouseNew.getCreateTime());

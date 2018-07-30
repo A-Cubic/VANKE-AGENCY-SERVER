@@ -438,7 +438,9 @@
 				            WHERE 
 				             house_id=bh.id 
 				             AND user_name=#{username}
-				) likeType
+				) likeType,
+				(DATE_ADD(create_time,INTERVAL 1 DAY)>NOW()) explorationTimeType,
+				(SELECT be.state FROM  bus_examine be WHERE be.house_id=bh.`id` AND be.state = 0 AND be.type=4)  examineState
 				FROM bus_house bh
 				WHERE 
 					bh.id=#{id}
