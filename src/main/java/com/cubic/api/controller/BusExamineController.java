@@ -167,7 +167,7 @@ public class BusExamineController {
     	busExamine.setState("1");
     	busExamine.setUserName(user.getName());
     	busExamineService.updateResult(busExamine);
-        return ResultGenerator.genOkResult("审核成功");
+        return ResultGenerator.genOkResult("审核完成");
     }
     /**
      * 开始审核(审核状态设置为审核中:1)
