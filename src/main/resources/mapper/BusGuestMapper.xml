@@ -135,7 +135,7 @@
 					 <if test="isShare !=null and isShare==1">
 						and  isshare=#{isShare}
 					 </if>
-					<if test="guestname!=null"><!-- 客源姓名 -->
+					<if test="guestname!=null and guestname != ''"><!-- 客源姓名 -->
 							and guestname like "%"#{guestname}"%"
 					</if>
 					
@@ -143,7 +143,7 @@
 							and sex=#{sex}
 					</if>
 					
-					<if test="guestgrade!=null"><!-- 客源星级 -->
+					<if test="guestgrade!=null and guestgrade != ''"><!-- 客源星级 -->
 							and guestgrade=#{guestgrade}
 					</if>
 					

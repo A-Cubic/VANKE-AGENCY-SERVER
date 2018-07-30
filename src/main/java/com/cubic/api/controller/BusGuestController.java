@@ -24,6 +24,7 @@ import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusGuestService;
 import com.cubic.api.service.MessageService;
 import com.cubic.api.service.UserService;
+import com.cubic.api.util.MessageConstant;
 import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -89,13 +90,17 @@ public class BusGuestController {
     	//审核信息
     	BusExamine busExamine=new BusExamine();
     	busExamine.setGuestId(busGuest.getId());
+    	String msgContent="";
+    	String url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
     	if("1".equals(busGuest.getIskey())){
     		busExamine.setType("5");
+    		msgContent = MessageConstant.MESSAGE_GUEST_INVALID;
     	}else if("0".equals(busGuest.getIskey())){
     		busExamine.setType("9");
+    		msgContent = MessageConstant.MESSAGE_GUEST_NOINVALID;
     	}
     	//提交审核消息
-    	messageService.sendMessage("1", "提交无效客源申请", ""+busGuest.getId(), user.getName());
+    	messageService.sendMessage("1", msgContent, url, user.getName());
     	//客源无效状态2:提交待审核
     	busGuest.setIskey("2");
     	busGuestService.update(busGuest);

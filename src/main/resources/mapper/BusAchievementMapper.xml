@@ -100,7 +100,7 @@
   
   <update  id="updateExamineType" parameterType="com.cubic.api.model.BusAchievement">
   	UPDATE bus_achievement
-  	SET examine_type = 1;
+  	SET examine_type = #{examineType};
   	WHERE 
   		transaction_id=#{transactionId}
   	

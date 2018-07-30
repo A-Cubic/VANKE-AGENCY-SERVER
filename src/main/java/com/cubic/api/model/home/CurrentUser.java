@@ -1,9 +1,5 @@
 package com.cubic.api.model.home;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-
 import com.alibaba.fastjson.annotation.JSONField;
 
 public class CurrentUser {

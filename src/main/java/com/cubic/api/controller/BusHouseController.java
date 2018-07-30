@@ -32,6 +32,7 @@ import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.MessageService;
 import com.cubic.api.service.UserService;
+import com.cubic.api.util.MessageConstant;
 import com.cubic.api.util.NumberUtil;
 import com.cubic.api.util.OSSUtil;
 import com.github.pagehelper.PageHelper;
@@ -129,15 +130,19 @@ public class BusHouseController {
     @PostMapping("/updateState")
     public Result updateState(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
+    	String msgContent="";
+    	String url=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
 		if(busHouse.getState().equals("1")){//设置为无效房源
 			busExamine.setType("3");   
 			busHouse.setState("2");
+			msgContent = MessageConstant.MESSAGE_HOUSE_INVALID;
 		}else if(busHouse.getState().equals("0")){//取消无效房源
 			busExamine.setType("8"); 
 			busHouse.setState("3");
+			msgContent = MessageConstant.MESSAGE_HOUSE_NOINVALID;
 		}
 		//提交审核消息
-		messageService.sendMessage("1", "提交无效房源申请", ""+busHouse.getId(), user.getName());
+		messageService.sendMessage("1", msgContent, url, user.getName());
 		//待审核状态
 		busHouseService.update(busHouse);
     	busExamine.setHouseId(busHouse.getId());
@@ -156,16 +161,19 @@ public class BusHouseController {
     @PostMapping("/updateIsSpecial")
     public Result updateIsSpecial(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
+    	String msgContent="";
+    	String url=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
     	if(busHouse.getIsspecial().equals("1")){//设置为特殊房源
     		busExamine.setType("1");
     		busHouse.setIsspecial("2");
+    		msgContent = MessageConstant.MESSAGE_HOUSE_SPECIAL;
     	}else if(busHouse.getIsspecial().equals("0")){//取消特殊房源
-    		
     		busExamine.setType("6");
     		busHouse.setIsspecial("3");
+    		msgContent = MessageConstant.MESSAGE_HOUSE_NOSPECIAL;
     	}
     	//提交审核消息
-		messageService.sendMessage("1", "提交特殊房源申请", ""+busHouse.getId(), user.getName());
+		messageService.sendMessage("1", msgContent, url, user.getName());
 		//待审核状态
 		busHouseService.update(busHouse);
     	busExamine.setHouseId(busHouse.getId());
@@ -184,16 +192,19 @@ public class BusHouseController {
     @PostMapping("/updateIsFine")
     public Result updateIsFine(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
+    	String msgContent="";
+    	String url=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
     	if(busHouse.getIsfine().equals("0")){//取消优质房源
     		busExamine.setType("7");
             busHouse.setIsfine("3");
-    		
+            msgContent = MessageConstant.MESSAGE_HOUSE_NOGOOD;
     	}else if(busHouse.getIsfine().equals("1")){//设置为优质房源
     		busExamine.setType("2");
             busHouse.setIsfine("2");
+            msgContent = MessageConstant.MESSAGE_HOUSE_GOOD;
     	}  
     	//提交审核消息
-		messageService.sendMessage("1", "提交优质房源申请", ""+busHouse.getId(), user.getName());
+		messageService.sendMessage("1", msgContent, url, user.getName());
 		//待审核状态
     	busHouseService.update(busHouse);
     	busExamine.setHouseId(busHouse.getId());
@@ -319,7 +330,9 @@ public class BusHouseController {
     	busExamine.setOtherimg(url.toString());
     	url.setLength(0);
     	//提交审核消息
-		messageService.sendMessage("2", "提交房源实勘图片录入申请", ""+busHouse.getId(), user.getName());
+    	String msgContent=MessageConstant.MESSAGE_HOUSE_REALIMG;
+    	String urlin=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
+		messageService.sendMessage("2", msgContent, urlin, user.getName());
     	busExamine.setHouseId(busHouse.getId());
     	busExamine.setType("4");
     	busExamine.setUserName(user.getName());
@@ -784,17 +797,5 @@ public class BusHouseController {
     	}
     	 return ResultGenerator.genOkResult(list);
     }
-    /**
-     * 测试接口
-     * @param map
-     * 
-     * */
-    @PostMapping("/test")
-    public Result test(Principal user,@RequestBody Map<String,Object> map) {
-    	List<BusHouse> add=new ArrayList<BusHouse>();
-////    	BusHouse bs=new BusHouse();
-////    			bs.setId( Long.parseLong(map.get("id").toString()));
-//    	Object ob=;
-        return ResultGenerator.genOkResult("");
-    }
+
 }
