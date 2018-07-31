@@ -166,7 +166,7 @@
 	 		SET b.record_user_name=#{recordUserName},
 	 			b.record_rel_name=(select su.relname from sys_user su	where su.username=#{recordUserName})
 	 		WHERE 
-	 		  bh.id=#{id}
+	 		  b.id=#{id}
 	 
 	 </update>
 	 
