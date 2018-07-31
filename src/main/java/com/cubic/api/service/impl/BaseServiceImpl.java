@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cubic.api.mapper.BaseMapper;
 import com.cubic.api.model.BaseRegion;
 import com.cubic.api.model.BaseXiaoQu;
+import com.cubic.api.model.Store;
 import com.cubic.api.service.BaseService;
 
 /**
@@ -31,6 +32,12 @@ public class BaseServiceImpl implements BaseService {
 	@Override
 	public List<BaseXiaoQu> listXiaoQu() {
 		return mapper.listXiaoQu();
+	}
+
+	@Override
+	public List<Store> listMendian() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

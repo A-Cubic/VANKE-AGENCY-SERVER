@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cubic.api.model.BaseRegion;
 import com.cubic.api.model.BaseXiaoQu;
+import com.cubic.api.model.Store;
 
 /**
  * @author cubic
@@ -12,4 +13,5 @@ import com.cubic.api.model.BaseXiaoQu;
 public interface BaseService {
 	List<BaseRegion> listRegions();
 	List<BaseXiaoQu> listXiaoQu();
+	List<Store> listMendian();
 }

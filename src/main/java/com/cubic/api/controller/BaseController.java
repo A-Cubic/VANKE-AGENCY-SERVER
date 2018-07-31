@@ -1,5 +1,6 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BaseRegion;
 import com.cubic.api.model.BaseXiaoQu;
+import com.cubic.api.model.Store;
 import com.cubic.api.service.BaseService;
 
 /**
@@ -42,6 +44,16 @@ public class BaseController {
     @PostMapping("/xiaoqu/list")
     public Result listXiaoQu() {
         List<BaseXiaoQu> list = service.listXiaoQu();
+        return ResultGenerator.genOkResult(list);
+    }
+    
+    /**
+     * 门店下拉
+     * 
+     * */
+    @PostMapping("/mendian/list")
+    public Result listMendian(Principal user) {
+        List<Store> list = service.listMendian();
         return ResultGenerator.genOkResult(list);
     }
 }
