@@ -78,6 +78,10 @@ public class CurrentUser {
      * 角色名
      */
     private String desc;
+    /**
+     * 角色名
+     */
+    private String descId;
     
     /**
      * 注册时间
@@ -212,6 +216,14 @@ public class CurrentUser {
 
 	public void setLatent_score(String latent_score) {
 		this.latent_score = latent_score;
+	}
+
+	public String getDescId() {
+		return descId;
+	}
+
+	public void setDescId(String descId) {
+		this.descId = descId;
 	}
     
     

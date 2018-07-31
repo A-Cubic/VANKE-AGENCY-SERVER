@@ -1,11 +1,12 @@
 package com.cubic.api.mapper;
 
-import com.cubic.api.core.mapper.MyMapper;
-import com.cubic.api.model.User;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.cubic.api.core.mapper.MyMapper;
+import com.cubic.api.model.User;
 
 /**
  * @author fei.yu
@@ -41,4 +42,6 @@ public interface UserMapper extends MyMapper<User> {
      * @return 用户
      */    
     List<User> listUserInfo(Map<String, Object> param);
+    
+
 }

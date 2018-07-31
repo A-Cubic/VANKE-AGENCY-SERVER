@@ -26,6 +26,8 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.LoginResponse;
 import com.cubic.api.model.User;
+import com.cubic.api.model.UserRole;
+import com.cubic.api.service.UserRoleService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.service.impl.UserDetailsServiceImpl;
 import com.github.pagehelper.PageHelper;
@@ -44,8 +46,10 @@ public class UserController {
     @Resource
     private UserDetailsServiceImpl userDetailsService;
     @Resource
+    private UserRoleService userRoleService;
+    @Resource
     private JwtUtil jwtUtil;
-
+    @PreAuthorize("hasAuthority('user:register')")
     @PostMapping("/register")
     public Result register(@RequestBody @Valid final User user,
                            final BindingResult bindingResult) {
@@ -55,7 +59,13 @@ public class UserController {
             final String msg = bindingResult.getFieldError().getDefaultMessage();
             return ResultGenerator.genFailedResult(msg);
         } else {
+        	//注册
         	this.userService.save(user);
+        	//添加角色关联
+        	UserRole userRole=new UserRole();
+        	userRole.setUserId(user.getId());
+        	userRole.setRoleId(user.getRoleId());
+        	userRoleService.save(userRole);
         	return ResultGenerator.genOkResult("创建成功");
 //            return this.getToken(user);
         }

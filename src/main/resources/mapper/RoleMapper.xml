@@ -28,4 +28,25 @@
         LEFT JOIN `sys_role_permission` rp ON r.id = rp.role_id
         LEFT JOIN `sys_permission` p ON rp.permission_id = p.id
     </select>
+    
+    <select id="listDesc" resultType="com.cubic.api.model.home.CurrentUser">
+ 		SELECT sr.`id` descId ,sr.`desc`
+    	FROM `sys_role` sr  
+    	WHERE 
+    		1=1
+    		<if test="role!=null and role==1"><!--经理权限 -->
+    			AND sr.`id`!=1
+    		</if>
+    		<if test="role!=null and role==4"><!--店长权限 -->
+    			AND sr.`id`!=1
+    			AND sr.`id`!=4
+
+    		</if>
+    		<if test="role!=null and role==3"><!--助理权限 -->
+    			AND sr.`id`!=1
+    			AND sr.`id`!=4
+    			AND sr.`id`!=3
+    		</if>
+    	GROUP BY sr.`id`	
+    </select>
 </mapper>

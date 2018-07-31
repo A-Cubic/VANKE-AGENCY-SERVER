@@ -1,6 +1,9 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -93,21 +96,44 @@ public class BusGuestController {
     	String msgContent="";
     	String url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
     	if("1".equals(busGuest.getIskey())){
+    		//客源无效状态2:无效房源
+        	busGuest.setIskey("2");
     		busExamine.setType("5");
     		msgContent = MessageConstant.MESSAGE_GUEST_INVALID;
     	}else if("0".equals(busGuest.getIskey())){
     		busExamine.setType("9");
+    		//客源无效状态3:取消无效房源
+        	busGuest.setIskey("3");
     		msgContent = MessageConstant.MESSAGE_GUEST_NOINVALID;
     	}
     	//提交审核消息
     	messageService.sendMessage("1", msgContent, url, user.getName());
-    	//客源无效状态2:提交待审核
-    	busGuest.setIskey("2");
+    
     	busGuestService.update(busGuest);
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
         return ResultGenerator.genOkResult(busGuest.getIskey());
     }
+    
+    /**
+     * 获取共享池客源
+     * @param busGuest
+     * 
+     * */
+    @PreAuthorize("hasAuthority('guest:updateIsshareUser')")
+    @PostMapping("/updateIsshareUser")
+    public Result updateUser(Principal user,@RequestBody BusGuest busGuest) {
+    	BusGuest busGuestNew=new BusGuest();
+    	if(null != busGuest){
+    		
+    			busGuestNew.setId(busGuest.getId());
+    			busGuestNew.setRecordUserName(user.getName());
+    			busGuestService.updateRecordUser(busGuestNew);
+    		
+    	}
+        return ResultGenerator.genOkResult("修改成功");
+    }
+    
     
     /**
      * 转让客源
@@ -130,33 +156,60 @@ public class BusGuestController {
     /**
      * 详情查询
      * @param map
+     * @throws ParseException 
      * 
      * */
     @PreAuthorize("hasAuthority('guest:detail')")
     @PostMapping("/detail")
-    public Result detail(@RequestBody Map<String,Object> map) {
+    public Result detail(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	BusGuest busGuest = busGuestService.findById(Long.valueOf(map.get("id").toString()));
+    	//不为维护人不能看
+    	if(!user.getName().equals(busGuest.getRecordUserName()) && !"1".equals(busGuest.getIsshare())){  		
+    		return ResultGenerator.genOkResult(0);
+    	}
+	    	//转换委托时间格式
+	     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	     	Date date = fmt.parse(busGuest.getCreateTime());
+			String  sre= fmt.format(date);
+			busGuest.setCreateTime(sre);
+			//转换上次维护时间格式
+	     	date = fmt.parse(busGuest.getRecordTime());
+			sre= fmt.format(date);
+			busGuest.setRecordTime(sre);
+			
         return ResultGenerator.genOkResult(busGuest);
     }
     /**
      * 客源条件查询
      * @param map
+     * @throws ParseException 
      * 
      * */
     @PreAuthorize("hasAuthority('guest:list')")
     @PostMapping("/list")
-    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    public Result list(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+    	
     	map.put("recordUserName", user.getName());
-    	List<BusGuest> list = busGuestService.listBusGuest(map);
-    		for(BusGuest busGuest:list){
-    			
-    			if(!busGuest.getRecordUserName().equals(user.getName())){
-    			
-    				
-    				busGuest.setCollaboratorType("1");
-    			}
-    		}
+   	    List<BusGuest> list = busGuestService.listBusGuest(map);
+
+ 		for(BusGuest busGuest:list){
+ 			
+ 	    	//转换委托时间格式
+ 	     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+ 	     	Date date = fmt.parse(busGuest.getCreateTime());
+ 			String  sre= fmt.format(date);
+ 			busGuest.setCreateTime(sre);
+ 			//转换上次维护时间格式
+ 	     	date = fmt.parse(busGuest.getRecordTime());
+ 			sre= fmt.format(date);
+ 			busGuest.setRecordTime(sre);
+ 			
+//    			//如果当前登录人不为维护人就是合作人
+//    			if(!busGuest.getRecordUserName().equals(user.getName())){	
+//    				busGuest.setCollaboratorType("1");
+//    			}
+   		}
         PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

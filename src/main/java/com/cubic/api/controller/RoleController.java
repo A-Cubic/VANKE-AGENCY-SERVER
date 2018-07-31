@@ -1,16 +1,29 @@
 package com.cubic.api.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.Role;
 import com.cubic.api.service.RoleService;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author fei.yu
@@ -52,5 +65,28 @@ public class RoleController {
         //noinspection unchecked
         final PageInfo<com.cubic.api.model.Resource> pageInfo = new PageInfo<com.cubic.api.model.Resource>(list);
         return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    /**
+     * 查询角色列表
+     * */
+    @PreAuthorize("hasAuthority('role:listDesc')")
+    @PostMapping("/listDesc")
+    public Result listDesc(Principal user) {
+	    Map<String,Object> param=new HashMap<String,Object>();
+	    param.put("userName", user.getName());
+	   	 if(user.toString().indexOf("ROLE_ADMIN")!=-1){ //经理
+	   		param.put("role", "1");
+	   	}else if(user.toString().indexOf("ROLE_MANAGER")!=-1){//店长/	
+	   		param.put("role", "4");
+	   	}else if(user.toString().indexOf("ROLE_SEC")!=-1){//助理
+	   		param.put("role", "3");
+	   	}else {
+	   	  return ResultGenerator.genOkResult(this.roleService.findAll());
+	   	}
+        final List<Role> list = this.roleService.listDesc(param);
+
+      
+        return ResultGenerator.genOkResult(list);
     }
 }

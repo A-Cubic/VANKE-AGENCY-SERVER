@@ -1,6 +1,10 @@
 package com.cubic.api.service;
 
 import com.cubic.api.model.BusHouseClicklog;
+
+import java.util.List;
+import java.util.Map;
+
 import com.cubic.api.core.service.Service;
 
 /**
@@ -15,4 +19,10 @@ public interface BusHouseClicklogService extends Service<BusHouseClicklog> {
      * 
      * */
 	void  insertClickLog(BusHouseClicklog busHouseClicklog);
+	 /**
+     * 点击记录查询
+     * @param map
+     * 
+     * */
+	List<BusHouseClicklog> listClickLog(Map<String,Object> map);
 }

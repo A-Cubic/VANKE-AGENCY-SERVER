@@ -14,12 +14,13 @@
     <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
   </resultMap>
   
-  <select id="listBusGuestLookrecord" resultMap="BaseResultMap">
-  	SELECT bgl.*,su.relname userRelName 
-  	FROM bus_guest_lookrecord bgl,sys_user su	
-  	WHERE guest_id=#{guestId}
-  		and  su.username=bgl.user_name
-  	ORDER BY create_time DESC	
+  <select id="listBusGuestLookrecord" resultType="com.cubic.api.model.BusGuestLookrecord">
+  	SELECT bgl.*,su.relname userRelName,bgl.create_time createTime,CONCAT(bh.xiaoqu_name,bh.numfloor,'号楼',bh.numunit,'单元',bh.numhousehold,'号') AS houseName 
+  	FROM bus_guest_lookrecord bgl,sys_user su,`bus_house` bh	
+  	WHERE bgl.guest_id=#{id}
+  		    and  su.username=bgl.user_name
+  			and bh.id=bgl.house_id
+  	ORDER BY bgl.create_time DESC	
   </select>
   
   

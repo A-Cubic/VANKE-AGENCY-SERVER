@@ -3,6 +3,7 @@ package com.cubic.api.controller;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -101,6 +102,10 @@ public class BusExamineController {
 		    		bushouse.setOtherimg(busExamineNew.getOtherimg());
 		    		bushouse.setExplorationUserName(busExamineNew.getUserName());
 		    		bushouse.setExplorationrelName(busExamineNew.getUserRelName());
+		    		if(!"".equals(busExamineNew.getShiimg())&&null!=busExamineNew.getShiimg()){//缩略图
+		    			bushouse.setTitleimg(Arrays.asList(busExamineNew.getShiimg().split(",")).get(0));
+		    		}
+		    		
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_REALIMG;
 		    	}else if(busExamineNew.getType().equals("6")){//审核类型为取消特殊房源审核
 		    		bushouse.setIsspecial("0");

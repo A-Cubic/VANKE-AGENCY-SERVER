@@ -5,4 +5,6 @@
         <id column="user_id" jdbcType="BIGINT" property="userId"/>
         <id column="role_id" jdbcType="BIGINT" property="roleId"/>
     </resultMap>
+    
+    
 </mapper>

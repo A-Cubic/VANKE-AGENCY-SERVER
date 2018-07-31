@@ -51,9 +51,14 @@ public class BusGuest {
     private String heartprice;
 
     /**
-     * 客源联系方式(可以有两个逗号隔开)
+     * 客源联系方式
      */
     private String phone;
+    
+    /**
+     *备用电话
+     */
+    private String phonetow;
 
     /**
      * 备注信息
@@ -111,7 +116,7 @@ public class BusGuest {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 客源合作人(逗号间隔)
@@ -122,7 +127,7 @@ public class BusGuest {
      * 上次维护时间
      */
     @Column(name = "record_time")
-    private Date recordTime;
+    private String recordTime;
     /**
      * 需求几室
      */
@@ -144,6 +149,7 @@ public class BusGuest {
      *是否是共享池里的数据
      */
     private String isshare;
+ 
     
     /**
      * 维护人真实姓名
@@ -452,7 +458,7 @@ public class BusGuest {
      *
      * @return create_time - 创建时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -461,7 +467,7 @@ public class BusGuest {
      *
      * @param createTime 创建时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -487,7 +493,7 @@ public class BusGuest {
      *
      * @return recordTime
      */
-	public Date getRecordTime() {
+	public String getRecordTime() {
 		return recordTime;
 	}
     /**
@@ -495,7 +501,7 @@ public class BusGuest {
      *
      * @param recordTime
      */
-	public void setRecordTime(Date recordTime) {
+	public void setRecordTime(String recordTime) {
 		this.recordTime = recordTime;
 	}
 
@@ -569,6 +575,14 @@ public class BusGuest {
 
 	public void setCollaboratorType(String collaboratorType) {
 		this.collaboratorType = collaboratorType;
+	}
+
+	public String getPhonetow() {
+		return phonetow;
+	}
+
+	public void setPhonetow(String phonetow) {
+		this.phonetow = phonetow;
 	}
     
     

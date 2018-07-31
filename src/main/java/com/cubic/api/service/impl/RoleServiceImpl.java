@@ -12,6 +12,7 @@ import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fei.yu
@@ -44,4 +45,9 @@ public class RoleServiceImpl extends AbstractService<Role> implements RoleServic
         this.rolePermissionMapper.deleteByCondition(condition);
         this.rolePermissionMapper.saveRolePermission(role.getId(), role.getPermissionIdList());
     }
+
+	@Override
+	public List<Role> listDesc(Map<String, Object> param) {
+		return roleMapper.listDesc(param);
+	}
 }

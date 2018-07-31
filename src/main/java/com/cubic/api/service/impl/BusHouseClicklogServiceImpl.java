@@ -7,6 +7,9 @@ import com.cubic.api.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 /**
@@ -28,5 +31,16 @@ public class BusHouseClicklogServiceImpl extends AbstractService<BusHouseClicklo
 		
 		busHouseClicklogMapper.insertClickLog(busHouseClicklog);
 	}
+    /**
+     * 查看点击记录
+     * @param map
+     * 
+     * */
+	@Override
+	public List<BusHouseClicklog> listClickLog(Map<String, Object> map) {
+
+		return busHouseClicklogMapper.listClickLog(map);
+	}
+
 
 }

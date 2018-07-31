@@ -1,6 +1,8 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -54,12 +56,13 @@ public class BusHouseClicklogController {
     	BusHouseClicklog busHouseClicklog = busHouseClicklogService.findById(id);
         return ResultGenerator.genOkResult(busHouseClicklog);
     }
-
-    @GetMapping
-    public Result list(@RequestParam(defaultValue = "0") Integer page,
-                       @RequestParam(defaultValue = "0") Integer size) {
-        PageHelper.startPage(page, size);
-        List<BusHouseClicklog> list = busHouseClicklogService.findAll();
+	/**
+	 * 记录log
+	 * */
+    @PostMapping("/list")
+    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+        List<BusHouseClicklog> list = busHouseClicklogService.listClickLog(map);
         PageInfo<BusHouseClicklog> pageInfo = new PageInfo<BusHouseClicklog>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

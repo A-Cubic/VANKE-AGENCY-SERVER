@@ -30,6 +30,7 @@
     <result column="huxingchu" jdbcType="VARCHAR" property="huxingchu" />   
      <result column="record_rel_name" jdbcType="VARCHAR" property="recordRelName" />
     <result column="create_rel_name" jdbcType="VARCHAR" property="createRelName" />
+      <result column="phonetow" jdbcType="VARCHAR" property="phonetow" />   
   </resultMap>
   
   
@@ -59,7 +60,8 @@
               huxingwei,
               huxingchu,
               record_rel_name,
-              create_rel_name
+              create_rel_name,
+              phonetow
 )	
   			VALUES (
   			#{guestname},
@@ -82,9 +84,10 @@
   			#{huxingshi},
   			#{huxingting},
   			#{huxingwei},
-  			#{husingchu},
+  			#{huxingchu},
   			(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
-  			(SELECT relname FROM sys_user WHERE username=#{createUserName})
+  			(SELECT relname FROM sys_user WHERE username=#{createUserName}),
+  			#{phonetow}
   			)
   </insert>
   
@@ -124,7 +127,8 @@
 				  `huxingchu`,
 				  `isshare`,
 				   record_rel_name,
-                   create_rel_name
+                   create_rel_name,
+                   phonetow
 				FROM bus_guest
 				
 				<where>

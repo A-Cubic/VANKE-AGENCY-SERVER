@@ -23,6 +23,8 @@ public class BusHouseLookrecord {
      */
     @Column(name = "house_id")
     private Long houseId;
+    
+
 
     /**
      * 创建时间
@@ -128,6 +130,6 @@ public class BusHouseLookrecord {
 	public void setUserRelName(String userRelName) {
 		this.userRelName = userRelName;
 	}
-    
+
     
 }

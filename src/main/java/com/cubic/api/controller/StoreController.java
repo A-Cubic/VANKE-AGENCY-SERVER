@@ -1,15 +1,23 @@
 package com.cubic.api.controller;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.Store;
 import com.cubic.api.service.StoreService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * @author cubic
@@ -44,12 +52,13 @@ public class StoreController {
 		Store store = storeService.findById(id);
 		return ResultGenerator.genOkResult(store);
 	}
-
-	@GetMapping("/list")
-	public Result list(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "0") Integer size) {
-		PageHelper.startPage(page, size);
+	/**
+	 * 查询全部
+	 * */
+	@PreAuthorize("hasAuthority('store:list')")
+	@PostMapping("/list")
+	public Result list() {
 		List<Store> list = storeService.findAll();
-		PageInfo<Store> pageInfo = new PageInfo<Store> (list);
-		return ResultGenerator.genOkResult(pageInfo);
+		return ResultGenerator.genOkResult(list);
 	}
 }

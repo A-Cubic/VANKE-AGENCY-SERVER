@@ -5,6 +5,7 @@ import com.cubic.api.model.Resource;
 import com.cubic.api.model.Role;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author fei.yu
@@ -17,4 +18,10 @@ public interface RoleMapper extends MyMapper<Role> {
      * @return 角色可控资源列表
      */
     List<Resource> findAllRoleWithPermission();
+    /**
+     * 按权限获得角色信息
+     *
+     * @return 角色可控资源列表
+     */
+    List<Role>  listDesc(Map<String, Object> param);
 }

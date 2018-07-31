@@ -34,7 +34,7 @@ public class BusGuestRecord {
      * 跟进时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 置顶状态
@@ -124,7 +124,7 @@ public class BusGuestRecord {
      *
      * @return create_time - 跟进时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -133,7 +133,7 @@ public class BusGuestRecord {
      *
      * @param createTime 跟进时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

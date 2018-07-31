@@ -46,7 +46,11 @@ public class BusGuestLookrecord {
      */
     @Column(name = "create_time")
     private String createTime;
-
+    /**
+     * 房源信息
+     */
+    @Transient
+    private String houseName;
     /**
      * 结束时间
      */
@@ -180,6 +184,14 @@ public class BusGuestLookrecord {
 
 	public void setUserRelName(String userRelName) {
 		this.userRelName = userRelName;
+	}
+
+	public String getHouseName() {
+		return houseName;
+	}
+
+	public void setHouseName(String houseName) {
+		this.houseName = houseName;
 	}
     
     

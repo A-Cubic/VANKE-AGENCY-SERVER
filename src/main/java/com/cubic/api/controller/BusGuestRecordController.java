@@ -1,6 +1,9 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -92,13 +95,21 @@ public class BusGuestRecordController {
     }
     /**查询跟进信息
      * @param map
+     * @throws ParseException 
      * 
      * */
     @PreAuthorize("hasAuthority('guestrecord:list')")
     @PostMapping("/list")
-    public Result list(@RequestBody Map<String,Object> map) {
+    public Result list(@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusGuestRecord> list = busGuestRecordService.listGuestRecord(map);
+        for(BusGuestRecord busGuestRecord:list){
+        	//转换时间格式
+	     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	     	Date date = fmt.parse(busGuestRecord.getCreateTime());
+			String  sre= fmt.format(date);
+			busGuestRecord.setCreateTime(sre);
+        }
         PageInfo<BusGuestRecord> pageInfo = new PageInfo<BusGuestRecord>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

@@ -30,4 +30,12 @@
   					#{type}
   					)
   </insert>
+  
+  
+  <select id="listClickLog" parameterType="map" resultMap="BaseResultMap">
+  	SELECT *
+  	FROM bus_house_clicklog 
+  	WHERE 
+  		house_id=#{houseId}
+  </select>
 </mapper>

@@ -57,7 +57,7 @@
   		SELECT bgr.*,su.relname userRelName
   		FROM  bus_guest_record bgr,sys_user su	
   		WHERE 
-  			guest_id = #{guestId}
+  			guest_id = #{id}
   			and su.username=bgr.user_name
   		order by  toptime desc		
   </select>
