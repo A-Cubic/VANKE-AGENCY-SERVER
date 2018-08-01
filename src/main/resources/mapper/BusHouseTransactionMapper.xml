@@ -26,5 +26,89 @@
     <result column="identity_prove_img" jdbcType="LONGVARCHAR" property="identityProveImg" />
     <result column="receipt_img" jdbcType="LONGVARCHAR" property="receiptImg" />
     <result column="agreement_img" jdbcType="LONGVARCHAR" property="agreementImg" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="contractnumber" jdbcType="VARCHAR" property="contractnumber" />
+     <result column="state" jdbcType="VARCHAR" property="state" />
   </resultMap>
+  <select id="listTransaction" parameterType="map" resultMap="BaseResultMap">
+  	SELECT bht.*, su.relname createrelName
+  	FROM bus_house_transaction bht
+  	LEFT JOIN `sys_user` su ON su.username =bht.create_user_name
+    WHERE 
+       1=1
+    	<if test="contractnumber!=null and contractnumber!=''"><!-- 合同编号 -->
+    	 AND bht.contractnumber like "%"#{contractnumber}"%"
+    	</if>
+    	<if test="type!=null and type!=''"><!-- 缴费状态 -->
+    	 AND bht.type = #{type}
+    	</if>
+    	<if test="state !=null and state !=''">
+    	 AND bht.state = #{state}
+    	</if>
+    	<if test="role !=null and role==2"><!-- 角色为经纪人只能看自己的 -->
+    	 AND 	bht.create_user_name =#{username}
+    	</if>
+    	<if test="role !=null and role!=2"><!-- 角色不为经济人的可以看本店所有的-->
+    	 AND 	su.store_id=(select store_id from sys_user where username=#{username})
+    	</if>
+  </select>
+  
+  <select id="detailTransaction" parameterType="map" resultMap="BaseResultMap">
+    SELECT bht.*, su.relname createrelName
+  	FROM bus_house_transaction bht
+  	LEFT JOIN `sys_user` su ON su.username =bht.create_user_name
+  	WHERE 
+  			bht.id=#{id}
+  </select>
+  
+  <insert id="insertTransaction" parameterType="com.cubic.api.model.BusHouseTransaction">
+  	INSERT INTO bus_house_transaction
+  	 (
+             `house_id`,
+             `guest_id`,
+             `create_user_name`,
+             `create_time`,
+             `buy_intermediary_price`,
+             `sell_intermediary_price`,
+             `buy_loan_price`,
+             `buy_intermediary_payment`,
+             `sell_intermediary_payment`,
+             `buy_loan_payment`,
+             `buy_intermediary_lack`,
+             `sell_intermediary_lack`,
+             `buy_loan_lack`,
+             `contract_img`,
+             `house_prove_img`,
+             `loan_contract_img`,
+             `identity_prove_img`,
+             `receipt_img`,
+             `agreement_img`,
+             `type`,
+             `contractnumber`,
+             `state`)
+             VALUES(
+             #{houseId},
+             #{guestId}.
+             #{createUserName},
+             NOW(),
+             #{buyIntermediaryPrice},
+             #{sellIntermediaryPrice},
+             #{buyLoanPrice},
+             #{buyIntermediaryPayment},
+             #{sellIntermediaryPayment},
+             #{buyLoanPayment},
+             #{buyIntermediaryLack},
+             #{sellIntermediaryLack},
+             #{buyLoanLack},
+             #{contractImg},
+             #{houseProveImg},
+             #{loanContractImg},
+             #{identityProveImg},
+             #{receiptImg},
+             #{agreementImg},
+             #{type},
+             #{contractnumber},
+             #{state}
+             )
+  </insert>
 </mapper>

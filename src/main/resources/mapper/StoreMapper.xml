@@ -11,7 +11,15 @@
   </resultMap>
   
   
-    <!-- <select id="ListBaseStore" resultMap="BaseResultMap">
-  		SELECT * FROM `base_store`
-  	</select>  -->
+    <select id="ListBaseStore" resultMap="BaseResultMap">
+  		SELECT bs.* 
+  		FROM `base_store` bs
+  		LEFT JOIN `sys_user` su ON bs.`id`=su.`store_id`
+  		WHERE 
+  			1=1 
+  			<if test="role!=null and role !=1"><!-- 除了admin以外,都只能看自己的门店 -->
+  				AND su.`username`=#{username}
+  			</if>
+  		GROUP BY bs.`id`
+  	</select> 
 </mapper>

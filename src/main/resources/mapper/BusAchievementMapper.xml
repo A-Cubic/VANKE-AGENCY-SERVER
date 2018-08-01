@@ -105,4 +105,36 @@
   		transaction_id=#{transactionId}
   	
   </update>
+  
+  <insert id="insertExamineAchievement" parameterType="com.cubic.api.model.BusAchievement">
+	   INSERT INTO bus_achievement
+	       (
+	             `user_name`,
+	             `house_id`,
+	             `transaction_id`,
+	             `rolenum`,
+	             `proportion`,
+	             `price`,
+	             `examine_type`,
+	             `create_time`)
+	             VALUES(
+	             #{userName},
+	             #{houseId},
+	             #{transactionId},
+	             #{rolenum},
+	             #{proportion},
+	             #{price},
+	             0,
+	             NOW()
+	             
+	             )
+  </insert>
+  
+  <select id="detailListAchievement" parameterType="map" resultMap="BaseResultMap">
+  		SELECT ba.*,su.relname userrelname
+  		FROM bus_achievement ba
+  		LEFT JOIN `sys_user` su ON su.username=ba.user_name
+  		WHERE 
+  			ba.transaction_id=#{id}
+  </select>
 </mapper>

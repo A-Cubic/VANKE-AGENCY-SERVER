@@ -30,4 +30,12 @@ public interface BusAchievementService extends Service<BusAchievement> {
 	 * @param BusAchievement
 	 * */
 	void updateExamineType(BusAchievement busAchievement);
+	
+	/**
+	 * 创建业绩
+	 * @param BusAchievement
+	 * */
+	void insertExamineAchievement(BusAchievement busAchievement);
+	
+	List<BusAchievement> detailListAchievement(Map<String,Object> map);
 }

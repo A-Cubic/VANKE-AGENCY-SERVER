@@ -42,6 +42,13 @@ public interface UserMapper extends MyMapper<User> {
      * @return 用户
      */    
     List<User> listUserInfo(Map<String, Object> param);
+    /**
+     * 注册用户
+     *
+     * @param user
+     * 
+     */   
+    void registerUser(User user);
     
 
 }

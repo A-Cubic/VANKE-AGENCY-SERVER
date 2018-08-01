@@ -168,7 +168,7 @@ public class BusHouse {
     private String recordUserName;
 
     /**
-     * 房屋提交人的id
+     * 房屋提交人的真实姓名
      */
     @Column(name = "create_user_name")
     private String createUserName;

@@ -74,6 +74,24 @@
 	    		relname = #{usertext}  or user_no = "VK000"#{usertext}
     </select>
     
+    <insert id="registerUser" keyProperty="id" useGeneratedKeys="true"  parameterType="com.cubic.api.model.User">
+      	INSERT INTO `sys_user`
+      	          (
+             `username`,
+             `password`,
+             `register_time`,
+             `phone`,
+             `store_id`,
+             `relname`)
+             VALUES(
+             #{username},
+             #{password},
+             NOW(),
+             #{phone},
+             #{store_id},
+             #{relname}        
+             )
+    </insert>
     
   
     

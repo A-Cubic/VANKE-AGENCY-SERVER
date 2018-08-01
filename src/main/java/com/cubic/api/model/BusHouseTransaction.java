@@ -26,6 +26,13 @@ public class BusHouseTransaction {
      */
     @Column(name = "create_user_name")
     private String createUserName;
+    
+
+    /**
+     * 创建人真实姓名
+     */
+    @Transient
+    private String createrelName;
     /**
      * 成交编号
      */
@@ -34,6 +41,10 @@ public class BusHouseTransaction {
      * 合同编号
      */
     private String  contractnumber;
+    /**
+     * 成交状态
+     */
+    private String state;
 
     /**
      * 创建时间
@@ -524,6 +535,22 @@ public class BusHouseTransaction {
 
 	public void setContractnumber(String contractnumber) {
 		this.contractnumber = contractnumber;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCreaterelName() {
+		return createrelName;
+	}
+
+	public void setCreaterelName(String createrelName) {
+		this.createrelName = createrelName;
 	}
     
     

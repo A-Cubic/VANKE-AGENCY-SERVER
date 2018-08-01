@@ -124,6 +124,14 @@ public class HomeController {
 			map.put("role", "2");
 		}
 		List<CurrentScore> list = service.listRankings(map);
+		
+		for(CurrentScore score:list){
+			//如果没有业绩等于0
+			if(score.getScore()==null || "".equals(score.getScore())){
+				score.setScore_value("0");
+				
+			}
+		}
 		PageInfo<CurrentScore> pageInfo = new PageInfo<CurrentScore>(list);
 		return ResultGenerator.genOkResult(pageInfo);
 	}

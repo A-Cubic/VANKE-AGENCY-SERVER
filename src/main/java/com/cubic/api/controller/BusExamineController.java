@@ -24,10 +24,12 @@ import com.cubic.api.model.BusAchievement;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusGuest;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.BusHouseTransaction;
 import com.cubic.api.service.BusAchievementService;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusGuestService;
 import com.cubic.api.service.BusHouseService;
+import com.cubic.api.service.BusHouseTransactionService;
 import com.cubic.api.service.MessageService;
 import com.cubic.api.util.MessageConstant;
 import com.github.pagehelper.PageHelper;
@@ -50,6 +52,8 @@ public class BusExamineController {
     private MessageService messageService;
     @Resource
     private BusAchievementService busAchievementService;
+    @Resource
+    private BusHouseTransactionService busHouseTransactionService;
 
 
     @PostMapping
@@ -133,10 +137,16 @@ public class BusExamineController {
 	    		textExamine=MessageConstant.MESSAGE_SUCCESS_GUEST_NOINVALID;
 	    		url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
 	    	}else if (busExamineNew.getType().equals("10")){
+	    		//通过业绩
 	    		BusAchievement busAchievement =new BusAchievement();
 	    		busAchievement.setTransactionId(busExamineNew.getTransactionId());
-	    		busAchievement.setExamineType("1");
+	    		busAchievement.setExamineType("1");//审核状态设置为1:已通过
 	    		busAchievementService.updateExamineType(busAchievement);
+	    		//成交状态设置为3:完成成交
+	    		BusHouseTransaction busHouseTransaction = new BusHouseTransaction();
+	    		busHouseTransaction.setId(busExamineNew.getTransactionId());
+	    		busHouseTransaction.setState("3");
+	    		busHouseTransactionService.update(busHouseTransaction);
 	    		textExamine=MessageConstant.MESSAGE_SUCCESS_AUDIT_ALLOT;
 	    		url=MessageConstant.MESSAGE_AUDIT_URL+busAchievement.getTransactionId();
 	    	}
@@ -184,10 +194,17 @@ public class BusExamineController {
 	    		url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
 	    	}else if(busExamineNew.getType().equals("10")){
 	    		noStr=MessageConstant.MESSAGE_FAIL_AUDIT_ALLOT;
+	    		
 	    		BusAchievement busAchievement =new BusAchievement();
 	    		busAchievement.setTransactionId(busExamineNew.getTransactionId());
 	    		busAchievement.setExamineType("0");
 	    		busAchievementService.updateExamineType(busAchievement);
+	    		
+	    		//成交状态设置为1:添加完成,分配业绩
+	    		BusHouseTransaction busHouseTransaction = new BusHouseTransaction();
+	    		busHouseTransaction.setId(busExamineNew.getTransactionId());
+	    		busHouseTransaction.setState("1");
+	    		busHouseTransactionService.update(busHouseTransaction);
 	    		url=MessageConstant.MESSAGE_AUDIT_URL+busAchievement.getTransactionId();
 	    	}
         	textExamine=noStr+busExamine.getContent();

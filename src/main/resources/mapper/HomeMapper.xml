@@ -163,27 +163,27 @@
 	</update>
 	<select id="listRankings" parameterType="map"  resultType="com.cubic.api.model.home.CurrentScore">
 		  SELECT a.*,@rownum:=@rownum+1 AS rank FROM (SELECT
-		  ba.`id`,
+		  su.username,
 		  su.relname real_name,
 		  SUM(price) score,
 		  bs.`store_name`
-		FROM bus_achievement ba,sys_user su ,base_store bs
-		WHERE 
-			ba.user_name=su.username
-			AND bs.`id`=su.store_id
-			AND ba.examine_type=1
-			<if test="type!=null">
+		  FROM sys_user su 
+          LEFT JOIN  bus_achievement ba  ON  su.username =ba.user_name AND  ba.examine_type=1 
+       <if test="type!=null">
 				<if test="type==1">
-					<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
+					<![CDATA[ AND DATE(ba.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(ba.create_time) <= DATE(NOW())]]>
 				</if>
 				<if test="type==2">
-					<![CDATA[ AND DATE(create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(create_time) <= DATE(NOW())]]>
+					<![CDATA[ AND DATE(ba.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(ba.create_time) <= DATE(NOW())]]>
 				</if>
 			</if>
+		LEFT JOIN base_store bs ON bs.`id`=su.store_id
+		WHERE 
+		  1=1
 			<if test="role!=null and role==2">
-				AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
-		    </if>
-		GROUP BY ba.user_name
+			  AND 	su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
+		    </if>		
+		GROUP BY su.username
 		ORDER BY SUM(price) DESC) a,(SELECT @rownum:=0) r
 	</select>
 	

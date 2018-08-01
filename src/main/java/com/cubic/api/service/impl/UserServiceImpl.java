@@ -119,4 +119,26 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 
 		return userMapper.listUserInfo(param);
 	}
+    //注册用户
+	@Override
+	public String  registerUser(User user) {
+	      User u = this.findBy("username", user.getUsername());
+	        if (u != null) {
+	            
+	           return "0";
+	        } else {	           	              
+	                user.setPassword(this.passwordEncoder.encode(user.getPassword().trim()));
+	                this.userMapper.registerUser(user);;
+	                // 如果没有指定角色Id，以默认普通用户roleId保存
+	                Long roleId = user.getRoleId();
+	                if (roleId == null) {
+	                    roleId = 2L;
+	                }
+	                this.userRoleMapper.insert(new UserRole()
+	                        .setUserId(user.getId())
+	                        .setRoleId(roleId));	
+	                return "1";
+	        }
+		
+	}
 }

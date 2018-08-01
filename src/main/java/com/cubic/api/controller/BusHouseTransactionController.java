@@ -6,6 +6,7 @@ import com.cubic.api.model.BusAchievement;
 import com.cubic.api.model.BusHouseTransaction;
 import com.cubic.api.service.BusHouseTransactionService;
 import com.cubic.api.util.NumberUtil;
+import com.cubic.api.util.OSSUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +31,22 @@ public class BusHouseTransactionController {
      * @param busHouseTransaction
      * */
     @PostMapping("/insert")
-    public Result add(Principal user,@RequestBody BusHouseTransaction busHouseTransaction,@RequestBody BusAchievement busAchievement) {
-    	busHouseTransactionService.save(busHouseTransaction);
+    public Result add(Principal user,@RequestBody BusHouseTransaction busHouseTransaction) {
+    	//判断缴费状态
+    	if("0".equals(busHouseTransaction.getBuyIntermediaryLack()) && "0".equals(busHouseTransaction.getSellIntermediaryLack()) && "0".equals(busHouseTransaction.getBuyLoanLack())){
+    		
+    		busHouseTransaction.setType("1");
+    	}else{
+    		busHouseTransaction.setType("0");
+    	}
+    	
+    	//添加完成状态
+    	busHouseTransaction.setState("1");
+    	//录入人
+    	busHouseTransaction.setCreateUserName(user.getName());
     	//计算业绩
-    	
-    	
+    	//OSSUtil.uploadOSSToInputStream(urltext,"house")
+    	busHouseTransactionService.insertTransaction(busHouseTransaction);
     	//根据添加的id生成成交编号
     	String num = NumberUtil.geoEquipmentNo("C",busHouseTransaction.getId());
     	BusHouseTransaction busHouseTransactionNew=new BusHouseTransaction();
@@ -68,7 +80,7 @@ public class BusHouseTransactionController {
     @PostMapping("/list")
     public Result list(Principal user,@RequestBody Map<String,Object> map) {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-        List<BusHouseTransaction> list = busHouseTransactionService.findAll();
+        List<BusHouseTransaction> list = busHouseTransactionService.listTransaction(map);
         PageInfo<BusHouseTransaction> pageInfo = new PageInfo<BusHouseTransaction>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

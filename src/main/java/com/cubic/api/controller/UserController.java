@@ -24,12 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.jwt.JwtUtil;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
+import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.LoginResponse;
 import com.cubic.api.model.User;
 import com.cubic.api.model.UserRole;
 import com.cubic.api.service.UserRoleService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.service.impl.UserDetailsServiceImpl;
+import com.cubic.api.util.NumberUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -51,22 +53,31 @@ public class UserController {
     private JwtUtil jwtUtil;
     @PreAuthorize("hasAuthority('user:register')")
     @PostMapping("/register")
-    public Result register(@RequestBody @Valid final User user,
+    public Result register(final Principal userPrincipal,@RequestBody @Valid final User user,
                            final BindingResult bindingResult) {
-        // {"username":"123456", "password":"123456", "email": "123456@qq.com"}
         if (bindingResult.hasErrors()) {
             //noinspection ConstantConditions
             final String msg = bindingResult.getFieldError().getDefaultMessage();
             return ResultGenerator.genFailedResult(msg);
         } else {
-        	//注册
-        	this.userService.save(user);
-        	//添加角色关联
-        	UserRole userRole=new UserRole();
-        	userRole.setUserId(user.getId());
-        	userRole.setRoleId(user.getRoleId());
-        	userRoleService.save(userRole);
-        	return ResultGenerator.genOkResult("创建成功");
+        	//判断权限
+  	  	  if(userPrincipal.toString().indexOf("ROLE_LEADER")!=-1
+  	  			  ||userPrincipal.toString().indexOf("ROLE_SEC")!=-1
+  	  			  ||userPrincipal.toString().indexOf("ROLE_ADMIN")!=-1){
+  	  		  //注册
+          String returnText=this.userService.registerUser(user);
+          if(!"0".equals(returnText)){      	         
+          	String num = NumberUtil.geoEquipmentNo("VK",user.getId());
+        	User userNew=new User();
+        	userNew.setId(user.getId());
+        	userNew.setUser_no(num);
+        	userService.update(userNew);
+          }
+          	  return ResultGenerator.genOkResult(returnText);
+  		   	}else {
+  		   	 return ResultGenerator.genOkResult("没有权限");
+  		   	}
+        	
 //            return this.getToken(user);
         }
     }

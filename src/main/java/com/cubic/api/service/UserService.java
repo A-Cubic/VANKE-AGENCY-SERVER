@@ -62,4 +62,11 @@ public interface UserService extends Service<User> {
      * @return 用户
      */    
     List<User> listUserInfo(Map<String, Object> param);
+    /**
+     * 注册用户
+     *
+     * @param user
+     * 
+     */   
+    String registerUser(User user);
 }

@@ -50,6 +50,20 @@ public class BusAchievementServiceImpl extends AbstractService<BusAchievement> i
 		busAchievementMapper.updateExamineType(busAchievement);
 		
 	}
+	/**
+	 * 创建业绩
+	 * @param busAchievement
+	 * */
+	@Override
+	public void insertExamineAchievement(BusAchievement busAchievement) {
+		busAchievementMapper.insertExamineAchievement(busAchievement);
+		
+	}
+	@Override
+	public List<BusAchievement> detailListAchievement(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return busAchievementMapper.detailListAchievement(map);
+	}
 
 
 

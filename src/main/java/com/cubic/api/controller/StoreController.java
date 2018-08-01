@@ -1,6 +1,9 @@
 package com.cubic.api.controller;
 
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -57,8 +60,18 @@ public class StoreController {
 	 * */
 	@PreAuthorize("hasAuthority('store:list')")
 	@PostMapping("/list")
-	public Result list() {
-		List<Store> list = storeService.findAll();
+	public Result list(Principal user) {
+		Map<String,Object> map =new HashMap<String, Object>();
+		map.put("username", user.getName());
+		
+	  	  if(user.toString().indexOf("ROLE_LEADER")!=-1){ //经理
+	  		map.put("role", "5");
+		   	}else if(user.toString().indexOf("ROLE_SEC")!=-1){//助理
+		   		map.put("role", "3");
+		   	}else if (user.toString().indexOf("ROLE_ADMIN")!=-1){
+		   		map.put("role", "1");
+		   	}
+		List<Store> list = storeService.ListBaseStore(map);
 		return ResultGenerator.genOkResult(list);
 	}
 }

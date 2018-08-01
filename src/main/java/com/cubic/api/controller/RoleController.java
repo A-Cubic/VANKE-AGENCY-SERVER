@@ -75,14 +75,10 @@ public class RoleController {
     public Result listDesc(Principal user) {
 	    Map<String,Object> param=new HashMap<String,Object>();
 	    param.put("userName", user.getName());
-	   	 if(user.toString().indexOf("ROLE_ADMIN")!=-1){ //经理
-	   		param.put("role", "1");
-	   	}else if(user.toString().indexOf("ROLE_MANAGER")!=-1){//店长/	
-	   		param.put("role", "4");
+	   	 if(user.toString().indexOf("ROLE_LEADER")!=-1){ //经理
+	   		param.put("role", "5");
 	   	}else if(user.toString().indexOf("ROLE_SEC")!=-1){//助理
 	   		param.put("role", "3");
-	   	}else {
-	   	  return ResultGenerator.genOkResult(this.roleService.findAll());
 	   	}
         final List<Role> list = this.roleService.listDesc(param);
 
