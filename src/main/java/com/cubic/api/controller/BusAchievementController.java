@@ -63,24 +63,56 @@ public class BusAchievementController {
     	
     	//审核信息
     	BusExamine busExamine=new BusExamine();
-    	busExamine.setTransactionId(listbusAchievement.get(0).getTransactionId());
-    	String msgContent = MessageConstant.MESSAGE_AUDIT_ALLOT;
-    	String url=MessageConstant.MESSAGE_GUEST_URL;
+    	if(listbusAchievement!=null&&listbusAchievement.size()!=0){
+    		Long id=null;
+    		//验证成交是否为空
+    		if(listbusAchievement.get(0).getTransactionId()!=null){
+    			id=listbusAchievement.get(0).getTransactionId();
+    			
+    		}else {
+    			return ResultGenerator.genOkResult("0");
+    			
+    		}
+    		busExamine.setTransactionId(id);
+        	String msgContent = MessageConstant.MESSAGE_AUDIT_ALLOT;
+        	String url=MessageConstant.MESSAGE_GUEST_URL;
+        			Long houseId=null;
+        			Long transactionId=null;
+    		    	for(BusAchievement busAchievement:listbusAchievement){
+    		    		
+    		    		if(busAchievement.getHouseId()!=null&&busAchievement.getTransactionId()!=null){  		    			
+    		    			houseId=busAchievement.getHouseId();
+    		    			transactionId=busAchievement.getTransactionId();
+    		    		}
+    		    		//角色为7:促成合作人的情况给houseid和transactionid赋值
+    		    		if(busAchievement.getRolenum()!=null &&"7".equals( busAchievement.getRolenum())){
+    		    			busAchievement.setHouseId(houseId);
+    		    			busAchievement.setTransactionId(transactionId);
+    		    		}
+    		    		busAchievementService.insertExamineAchievement(busAchievement);    	
+    		    	}
+    		    	//修改成交状态为待审核
+    		    	BusHouseTransaction busHouseTransaction=new BusHouseTransaction();
+    		    	busHouseTransaction.setId(id);
+    		    	busHouseTransaction.setState("2");
+    		    	busHouseTransactionService.update(busHouseTransaction);
+    		    	//发送消息
+    		    	messageService.sendMessage("1", msgContent, url, user.getName());
+    		    	busExamine.setType("10");
+    		    	busExamine.setUserName(user.getName());
+    		    	busExamineService.insertBusExamine(busExamine);
+            return ResultGenerator.genOkResult("1");
+    		
+    	}else{
+    		
+    		return ResultGenerator.genOkResult("0");
+    	}
     	
-		    	for(BusAchievement busAchievement:listbusAchievement){
-		    		busAchievementService.insertExamineAchievement(busAchievement);    	
-		    	}
-		    	//发送消息
-		    	messageService.sendMessage("1", msgContent, url, user.getName());
-		    	busExamine.setType("10");
-		    	busExamine.setUserName(user.getName());
-		    	busExamineService.insertBusExamine(busExamine);
-        return ResultGenerator.genOkResult("1");
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busAchievementService.deleteById(id);
+    @PostMapping("/delete")
+    public Result delete(@RequestBody Map<String,Object> map) {
+    	//busAchievementService.deleteTransactionAchievement(Long.valueOf(map.get("id").toString()));
         return ResultGenerator.genOkResult();
     }
 
@@ -93,9 +125,25 @@ public class BusAchievementController {
 	 * 查看分配业绩
 	 * @param map
 	 * */
+    @PreAuthorize("hasAuthority('achievement:detailList')")
     @PostMapping("/detailList")
     public Result detail(@RequestBody Map<String,Object> map) {
     	List<BusAchievement> busAchievementlist = busAchievementService.detailListAchievement(map);
+    	  for(BusAchievement busAchievement:busAchievementlist){
+            	
+            	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){
+            		String rolenametext=busAchievement.getRoleName();
+            		rolenametext=rolenametext.replaceAll("1","录入人");
+            		rolenametext=rolenametext.replaceAll("2","维护人");
+            		rolenametext=rolenametext.replaceAll("3","钥匙人");
+            		rolenametext=rolenametext.replaceAll("4","实勘人");
+            		rolenametext=rolenametext.replaceAll("5","独家人");
+            		rolenametext=rolenametext.replaceAll("6","促成人");
+            		rolenametext=rolenametext.replaceAll("7","促成合作人");
+            		rolenametext = rolenametext.substring(0,rolenametext.length() - 1);
+            		busAchievement.setRoleName(rolenametext);
+            	}
+            }
         return ResultGenerator.genOkResult(busAchievementlist);
     }
     
@@ -103,6 +151,7 @@ public class BusAchievementController {
  * 点击编辑查询业绩
  * @param busAchievement
  * */
+    @PreAuthorize("hasAuthority('achievement:getAchievement')")
     @PostMapping("/getAchievement")
     public Result getAchievement(Principal user,@RequestBody BusAchievement busAchievement) {
     	BusHouseTransaction busHouseTransaction=null;
@@ -132,15 +181,16 @@ public class BusAchievementController {
     		busAchievementNew.setTransactionId(busHouseTransaction.getId());
     		//角色类型:录入人(1)
     		busAchievementNew.setRolenum("1");
+    		
     		//录入人占百分之十
     		double proCreate=0.1;
     		//业绩百分比
-    		busAchievementNew.setProportion(String.valueOf(proCreate*100));
+    		busAchievementNew.setProportion(String.valueOf((int)(proCreate*100)));
     		pro=pro-proCreate;
     		double priceCreate=price*proCreate;
     		price=price-priceCreate;
     		//录入人业绩金额
-    		busAchievementNew.setPrice(String.valueOf(priceCreate));
+    		busAchievementNew.setPrice(String.valueOf((int)priceCreate));
     		list.add(busAchievementNew);
     	}
     	
@@ -159,12 +209,12 @@ public class BusAchievementController {
     		//维护人占百分之十
     		double proRecord=0.1;
     		//业绩百分比
-    		busAchievementNew.setProportion(String.valueOf(proRecord*100));
+    		busAchievementNew.setProportion(String.valueOf((int)(proRecord*100)));
     		pro=pro-proRecord;
     		double priceRecord=price*proRecord;
     		price=price-priceRecord;
     		//维护人业绩金额
-    		busAchievementNew.setPrice(String.valueOf(priceRecord));
+    		busAchievementNew.setPrice(String.valueOf((int)priceRecord));
     		list.add(busAchievementNew);
     	}
     	
@@ -183,12 +233,12 @@ public class BusAchievementController {
     		//钥匙人占百分之5
     		double proKey=0.05;
     		//业绩百分比
-    		busAchievementNew.setProportion(String.valueOf(proKey*100));
+    		busAchievementNew.setProportion(String.valueOf((int)(proKey*100)));
     		pro=pro-proKey;
     		double priceKey=price*proKey;
     		price=price-priceKey;
     		//钥匙人业绩金额
-    		busAchievementNew.setPrice(String.valueOf(priceKey));
+    		busAchievementNew.setPrice(String.valueOf((int)priceKey));
     		list.add(busAchievementNew);
     	}
     	
@@ -207,12 +257,12 @@ public class BusAchievementController {
     		//实勘人占百分之10
     		double proExploration=0.10;
     		//业绩百分比
-    		busAchievementNew.setProportion(String.valueOf(proExploration*100));
+    		busAchievementNew.setProportion(String.valueOf((int)(proExploration*100)));
     		pro=pro-proExploration;
     		double priceExploration=price*proExploration;
     		price=price-priceExploration;
     		//实勘人业绩金额
-    		busAchievementNew.setPrice(String.valueOf(priceExploration));
+    		busAchievementNew.setPrice(String.valueOf((int)priceExploration));
     		list.add(busAchievementNew);
     	}
     	
@@ -229,9 +279,9 @@ public class BusAchievementController {
     		//角色类型:促成人(6)
     		busAchievementNew.setRolenum("6");
     		//促成人占剩下的全部
-    		busAchievementNew.setProportion(String.valueOf(pro*100));
+    		busAchievementNew.setProportion(String.valueOf((int)(pro*100)));
     		//促成人占剩下的全部
-    		busAchievementNew.setPrice(String.valueOf(price));
+    		busAchievementNew.setPrice(String.valueOf((int)price));
     		list.add(busAchievementNew);
     	
         return ResultGenerator.genOkResult(list);

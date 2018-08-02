@@ -31,11 +31,24 @@ import com.cubic.api.service.StoreService;
 public class StoreController {
 	@Resource
 	private StoreService storeService;
-
-	@PostMapping
+	/**
+	 * 创建门店
+	 * @param store
+	 * */
+	@PreAuthorize("hasAuthority('store:insert')")
+	@PostMapping("/insert")
 	public Result add(@RequestBody Store store) {
-		storeService.save(store);
-		return ResultGenerator.genOkResult();
+		storeService.insertBaseStore(store);
+		if(store.getStreetId()!=null&&store.getStreetId().size()!=0){
+			
+		}
+		//添加门店范围
+		for(String id:store.getStreetId()){
+			Map<String,Object> map=new HashMap<String,Object>();
+			map.put("streetId", id);
+			storeService.insertStoreRange(map);
+		}
+		return ResultGenerator.genOkResult("创建成功");
 	}
 
 	@DeleteMapping("/{id}")

@@ -36,6 +36,17 @@ public interface BusAchievementService extends Service<BusAchievement> {
 	 * @param BusAchievement
 	 * */
 	void insertExamineAchievement(BusAchievement busAchievement);
-	
+	/**
+	 * 查询业绩分配详情
+	 * @param BusAchievement
+	 * */
 	List<BusAchievement> detailListAchievement(Map<String,Object> map);
+	
+	
+	   
+	   /**
+	    * 成交业绩分配未通过,删除业绩
+	    * @param long
+	    * */
+     void deleteTransactionAchievement(Long id);
 }

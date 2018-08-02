@@ -46,4 +46,11 @@ public interface BusGuestService extends Service<BusGuest> {
      * 
      * */
 	List<BusGuest> listRecordTime();
+	
+	 /**
+     * 按照条件查询成交客源
+     * @param map
+     * 
+     * */	
+	List<BusGuest> listTransactionGuest(Map<String,Object> map);
 }

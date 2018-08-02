@@ -1,6 +1,13 @@
 package com.cubic.api.model;
 
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "base_store")
 public class Store {
@@ -19,6 +26,22 @@ public class Store {
      */
     @Column(name = "store_adress")
     private String storeAdress;
+    /**
+     *位置code
+     *
+     * */
+    @Transient
+    private List<String> regionCode;
+    /**
+     * 街道id
+     * */
+    @Transient
+    private List<String>  streetId;
+    /**
+     * 用户列表
+     * */
+    @Transient
+    private List<User> userlist;
 
     /**
      * @return id
@@ -69,4 +92,30 @@ public class Store {
     public void setStoreAdress(String storeAdress) {
         this.storeAdress = storeAdress;
     }
+
+	public List<String> getRegionCode() {
+		return regionCode;
+	}
+
+	public void setRegionCode(List<String> regionCode) {
+		this.regionCode = regionCode;
+	}
+
+	public List<String> getStreetId() {
+		return streetId;
+	}
+
+	public void setStreetId(List<String> streetId) {
+		this.streetId = streetId;
+	}
+
+	public List<User> getUserlist() {
+		return userlist;
+	}
+
+	public void setUserlist(List<User> userlist) {
+		this.userlist = userlist;
+	}
+    
+    
 }

@@ -161,6 +161,26 @@
 				</where>
 	 </select>
 	 
+	 
+	 <select id="listTransactionGuest" parameterType="map" resultMap="BaseResultMap"> 
+	   SELECT 
+			      `id`,
+				  `number`,
+				  `guestname`,
+				   remarks,
+				   record_user_name,
+				   record_rel_name,
+				   record_time,
+				   create_time	 
+	   FROM bus_guest
+	   WHERE 
+	    iskey!=1
+	    AND record_user_name=#{username}
+	    <if test="searchText !=null and searchText !=''"><!-- 搜索文本,模糊查询客源名称或客源编号 -->
+	    	AND  guestname like "%"#{searchText}"%" OR number like "%"#{searchText}"%"
+	    </if>
+	 </select>
+	 
 	 <update id="updateRecordUser" parameterType="com.cubic.api.model.BusGuest">
 	  		UPDATE bus_guest b
 	 		SET b.record_user_name=#{recordUserName},
@@ -171,13 +191,15 @@
 	 </update>
 	 
 	 <select id="listRecordTime" resultMap="BaseResultMap">
-	 		SELECT (CASE 
-					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=10 AND (DATE(NOW())-DATE(record_time)) <15 THEN '1']]>
-					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=15 THEN '2']]>
-					END) casetype,id,record_user_name
-				FROM `bus_guest`
+				SELECT bg.id,su.`username` record_user_name,
+						(CASE 
+							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bg.record_time)>=10 AND TO_DAYS(NOW())-TO_DAYS(bg.record_time) <15 THEN '1']]>
+							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bg.record_time)>=15 THEN '2']]>
+							END) casetype  
+				FROM `bus_guest` bg ,`sys_user` su 
 				WHERE 
-					<![CDATA[(DATE(NOW())-DATE(record_time))>=10]]>
-					AND isshare = '0'
+				 bg.isshare = '0'
+				AND su.`username`=bg.`record_user_name`				
+				AND   <![CDATA[TO_DAYS(NOW())-TO_DAYS(bg.record_time)>=10]]>		
 	 </select>
 </mapper>

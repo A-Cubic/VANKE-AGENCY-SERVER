@@ -200,6 +200,9 @@
 			<if test="type != null"><!-- 类型条件-->
 				 and bh.type = #{type}
 			</if>
+			<if test="isshare!=null and isshare == 0">
+			     and bh.isshare = 0
+			</if>
 			<if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->
 				 and  su.username=#{userName}	
 				 and  bsr.store_id=su.store_id					
@@ -394,14 +397,18 @@
 	 
 	 
 	 <select id="listRecordTime" resultMap="BaseResultMap">
-	 		SELECT (CASE 
-					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=10 AND (DATE(NOW())-DATE(record_time)) <15 THEN '1']]>
-					<![CDATA[WHEN (DATE(NOW())-DATE(record_time))>=15 THEN '2']]>
-					END) casetype,id,record_user_name
-				FROM `bus_house`
+				SELECT bh.id,su.`username` record_user_name,
+						(CASE 
+							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=10 AND TO_DAYS(NOW())-TO_DAYS(bh.record_time) <15 THEN '1']]>
+							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=15 THEN '2']]>
+							END) casetype  
+				FROM `bus_house` bh ,`sys_user` su 
 				WHERE 
-					<![CDATA[(DATE(NOW())-DATE(record_time))>=10]]>
-					AND isshare = '0'
+				
+				 bh.isshare = '0'
+				AND su.`username`=bh.`record_user_name`
+				OR su.`username` IN (SELECT user_name FROM  bus_house_like WHERE `house_id`=bh.`id`)
+				AND   <![CDATA[TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=10]]>	
 	 </select>
 	 
 	 

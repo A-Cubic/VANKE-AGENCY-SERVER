@@ -8,6 +8,7 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="store_name" jdbcType="VARCHAR" property="storeName" />
     <result column="store_adress" jdbcType="VARCHAR" property="storeAdress" />
+    <collection property="userlist" column="id" ofType="com.cubic.api.model.User" select="selectUserList"/>
   </resultMap>
   
   
@@ -22,4 +23,45 @@
   			</if>
   		GROUP BY bs.`id`
   	</select> 
+  	
+  	
+  	<insert id="insertBaseStore" parameterType="com.cubic.api.model.Store">
+  		INSERT INTO base_store
+  			          (
+		             `store_name`,
+		             `store_adress`)
+		             VALUES(
+		             #{storeName},
+		             #{storeAdress}
+		             )
+  	
+  	</insert>
+  	
+  	
+  	<insert id="insertStoreRange" parameterType="map">
+  		INSERT INTO `base_store_range`
+            (
+             `store_id`,
+             `region_name`,
+             `street_name`)
+		VALUES (
+		        #{storeId},
+		        (SELECT br.region_name FROM `base_region` br ,`base_street` bs WHERE bs.`region_code`=br.`region_code` AND bs.`id`=#{streetId}),
+		        (SELECT street_name FROM `base_street` WHERE id = #{streetId}));
+  	
+  	</insert>
+  	
+  	<select id="selectUserList" resultType="com.cubic.api.model.User">
+  			SELECT id,user_no,relname,phone 
+  			FROM `sys_user`
+  			WHERE 
+  				store_id=#{id}
+  	
+  	</select>
+  	
+  	<select id="storeUser" resultMap="BaseResultMap">
+  			select id,store_name
+  			from  base_store
+  			
+  	</select>
 </mapper>

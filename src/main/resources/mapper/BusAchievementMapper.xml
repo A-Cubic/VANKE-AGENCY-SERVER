@@ -100,7 +100,7 @@
   
   <update  id="updateExamineType" parameterType="com.cubic.api.model.BusAchievement">
   	UPDATE bus_achievement
-  	SET examine_type = #{examineType};
+  	SET examine_type = #{examineType}
   	WHERE 
   		transaction_id=#{transactionId}
   	
@@ -137,4 +137,10 @@
   		WHERE 
   			ba.transaction_id=#{id}
   </select>
+  
+  
+  <delete id="deleteTransactionAchievement" parameterType="java.lang.Long">
+  		DELETE FROM bus_achievement 
+  		WHERE transaction_id=#{id}
+  </delete>
 </mapper>

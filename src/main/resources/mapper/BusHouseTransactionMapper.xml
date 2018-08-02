@@ -29,6 +29,7 @@
     <result column="number" jdbcType="VARCHAR" property="number" />
     <result column="contractnumber" jdbcType="VARCHAR" property="contractnumber" />
      <result column="state" jdbcType="VARCHAR" property="state" />
+     <result column="buytype" jdbcType="VARCHAR" property="buytype" />
   </resultMap>
   <select id="listTransaction" parameterType="map" resultMap="BaseResultMap">
   	SELECT bht.*, su.relname createrelName
@@ -48,7 +49,7 @@
     	<if test="role !=null and role==2"><!-- 角色为经纪人只能看自己的 -->
     	 AND 	bht.create_user_name =#{username}
     	</if>
-    	<if test="role !=null and role!=2"><!-- 角色不为经济人的可以看本店所有的-->
+    	<if test="role == null or role!=2"><!-- 角色不为经济人的可以看本店所有的-->
     	 AND 	su.store_id=(select store_id from sys_user where username=#{username})
     	</if>
   </select>
@@ -61,7 +62,7 @@
   			bht.id=#{id}
   </select>
   
-  <insert id="insertTransaction" parameterType="com.cubic.api.model.BusHouseTransaction">
+  <insert id="insertTransaction" keyProperty="id" useGeneratedKeys="true" parameterType="com.cubic.api.model.BusHouseTransaction">
   	INSERT INTO bus_house_transaction
   	 (
              `house_id`,
@@ -85,10 +86,11 @@
              `agreement_img`,
              `type`,
              `contractnumber`,
-             `state`)
+             `state`,
+              buytype)
              VALUES(
              #{houseId},
-             #{guestId}.
+             #{guestId},
              #{createUserName},
              NOW(),
              #{buyIntermediaryPrice},
@@ -108,7 +110,8 @@
              #{agreementImg},
              #{type},
              #{contractnumber},
-             #{state}
+             #{state},
+             #{buytype}
              )
   </insert>
 </mapper>

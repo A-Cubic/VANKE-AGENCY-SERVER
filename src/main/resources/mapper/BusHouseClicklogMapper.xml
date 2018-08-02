@@ -37,5 +37,6 @@
   	FROM bus_house_clicklog 
   	WHERE 
   		house_id=#{houseId}
+  		AND type=#{type}
   </select>
 </mapper>

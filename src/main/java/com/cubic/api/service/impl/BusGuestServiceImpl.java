@@ -73,4 +73,13 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 
 		return busGuestMapper.listRecordTime();
 	}
+	/**
+	 * 按照搜索条件查询成交客源
+	 * @param map
+	 * */
+	@Override
+	public List<BusGuest> listTransactionGuest(Map<String, Object> map) {
+
+		return busGuestMapper.listTransactionGuest(map);
+	}
 }

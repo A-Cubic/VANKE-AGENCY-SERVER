@@ -61,8 +61,16 @@ public class BusAchievementServiceImpl extends AbstractService<BusAchievement> i
 	}
 	@Override
 	public List<BusAchievement> detailListAchievement(Map<String, Object> map) {
-		// TODO Auto-generated method stub
+
 		return busAchievementMapper.detailListAchievement(map);
+	}
+	/**
+	 * 删除成交业绩未通过审核的
+	 * */
+	@Override
+	public void deleteTransactionAchievement(Long id) {
+
+		busAchievementMapper.deleteTransactionAchievement(id);
 	}
 
 

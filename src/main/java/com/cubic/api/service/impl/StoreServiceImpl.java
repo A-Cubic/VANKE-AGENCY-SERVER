@@ -27,6 +27,32 @@ public class StoreServiceImpl extends AbstractService<Store> implements StoreSer
 	public List<Store> ListBaseStore(Map<String, Object> map) {
 		return storeMapper.ListBaseStore(map);
 	}
+	/**
+	 * 创建门店
+	 * 
+	 * */
+	@Override
+	public void insertBaseStore(Store store) {
+		storeMapper.insertBaseStore(store);
+		
+	}
+/**
+ * 添加门店范围
+ * 
+ * */
+	@Override
+	public void insertStoreRange(Map<String, Object> map) {
+		storeMapper.insertStoreRange(map);
+		
+	}
+	/**
+	 * 通讯录
+	 * */
+	@Override
+	public List<Store> storeUser() {
+		// TODO Auto-generated method stub
+		return storeMapper.storeUser();
+	}
     
     
  

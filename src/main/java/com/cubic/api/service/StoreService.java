@@ -18,4 +18,25 @@ public interface StoreService extends Service<Store> {
 	 * @param map
 	 * */
 	List<Store> ListBaseStore(Map<String, Object> map);
+	
+	/**
+	 * 创建门店
+	 * @param Store
+	 * */
+	void insertBaseStore(Store store);
+	
+	/**
+	 * 添加门店范围
+	 * @param map
+	 * */
+	void insertStoreRange(Map<String, Object> map);
+	
+	
+	/**
+	 * 通讯录门店分组
+	 *
+	 * */
+	List<Store> storeUser();
+
+
 }

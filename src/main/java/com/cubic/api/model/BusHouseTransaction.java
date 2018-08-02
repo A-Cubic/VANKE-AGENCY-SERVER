@@ -1,7 +1,14 @@
 package com.cubic.api.model;
 
 import java.util.Date;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Table(name = "bus_house_transaction")
 public class BusHouseTransaction {
@@ -45,7 +52,10 @@ public class BusHouseTransaction {
      * 成交状态
      */
     private String state;
-
+    /**
+     * 成交类型(1:买卖,2:租赁)
+     */
+    private String buytype;
     /**
      * 创建时间
      */
@@ -116,36 +126,49 @@ public class BusHouseTransaction {
      */
     @Column(name = "contract_img")
     private String contractImg;
+    @Transient
+    private List<String> contractImgList;
 
     /**
      * 产权证图片
      */
     @Column(name = "house_prove_img")
     private String houseProveImg;
+    @Transient
+    private List<String> houseProveImgList;
 
     /**
      * 贷款合同图片
      */
     @Column(name = "loan_contract_img")
     private String loanContractImg;
+    @Transient
+    private List<String> loanContractImgList;
 
     /**
      * 身份证图片
      */
     @Column(name = "identity_prove_img")
     private String identityProveImg;
+    @Transient
+    private List<String> identityProveImgList;
+    
 
     /**
      * 收据图片
      */
     @Column(name = "receipt_img")
     private String receiptImg;
+    @Transient
+    private List<String> receiptImgList;
 
     /**
      * 补充协议图片
      */
     @Column(name = "agreement_img")
     private String agreementImg;
+    @Transient
+    private List<String> agreementImgList;
 
     /**
      * @return id
@@ -551,6 +574,62 @@ public class BusHouseTransaction {
 
 	public void setCreaterelName(String createrelName) {
 		this.createrelName = createrelName;
+	}
+
+	public String getBuytype() {
+		return buytype;
+	}
+
+	public void setBuytype(String buytype) {
+		this.buytype = buytype;
+	}
+
+	public List<String> getContractImgList() {
+		return contractImgList;
+	}
+
+	public void setContractImgList(List<String> contractImgList) {
+		this.contractImgList = contractImgList;
+	}
+
+	public List<String> getHouseProveImgList() {
+		return houseProveImgList;
+	}
+
+	public void setHouseProveImgList(List<String> houseProveImgList) {
+		this.houseProveImgList = houseProveImgList;
+	}
+
+	public List<String> getLoanContractImgList() {
+		return loanContractImgList;
+	}
+
+	public void setLoanContractImgList(List<String> loanContractImgList) {
+		this.loanContractImgList = loanContractImgList;
+	}
+
+	public List<String> getIdentityProveImgList() {
+		return identityProveImgList;
+	}
+
+	public void setIdentityProveImgList(List<String> identityProveImgList) {
+		this.identityProveImgList = identityProveImgList;
+	}
+
+	public List<String> getReceiptImgList() {
+		return receiptImgList;
+	}
+
+	public void setReceiptImgList(List<String> receiptImgList) {
+		this.receiptImgList = receiptImgList;
+	}
+
+	public List<String> getAgreementImgList() {
+		return agreementImgList;
+	}
+
+	public void setAgreementImgList(List<String> agreementImgList) {
+		this.agreementImgList = agreementImgList;
 	}
     
     

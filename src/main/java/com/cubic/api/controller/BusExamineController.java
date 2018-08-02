@@ -84,7 +84,7 @@ public class BusExamineController {
     	//审核通过
     	if(busExamine.getResult().equals("1")){
     		//审核类型不是5:客源无效审核或9:取消无效客源审核
-	    	if(!busExamineNew.getType().equals("5") && !busExamineNew.getType().equals("9")){
+	    	if(!"5".equals(busExamineNew.getType()) && !"9".equals(busExamineNew.getType())&&!"10".equals(busExamineNew.getType())){
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
 		    	if(busExamineNew.getType().equals("1")){//审核类型为特殊房源审核
@@ -154,7 +154,7 @@ public class BusExamineController {
     		//未通过理由
     		String noStr="";
     		//判断不为客源类型的审核
-        	if(!busExamineNew.getType().equals("5") && !busExamineNew.getType().equals("9")){
+    		if(!"5".equals(busExamineNew.getType()) && !"9".equals(busExamineNew.getType())&&!"10".equals(busExamineNew.getType())){
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
 		    	if(busExamineNew.getType().equals("1")){//提交特殊房源审核未通过,状态从2:提交待审核变回0:不是特殊房源
@@ -194,18 +194,15 @@ public class BusExamineController {
 	    		url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
 	    	}else if(busExamineNew.getType().equals("10")){
 	    		noStr=MessageConstant.MESSAGE_FAIL_AUDIT_ALLOT;
-	    		
-	    		BusAchievement busAchievement =new BusAchievement();
-	    		busAchievement.setTransactionId(busExamineNew.getTransactionId());
-	    		busAchievement.setExamineType("0");
-	    		busAchievementService.updateExamineType(busAchievement);
+	    		//删除成交未通过的业绩
+	    		busAchievementService.deleteTransactionAchievement(busExamineNew.getTransactionId());
 	    		
 	    		//成交状态设置为1:添加完成,分配业绩
 	    		BusHouseTransaction busHouseTransaction = new BusHouseTransaction();
 	    		busHouseTransaction.setId(busExamineNew.getTransactionId());
 	    		busHouseTransaction.setState("1");
 	    		busHouseTransactionService.update(busHouseTransaction);
-	    		url=MessageConstant.MESSAGE_AUDIT_URL+busAchievement.getTransactionId();
+	    		url=MessageConstant.MESSAGE_AUDIT_URL+busExamineNew.getTransactionId();
 	    	}
         	textExamine=noStr+busExamine.getContent();
     	}

@@ -26,8 +26,10 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.LoginResponse;
+import com.cubic.api.model.Store;
 import com.cubic.api.model.User;
 import com.cubic.api.model.UserRole;
+import com.cubic.api.service.StoreService;
 import com.cubic.api.service.UserRoleService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.service.impl.UserDetailsServiceImpl;
@@ -49,6 +51,8 @@ public class UserController {
     private UserDetailsServiceImpl userDetailsService;
     @Resource
     private UserRoleService userRoleService;
+	@Resource
+	private StoreService storeService;
     @Resource
     private JwtUtil jwtUtil;
     @PreAuthorize("hasAuthority('user:register')")
@@ -165,7 +169,15 @@ public class UserController {
     public Result logout(final Principal user) {
         return ResultGenerator.genOkResult();
     }
-
+    /**
+     * 通讯录
+     * */
+    
+    @PostMapping("/storeUser")
+    public Result storeUser(){
+    	List<Store> userlist=storeService.storeUser();
+    	 return ResultGenerator.genOkResult(userlist);
+    }
     /**
      * 获得 token
      */

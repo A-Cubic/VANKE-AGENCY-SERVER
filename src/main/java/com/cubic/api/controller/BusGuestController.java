@@ -227,4 +227,37 @@ public class BusGuestController {
 	      PageInfo<User> pageInfo = new PageInfo<User>(list);
     	 return ResultGenerator.genOkResult(pageInfo);
     }
+    
+    
+    /**
+     * 查询成交客源
+     * @param  page  size map
+     * @throws ParseException 
+     * @RequestBody Map<String,Object> map
+     * */
+    @PreAuthorize("hasAuthority('guest:listTransactionGuest')")
+    @PostMapping("/listTransactionGuest")
+    public Result listTransactionGuest(Principal user,@RequestBody Map<String,Object> map) throws ParseException{
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	     
+    	map.put("username", user.getName());
+   	    List<BusGuest> list = busGuestService.listTransactionGuest(map);
+
+ 		for(BusGuest busGuest:list){
+ 			
+ 	    	//转换委托时间格式
+ 	     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+ 	     	Date date = fmt.parse(busGuest.getCreateTime());
+ 			String  sre= fmt.format(date);
+ 			busGuest.setCreateTime(sre);
+ 			//转换上次维护时间格式
+ 	     	date = fmt.parse(busGuest.getRecordTime());
+ 			sre= fmt.format(date);
+ 			busGuest.setRecordTime(sre);
+ 			
+
+   		}
+    	PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
+  	 return ResultGenerator.genOkResult(pageInfo);
+    }
 }

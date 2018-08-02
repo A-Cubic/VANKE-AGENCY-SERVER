@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusHouseTransactionRepairMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusHouseTransactionRepair">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="transaction_id" jdbcType="BIGINT" property="transactionId" />
+    <result column="buy_intermediary_payment" jdbcType="VARCHAR" property="buyIntermediaryPayment" />
+    <result column="sell_intermediary_payment" jdbcType="VARCHAR" property="sellIntermediaryPayment" />
+    <result column="buy_loan_payment" jdbcType="VARCHAR" property="buyLoanPayment" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="ListTransactionRepair" parameterType="map" resultMap="BaseResultMap">
+  	SELECT * 
+  	FROM `bus_house_transaction_repair`
+  	WHERE 
+  		transaction_id=#{transactionId}
+  </select>
+  
+  
+  
+  <insert id="insertTransactionRepair" parameterType="com.cubic.api.model.BusHouseTransactionRepair">
+  	INSERT INTO `bus_house_transaction_repair`
+  	            (
+             `user_name`,
+             `transaction_id`,
+             `buy_intermediary_payment`,
+             `sell_intermediary_payment`,
+             `buy_loan_payment`,
+             `create_time`)
+          VALUES(
+          #{username},
+          #{transactionId},
+          #{buyIntermediaryPayment},
+          #{sellIntermediaryPayment},
+          #{buyLoanPayment},
+          NOW()
+          )   
+  
+  </insert>
+  
+  
+</mapper>

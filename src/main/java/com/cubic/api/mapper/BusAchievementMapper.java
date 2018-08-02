@@ -29,7 +29,15 @@ public interface BusAchievementMapper extends MyMapper<BusAchievement> {
 	 * @param BusAchievement
 	 * */
 	void insertExamineAchievement(BusAchievement busAchievement);
-	
+	/**
+	 * 查询成交业绩分配详情
+	 * */
    List<BusAchievement> detailListAchievement(Map<String,Object> map);
+   
+   /**
+    * 成交业绩分配未通过,删除业绩
+    * @param long
+    * */
+   void deleteTransactionAchievement(Long id);
 	
 }
