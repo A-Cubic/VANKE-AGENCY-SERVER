@@ -164,5 +164,10 @@ public class HomeController {
 		service.upadateImg(url, user.getName());
 		return ResultGenerator.genOkResult(url);
 	}
+	@PostMapping("/user/newHouseList")
+	public Result newHouseList(){
+		List<BusHouse> list=service.newHouseList();
+		return ResultGenerator.genOkResult(list);
+	}
 
 }

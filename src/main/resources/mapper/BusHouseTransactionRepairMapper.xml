@@ -32,7 +32,7 @@
              `buy_loan_payment`,
              `create_time`)
           VALUES(
-          #{username},
+          #{userName},
           #{transactionId},
           #{buyIntermediaryPayment},
           #{sellIntermediaryPayment},

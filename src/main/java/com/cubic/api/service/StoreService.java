@@ -37,6 +37,10 @@ public interface StoreService extends Service<Store> {
 	 *
 	 * */
 	List<Store> storeUser();
-
+	/**
+	 * 判断是否存在
+	 *
+	 * */
+	Store storeIF(Store store);
 
 }

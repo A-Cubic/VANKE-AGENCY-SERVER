@@ -72,6 +72,17 @@ public class BusAchievementServiceImpl extends AbstractService<BusAchievement> i
 
 		busAchievementMapper.deleteTransactionAchievement(id);
 	}
+	
+	@Override
+	public List<BusAchievement> listAchievementTow(Map<String, Object> map) {
+
+		return busAchievementMapper.listAchievementTow(map);
+	}
+	@Override
+	public List<BusAchievement> listStoreAllAchievement(Map<String, Object> map) {
+
+		return busAchievementMapper.listStoreAllAchievement(map);
+	}
 
 
 

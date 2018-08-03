@@ -25,10 +25,15 @@ public class BusAchievement {
     @Transient
     private String userrelname;
     /**
-     * 个人总业绩
+     * 个人总业绩OR 所有门店总业绩
      */
     @Transient
     private String sumprice;
+    /**
+     * 门店名称
+     */
+    @Transient
+    private String storeName;
 
     /**
      * 房源id
@@ -296,6 +301,14 @@ public class BusAchievement {
 
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
+	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
     
     

@@ -1,6 +1,9 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -57,11 +60,22 @@ public class BusHouseClicklogController {
     }
 	/**
 	 * 记录log
+	 * @throws ParseException 
 	 * */
     @PostMapping("/list")
-    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    public Result list(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseClicklog> list = busHouseClicklogService.listClickLog(map);
+        
+        for(BusHouseClicklog busHouseClicklog:list){
+        	//转换时间
+         	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+ 	     	Date date = fmt.parse(busHouseClicklog.getCreateTime());
+ 			String  sre= fmt.format(date);
+ 			busHouseClicklog.setCreateTime(sre);
+        }
+        
+ 
         PageInfo<BusHouseClicklog> pageInfo = new PageInfo<BusHouseClicklog>(list);
         return ResultGenerator.genOkResult(pageInfo);
     }

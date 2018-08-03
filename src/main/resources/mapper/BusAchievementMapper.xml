@@ -143,4 +143,71 @@
   		DELETE FROM bus_achievement 
   		WHERE transaction_id=#{id}
   </delete>
+  
+  
+  <select id="listAchievementTow" parameterType="Map" resultMap="BaseResultMap">
+  SELECT
+
+	  busa.`user_name`,
+	  bht.`number` dealNum,
+	  bht.`contractnumber` contractNum,
+	  busa.`transaction_id`,
+	  su.`relname` userrelname,
+	  bh.`xiaoqu_name` xiaoquName,
+	  CONCAT (GROUP_CONCAT(busa.`rolenum`),",") roleName,
+	  SUM( busa.`proportion`) proportion,
+	  SUM(busa.`price`) sumprice,
+	  bht.create_time,
+	  bs.store_name storeName
+	  
+	  
+
+	FROM bus_achievement busa,`bus_house_transaction` bht,`sys_user` su,`bus_house` bh,`base_store` bs
+  
+	WHERE 
+	1=1
+
+		AND busa.examine_type=1
+		AND bht.`id`=busa.`transaction_id`
+		AND su.`username`=busa.`user_name`
+		AND bh.`id`=busa.`house_id`
+		
+		<if test="(createTimeStart!=null and createTimeStart!='') and (createTimeEnd!=null and createTimeEnd!='')">
+			<![CDATA[AND  DATE(busa.create_time) > #{createTimeStart} AND DATE(busa.create_time) < #{createTimeEnd}]]>
+		</if>
+		<if test="(createTimeStart!=null and createTimeStart!='')  and (createTimeEnd==null or createTimeEnd=='')">
+			<![CDATA[AND  DATE(busa.create_time) > #{createTimeStart}]]>
+		</if>
+		<if test="(createTimeStart==null or createTimeStart=='') and (createTimeEnd!=null and createTimeEnd!='')">
+			<![CDATA[ AND DATE(busa.create_time) < #{createTimeEnd}]]>
+		</if>
+		<if test="storeId!=null"><!-- 店长权限能看自己门店的-->
+		 AND su.`store_id`=#{storeId}
+		</if>
+		AND bs.id=su.`store_id`
+		GROUP BY busa.transaction_id,busa.`user_name`
+
+		ORDER BY  busa.create_time DESC
+  </select>
+  
+  
+  <select id="listStoreAllAchievement" parameterType="Map" resultMap="BaseResultMap">
+  	  		SELECT  bs.id,bs.store_name storeName,SUM(busa.price)  price
+	  		FROM `base_store` bs
+	  		LEFT JOIN sys_user su ON bs.id=su.`store_id`
+	  		LEFT JOIN bus_achievement busa ON su.`username`=busa.`user_name` AND busa.examine_type=1
+	  		WHERE 
+	  		1=1
+	  		<if test="(createTimeStart!=null and createTimeStart!='') and (createTimeEnd!=null and createTimeEnd!='')">
+				<![CDATA[AND  DATE(busa.create_time) > #{createTimeStart} AND DATE(busa.create_time) < #{createTimeEnd}]]>
+			</if>
+			<if test="(createTimeStart!=null and createTimeStart!='')  and (createTimeEnd==null or createTimeEnd=='')">
+				<![CDATA[AND  DATE(busa.create_time) > #{createTimeStart}]]>
+			</if>
+			<if test="(createTimeStart==null or createTimeStart=='') and (createTimeEnd!=null and createTimeEnd!='')">
+				<![CDATA[ AND DATE(busa.create_time) < #{createTimeEnd}]]>
+			</if>
+	  		GROUP BY bs.id
+	  		ORDER BY price DESC
+  </select>
 </mapper>

@@ -50,8 +50,16 @@ public class StoreServiceImpl extends AbstractService<Store> implements StoreSer
 	 * */
 	@Override
 	public List<Store> storeUser() {
-		// TODO Auto-generated method stub
+	
 		return storeMapper.storeUser();
+	}
+	/**
+	 * 验证是否存在
+	 * */
+	@Override
+	public Store storeIF(Store store) {
+	
+		return storeMapper.storeIF(store);
 	}
     
     

@@ -20,4 +20,5 @@ public interface HomeMapper {
 	List<CurrentScore> listRankings(Map<String,Object> map);
 	void upadateInfo(User user);
 	void upadateImg(String avatar,String username);
+	List<BusHouse> newHouseList();
 }

@@ -63,11 +63,13 @@ public class BusGuestController {
     	busGuestService.insertBusGuest(busGuest);
     	
     	//根据id得到客源编号并更新
-    	String num = NumberUtil.geoEquipmentNo("G",busGuest.getId());
-    	BusGuest busGuestNew=new BusGuest();
-    	busGuestNew.setId(busGuest.getId());
-    	busGuestNew.setNumber(num);
-    	busGuestService.update(busGuestNew);
+    	if(busGuest.getId()!=null){
+	    	String num = NumberUtil.geoEquipmentNo("G",busGuest.getId());
+	    	BusGuest busGuestNew=new BusGuest();
+	    	busGuestNew.setId(busGuest.getId());
+	    	busGuestNew.setNumber(num);
+	    	busGuestService.update(busGuestNew);
+    	}
         return ResultGenerator.genOkResult("添加成功");
     }
 

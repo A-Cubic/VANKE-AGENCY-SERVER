@@ -37,7 +37,7 @@ public class BusHouseTransactionController {
     @PreAuthorize("hasAuthority('transaction:insert')")
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusHouseTransaction busHouseTransaction) {
-    	//判断缴费状态
+    	//判断缴费状态(0:未结清,1:已结清)
     	if("0".equals(busHouseTransaction.getBuyIntermediaryLack()) && "0".equals(busHouseTransaction.getSellIntermediaryLack()) && "0".equals(busHouseTransaction.getBuyLoanLack())){
     		
     		busHouseTransaction.setType("1");
@@ -124,11 +124,14 @@ public class BusHouseTransactionController {
     	
     	busHouseTransactionService.insertTransaction(busHouseTransaction);
     	//根据添加的id生成成交编号
-    	String num = NumberUtil.geoEquipmentNo("C",busHouseTransaction.getId());
-    	BusHouseTransaction busHouseTransactionNew=new BusHouseTransaction();
-    	busHouseTransactionNew.setId(busHouseTransaction.getId());
-    	busHouseTransactionNew.setNumber(num);
-    	busHouseTransactionService.update(busHouseTransactionNew);
+    	if(busHouseTransaction.getId()!=null){
+    		String num = NumberUtil.geoEquipmentNo("C",busHouseTransaction.getId());
+        	BusHouseTransaction busHouseTransactionNew=new BusHouseTransaction();
+        	busHouseTransactionNew.setId(busHouseTransaction.getId());
+        	busHouseTransactionNew.setNumber(num);
+        	busHouseTransactionService.update(busHouseTransactionNew);   		
+    	}
+    
         return ResultGenerator.genOkResult("添加成功");
     }
 

@@ -72,7 +72,8 @@ public class BusHouseLookrecordController {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseLookrecord> list = busHouseLookrecordService.listBusHouseLookrecord(map);
         for(BusHouseLookrecord busHouseLookrecord:list){        	
-         	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         	//转换时间格式
+        	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
          	Date date = fmt.parse(busHouseLookrecord.getCreateTime());
     		String  sre= fmt.format(date);    		
     		busHouseLookrecord.setCreateTime(sre);

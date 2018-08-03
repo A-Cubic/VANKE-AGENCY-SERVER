@@ -75,8 +75,10 @@ public class BusExamineController {
     @PreAuthorize("hasAuthority('examine:updateResult')")
     @PostMapping("/updateResult")
     public Result updateResult(Principal user,@RequestBody BusExamine busExamine) {
+    	//查询审核信息
     	BusExamine busExamineNew=busExamineService.findById(busExamine.getId());
-    	if(busExamineNew.getState().equals("2")){
+    	//判断是否有人审核过了(0:未审核,1:已审核)
+    	if(busExamineNew.getState().equals("1")){
     		  return ResultGenerator.genOkResult("已经有人审核过了");
     	}
     	String textExamine="";
@@ -206,25 +208,14 @@ public class BusExamineController {
 	    	}
         	textExamine=noStr+busExamine.getContent();
     	}
+    	//发送消息
     	messageService.sendMessageResult(textExamine, url, user.getName(), busExamineNew.getUserName());
     	busExamine.setState("1");
     	busExamine.setUserName(user.getName());
     	busExamineService.updateResult(busExamine);
         return ResultGenerator.genOkResult("审核完成");
     }
-    /**
-     * 开始审核(审核状态设置为审核中:1)
-     * @param busGuest
-     * 
-     * */
-    @PreAuthorize("hasAuthority('examine:updateState')")
-    @PostMapping("/updateState")
-    public Result updateState(Principal user,@RequestBody BusExamine busExamine) {
-    	busExamine.setState("1");
-    	busExamine.setUserName(user.getName());
-    	busExamineService.updateResult(busExamine);
-        return ResultGenerator.genOkResult();
-    }
+
     /**
      * 审核详情查询
      * @param map
@@ -233,6 +224,7 @@ public class BusExamineController {
     @PreAuthorize("hasAuthority('examine:detail')")
     @PostMapping("/detail")
     public Result detail(@RequestBody Map<String,Object> map) {
+    	//详细信息
     	BusExamine busExamine = busExamineService.findById(Long.valueOf( map.get("id").toString()));
         return ResultGenerator.genOkResult(busExamine);
     }

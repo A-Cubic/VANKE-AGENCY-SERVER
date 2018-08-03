@@ -96,6 +96,11 @@ public class HomeServiceImpl implements HomeService {
 	public void upadateImg(String url,String username) {
 		mapper.upadateImg(url,username);
 	}
+
+	@Override
+	public List<BusHouse> newHouseList() {
+		return mapper.newHouseList();
+	}
 	 
 
 }

@@ -20,7 +20,7 @@
   			bhl.house_id=#{houseId}
   			and  su.username=bhl.user_name
   		
-  		ORDER BY create_time DESC	
+  		ORDER BY bhl.create_time DESC	
   
   </select>
 

@@ -105,7 +105,8 @@ public class BusHouseRecordController {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         List<BusHouseRecord> list = busHouseRecordService.listHouseRecord(map);
         for(BusHouseRecord busHouseRecord:list){        	
-         	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         	//转换时间格式
+        	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
          	Date date = fmt.parse(busHouseRecord.getCreateTime());
     		String  sre= fmt.format(date);    		
     		busHouseRecord.setCreateTime(sre);

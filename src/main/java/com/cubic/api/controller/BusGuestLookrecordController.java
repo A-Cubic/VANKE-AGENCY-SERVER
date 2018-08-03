@@ -53,14 +53,14 @@ public class BusGuestLookrecordController {
   
     	   
     	for(BusGuestLookrecord busGuestLookrecord:busGuestLookrecords){
-    		//开始时间转换
+    		//开始时间的转换
     		String str =busGuestLookrecord.getCreateTime();
     		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
     		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     		Date d = format.parse(str.replace("Z", " UTC"));
     		String  sre= fmt.format(d);
     		busGuestLookrecord.setCreateTime(sre);
-    		//结束时间转换
+    		//结束时间的转换
     		str =busGuestLookrecord.getEndtime();
     		d = format.parse(str.replace("Z", " UTC"));
     		sre= fmt.format(d);

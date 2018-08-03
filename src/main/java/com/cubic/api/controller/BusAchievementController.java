@@ -27,11 +27,13 @@ import com.cubic.api.model.BusAchievement;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseTransaction;
+import com.cubic.api.model.Store;
 import com.cubic.api.service.BusAchievementService;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.BusHouseTransactionService;
 import com.cubic.api.service.MessageService;
+import com.cubic.api.service.StoreService;
 import com.cubic.api.util.MessageConstant;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -53,6 +55,8 @@ public class BusAchievementController {
     private MessageService messageService;
     @Resource
     private BusExamineService busExamineService;
+	@Resource
+	private StoreService storeService;
     /**
      * 成交业绩创建
      * @param List<BusAchievement>
@@ -73,13 +77,18 @@ public class BusAchievementController {
     			return ResultGenerator.genOkResult("0");
     			
     		}
+    		//审核的成交id
     		busExamine.setTransactionId(id);
+    		//消息
         	String msgContent = MessageConstant.MESSAGE_AUDIT_ALLOT;
         	String url=MessageConstant.MESSAGE_GUEST_URL;
+        	        //房源id
         			Long houseId=null;
+        			//成交id
         			Long transactionId=null;
     		    	for(BusAchievement busAchievement:listbusAchievement){
     		    		
+    		    		//判断房源id和成交id不为空
     		    		if(busAchievement.getHouseId()!=null&&busAchievement.getTransactionId()!=null){  		    			
     		    			houseId=busAchievement.getHouseId();
     		    			transactionId=busAchievement.getTransactionId();
@@ -124,15 +133,15 @@ public class BusAchievementController {
 	/**
 	 * 查看分配业绩
 	 * @param map
+	 * @throws ParseException 
 	 * */
     @PreAuthorize("hasAuthority('achievement:detailList')")
     @PostMapping("/detailList")
-    public Result detail(@RequestBody Map<String,Object> map) {
+    public Result detail(@RequestBody Map<String,Object> map) throws ParseException {
     	List<BusAchievement> busAchievementlist = busAchievementService.detailListAchievement(map);
     	  for(BusAchievement busAchievement:busAchievementlist){
-            	
-            	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){
-            		String rolenametext=busAchievement.getRoleName();
+            	if(!"".equals(busAchievement.getRolenum())||null!=busAchievement.getRolenum()){
+            		String rolenametext=busAchievement.getRolenum();
             		rolenametext=rolenametext.replaceAll("1","录入人");
             		rolenametext=rolenametext.replaceAll("2","维护人");
             		rolenametext=rolenametext.replaceAll("3","钥匙人");
@@ -140,25 +149,29 @@ public class BusAchievementController {
             		rolenametext=rolenametext.replaceAll("5","独家人");
             		rolenametext=rolenametext.replaceAll("6","促成人");
             		rolenametext=rolenametext.replaceAll("7","促成合作人");
-            		rolenametext = rolenametext.substring(0,rolenametext.length() - 1);
+            		
             		busAchievement.setRoleName(rolenametext);
             	}
+            	
+            	
             }
         return ResultGenerator.genOkResult(busAchievementlist);
     }
     
-/**
- * 点击编辑查询业绩
- * @param busAchievement
- * */
+	/**
+	 * 点击编辑查询业绩
+	 * @param busAchievement
+	 * */
     @PreAuthorize("hasAuthority('achievement:getAchievement')")
     @PostMapping("/getAchievement")
     public Result getAchievement(Principal user,@RequestBody BusAchievement busAchievement) {
     	BusHouseTransaction busHouseTransaction=null;
     	List<BusAchievement> list=new ArrayList<BusAchievement>();
-    	if(busAchievement.getTransactionId()!=null && !"".equals(busAchievement.getTransactionId())){
+    	//验证成交id是否为空
+    	if(busAchievement.getTransactionId() != null && !"".equals(busAchievement.getTransactionId())){
     		Map<String,Object> map =new HashMap<String,Object>();
     		map.put("id", busAchievement.getTransactionId());
+    		//按照成交id查询成交详情
     		busHouseTransaction=busHouseTransactionService.detailTransaction(map);
     	}else {
     		  return ResultGenerator.genOkResult("0");   		
@@ -300,10 +313,8 @@ public class BusAchievementController {
     		map.put("userNameOne", user.getName());
     	}else if(user.toString().indexOf("ROLE_MANAGER")!=-1){//店长权限看本店的业绩		
     		map.put("userName", user.getName());
-    	}else{//测试数据用
-    		map.put("userNameOne", user.getName());
     	}
-    	
+    	//查询
         List<BusAchievement> list = busAchievementService.listMyAchievement(map);
         
         
@@ -314,6 +325,7 @@ public class BusAchievementController {
          	Date date = fmt.parse(busAchievement.getCreateTime());
     		String  sre= fmt.format(date);
     		busAchievement.setCreateTime(sre);
+    		//判断生成角色名称
         	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){
         		String rolenametext=busAchievement.getRoleName();
         		rolenametext=rolenametext.replaceAll("1","录入人");
@@ -331,7 +343,7 @@ public class BusAchievementController {
         return ResultGenerator.genOkResult(pageInfo);
     }
 	/**
-	 * 审核成交业绩
+	 * 查看审核成交业绩
 	 * @param map
 	 * @throws ParseException 
 	 * */
@@ -341,7 +353,7 @@ public class BusAchievementController {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
     	List<BusAchievement> list = busAchievementService.examineAchievement(map);
     	  for(BusAchievement busAchievement:list){
-          	
+          	//判断角色名称
           	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){
           		String rolenametext=busAchievement.getRoleName();
           		rolenametext=rolenametext.replaceAll("1","录入人");
@@ -357,6 +369,82 @@ public class BusAchievementController {
           }
     	PageInfo<BusAchievement> pageInfo = new PageInfo<BusAchievement>(list);
         return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    
+	/**
+	 * 查看分店业绩
+	 * @param map
+	 * @throws ParseException 
+	 * */
+    @PreAuthorize("hasAuthority('achievement:listAchievementTow')")
+    @PostMapping("/listAchievementTow")
+    public Result listAchievementTow(Principal user,@RequestBody Map<String,Object> map) throws ParseException{
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+    	List<BusAchievement> list = busAchievementService.listAchievementTow(map);
+    	  for(BusAchievement busAchievement:list){
+          	//转换时间格式
+           	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+           	Date date = fmt.parse(busAchievement.getCreateTime());
+      		String  sre= fmt.format(date);
+      		busAchievement.setCreateTime(sre);
+          	//判断角色名称
+          	if(!"".equals(busAchievement.getRoleName())||null!=busAchievement.getRoleName()){
+          		String rolenametext=busAchievement.getRoleName();
+          		rolenametext=rolenametext.replaceAll("1","录入人");
+          		rolenametext=rolenametext.replaceAll("2","维护人");
+          		rolenametext=rolenametext.replaceAll("3","钥匙人");
+          		rolenametext=rolenametext.replaceAll("4","实勘人");
+          		rolenametext=rolenametext.replaceAll("5","独家人");
+          		rolenametext=rolenametext.replaceAll("6","促成人");
+          		rolenametext=rolenametext.replaceAll("7","促成合作人");
+          		rolenametext = rolenametext.substring(0,rolenametext.length() - 1);
+          		busAchievement.setRoleName(rolenametext);
+          	}
+          }
+    	PageInfo<BusAchievement> pageInfo = new PageInfo<BusAchievement>(list);
+        return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+	/**
+	 * 查询全部门店的业绩
+	 * @param map
+	 * @throws ParseException 
+	 * */
+    @PreAuthorize("hasAuthority('achievement:listStoreAllAchievement')")
+    @PostMapping("/listStoreAllAchievement")
+    public Result listStoreAllAchievement(Principal user,@RequestBody Map<String,Object> map){
+    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+    	List<BusAchievement> list = busAchievementService.listStoreAllAchievement(map);
+    	//全部门店总业绩
+    	int priceSum=0;
+    	//计算全部门店总业绩
+    	for(BusAchievement busAchievement:list){   			
+    		  	if(busAchievement.getPrice()!=null){    		  		
+    		  		priceSum=priceSum+Integer.valueOf(busAchievement.getPrice());
+    		  	}else{
+    		  		
+    		  		busAchievement.setPrice("0");
+    		  	}
+          }
+    	//添加全部门店总业绩
+       	for(BusAchievement busAchievement:list){
+       		busAchievement.setSumprice(String.valueOf(priceSum));
+       	}
+    	PageInfo<BusAchievement> pageInfo = new PageInfo<BusAchievement>(list);
+        return ResultGenerator.genOkResult(pageInfo);
+    }
+	/**
+	 * 业绩2门店查询
+	 * @param map
+	 * @throws ParseException 
+	 * */
+    @PreAuthorize("hasAuthority('achievement:listStore')")
+    @PostMapping("/listStore")
+    public Result listStore(Principal user){
+    	 Map<String,Object> map=new HashMap<String,Object>();
+    	 List<Store> list=storeService.ListBaseStore(map);
+    	 return ResultGenerator.genOkResult(list);
     }
     
 

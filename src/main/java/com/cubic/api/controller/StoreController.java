@@ -38,17 +38,25 @@ public class StoreController {
 	@PreAuthorize("hasAuthority('store:insert')")
 	@PostMapping("/insert")
 	public Result add(@RequestBody Store store) {
+		//验证是否存在
+		Store storeNew=storeService.storeIF(store);
+		if(storeNew!=null){
+			
+			return ResultGenerator.genOkResult("0");
+		}
 		storeService.insertBaseStore(store);
 		if(store.getStreetId()!=null&&store.getStreetId().size()!=0){
 			
+		
+			//添加门店范围
+			for(String id:store.getStreetId()){
+				Map<String,Object> map=new HashMap<String,Object>();
+				map.put("storeId", store.getId());
+				map.put("streetId", id);
+				storeService.insertStoreRange(map);
+			}
 		}
-		//添加门店范围
-		for(String id:store.getStreetId()){
-			Map<String,Object> map=new HashMap<String,Object>();
-			map.put("streetId", id);
-			storeService.insertStoreRange(map);
-		}
-		return ResultGenerator.genOkResult("创建成功");
+		return ResultGenerator.genOkResult("1");
 	}
 
 	@DeleteMapping("/{id}")

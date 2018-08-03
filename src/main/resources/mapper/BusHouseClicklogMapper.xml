@@ -33,10 +33,11 @@
   
   
   <select id="listClickLog" parameterType="map" resultMap="BaseResultMap">
-  	SELECT *
-  	FROM bus_house_clicklog 
+  	SELECT bhc.*,su.relname clickRelName
+  	FROM bus_house_clicklog  bhc,sys_user su
   	WHERE 
-  		house_id=#{houseId}
-  		AND type=#{type}
+  		bhc.house_id=#{houseId}
+  		AND bhc.type=#{type}
+  		AND bhc.click_user_name=su.username
   </select>
 </mapper>

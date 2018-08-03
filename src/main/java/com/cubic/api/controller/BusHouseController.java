@@ -105,12 +105,16 @@ public class BusHouseController {
     	   
     	busHouseService.insertBusHouse(busHouse);
 
-    	//根据id得到房源编号并更新
-    	String num = NumberUtil.geoEquipmentNo("H",busHouse.getId());
-    	BusHouse busHouseNew=new BusHouse();
-    	busHouseNew.setId(busHouse.getId());
-    	busHouseNew.setNumber(num);
-    	busHouseService.update(busHouseNew);
+    
+    	if(busHouse.getId()!=null){
+    		//根据id得到房源编号并更新
+    		String num = NumberUtil.geoEquipmentNo("H",busHouse.getId());
+        	BusHouse busHouseNew=new BusHouse();
+        	busHouseNew.setId(busHouse.getId());
+        	busHouseNew.setNumber(num);
+        	busHouseService.update(busHouseNew);
+    	}
+    	
     	
         return ResultGenerator.genOkResult("添加成功");
     }
@@ -260,6 +264,7 @@ public class BusHouseController {
  				   busHouse.setChaoxiang("西北");
  			   }
  		   }
+    		    //修改
     			busHouseService.update(busHouse);  		
     	}
         return ResultGenerator.genOkResult("1");
@@ -371,10 +376,12 @@ public class BusHouseController {
     		return ResultGenerator.genOkResult("您今日查询联系信息的次数已用完");   		
     	}else if (busHouse.getClickcount()<20){
     		
+    		//日志信息
     		BusHouseClicklog busHouseClicklog=new BusHouseClicklog();
     		busHouseClicklog.setClickUserName(user.getName());
     		busHouseClicklog.setHouseId(Long.parseLong(map.get("houseId").toString()));
     		busHouseClicklog.setRecordUserName(busHouse.getRecordUserName());
+    		//日志类型(1:联系方式查看,2:地址查看)
     		busHouseClicklog.setType("1");
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
@@ -394,38 +401,49 @@ public class BusHouseController {
     	map.put("clickusername", user.getName());
     	BusHouse busHouse = busHouseService.DetailAddress(map);
     	StringBuffer stringtext=new StringBuffer();
-    
+    //拼接详细地址
     	if(null!=busHouse.getRegionName()){
+    		//区域名
     		stringtext.append(busHouse.getRegionName());
     	}
     	if(null!=busHouse.getStreetName()){
+    		//街道名
     		stringtext.append(busHouse.getStreetName());
     	}
     	if(null!=busHouse.getXiaoquName()){
+    		//小区名
     		stringtext.append(busHouse.getXiaoquName());
     	}
     	if(null!=busHouse.getNumfloor()){
+    		//楼号
     		stringtext.append(busHouse.getNumfloor());
     	}
     	if(null!=busHouse.getNumunit()){
+    		//单元号
     		stringtext.append(busHouse.getNumunit());
     	}
     	if(null!=busHouse.getNumhousehold()){
+    		//门牌号
     		
     		stringtext.append(busHouse.getNumhousehold());
     	}
     	if(null!=busHouse.getAddress()){
+    		//详细地址
     		stringtext.append(busHouse.getAddress());
     	}
+    	//拼接
     	busHouse.setAddressText(stringtext.toString());
     	
+    	//判断次数
     	if(busHouse.getClickcount()==20){
     		return ResultGenerator.genOkResult("您今日查询房屋地址的次数已用完");
     	}else if (busHouse.getClickcount()<20){
+    		//日志
     		BusHouseClicklog busHouseClicklog=new BusHouseClicklog();
     		busHouseClicklog.setClickUserName(user.getName());
     		busHouseClicklog.setHouseId(Long.parseLong(map.get("houseId").toString()));
     		busHouseClicklog.setRecordUserName(busHouse.getRecordUserName());
+    		//日志类型(1:联系方式查看,2:地址查看)
     		busHouseClicklog.setType("2");
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
@@ -449,7 +467,7 @@ public class BusHouseController {
 	    if(!"0".equals(busHouseNew.getLikeType())){
 	    	busHouseNew.setLikeType("1");
 	    }
-	    //如果存在待审核的实勘图则返回3:没有待审核的实勘图
+	    //3:没有待审核的实勘图
 	    if(busHouseNew.getExamineState()==null){
 	    	busHouseNew.setExamineState("3");
 	    }
@@ -460,19 +478,22 @@ public class BusHouseController {
 		
 		busHouseNew.setCreateTime(sre);
 		
+		//按照买卖和租赁类型返回价格单位
 		if("1".equals(busHouseNew.getType())){
 			if(null !=busHouseNew.getPrice()&& null !=busHouseNew.getAreas()){
+				//转换成万为单位
 				double d = Double.parseDouble(busHouseNew.getPrice())/10000;
 				BigDecimal bd = new BigDecimal(d);
 				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				busHouseNew.setPriceText(d1+"万");
-				
+				//计算每平米多少钱
 				double doione = Double.parseDouble(busHouseNew.getPrice())/Integer.parseInt(busHouseNew.getAreas());
 				BigDecimal bdone = new BigDecimal(doione);
 				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 				busHouseNew.setPriceOneText(done+"元/平");
 			}
-		}else if("2".equals(busHouseNew.getType())){			
+		}else if("2".equals(busHouseNew.getType())){	
+			//租赁价格单位为每月多少钱
 			if(null !=busHouseNew.getPrice()){
 				busHouseNew.setPriceText(busHouseNew.getPrice()+"元/月");
 			}

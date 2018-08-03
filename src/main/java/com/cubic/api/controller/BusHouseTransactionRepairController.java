@@ -47,15 +47,29 @@ public class BusHouseTransactionRepairController {
     @PostMapping("/insert")
     public Result add(Principal user,@RequestBody BusHouseTransactionRepair busHouseTransactionRepair) {
     	
+    	
+    	if(busHouseTransactionRepair.getBuyIntermediaryPayment()==null|| "".equals(busHouseTransactionRepair.getBuyIntermediaryPayment())){
+    		busHouseTransactionRepair.setBuyIntermediaryPayment("0");    		
+    	}
+    	if(busHouseTransactionRepair.getSellIntermediaryPayment()==null||"".equals(busHouseTransactionRepair.getSellIntermediaryPayment())){
+    		busHouseTransactionRepair.setSellIntermediaryPayment("0");
+    	}   	
+    	if(busHouseTransactionRepair.getBuyLoanPayment()==null||"".equals(busHouseTransactionRepair.getBuyLoanPayment())){   		
+    		busHouseTransactionRepair.setBuyLoanPayment("0");
+    	}
     	busHouseTransactionRepair.setUserName(user.getName());
     	busHouseTransactionRepairService.insertTransactionRepair(busHouseTransactionRepair);
     	//查询成交信息
     	BusHouseTransaction busHouseTransaction =busHouseTransactionService.findById(busHouseTransactionRepair.getTransactionId());
     	BusHouseTransaction busHouseTransactionNew=new BusHouseTransaction();
+    	
+    	busHouseTransactionNew.setId(busHouseTransaction.getId());
+    
     	//本次补交金额
     	int repairBuyIntermediary=Integer.valueOf(busHouseTransactionRepair.getBuyIntermediaryPayment());
         int repairSellIntermediary=Integer.valueOf(busHouseTransactionRepair.getSellIntermediaryPayment());
     	int repairBuyLoan=Integer.valueOf(busHouseTransactionRepair.getBuyLoanPayment());
+
         //获取原实缴金额
     	int buyIntermediaryPayment=Integer.valueOf(busHouseTransaction.getBuyIntermediaryPayment());
         int sellIntermediaryPayment=Integer.valueOf(busHouseTransaction.getSellIntermediaryPayment());
@@ -89,7 +103,7 @@ public class BusHouseTransactionRepairController {
         //更新成交记录
         busHouseTransactionService.update(busHouseTransactionNew);
         
-    	return ResultGenerator.genOkResult("添加成功");
+    	return ResultGenerator.genOkResult("1");
     }
 
     @DeleteMapping("/{id}")
@@ -118,7 +132,7 @@ public class BusHouseTransactionRepairController {
     @PreAuthorize("hasAuthority('transactionrepair:list')")
     @PostMapping("/list")
     public Result list(@RequestBody Map<String,Object> map) throws ParseException {
-    	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+    
         List<BusHouseTransactionRepair> list = busHouseTransactionRepairService.ListTransactionRepair(map);
 	       for(BusHouseTransactionRepair bean:list){
 	       	    //转换时间格式
@@ -127,7 +141,7 @@ public class BusHouseTransactionRepairController {
 		   		String  sre= fmt.format(date);	   		
 		   		bean.setCreateTime(sre);   	   
 	       }       
-        PageInfo<BusHouseTransactionRepair> pageInfo = new PageInfo<BusHouseTransactionRepair>(list);
-        return ResultGenerator.genOkResult(pageInfo);
+
+        return ResultGenerator.genOkResult(list);
     }
 }

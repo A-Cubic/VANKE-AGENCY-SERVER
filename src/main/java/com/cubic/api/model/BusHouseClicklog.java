@@ -23,6 +23,11 @@ public class BusHouseClicklog {
      */
     @Column(name = "house_id")
     private Long houseId;
+    /**
+     * 真实姓名
+     * */
+    @Transient
+    private String clickRelName;
 
     /**
      * 房源维护人的账号名
@@ -34,7 +39,7 @@ public class BusHouseClicklog {
      * 点击查看时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * @return id
@@ -117,7 +122,7 @@ public class BusHouseClicklog {
      *
      * @return create_time - 点击查看时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -126,7 +131,17 @@ public class BusHouseClicklog {
      *
      * @param createTime 点击查看时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
+
+	public String getClickRelName() {
+		return clickRelName;
+	}
+
+	public void setClickRelName(String clickRelName) {
+		this.clickRelName = clickRelName;
+	}
+    
+    
 }

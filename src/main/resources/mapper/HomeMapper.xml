@@ -195,5 +195,10 @@
 				username=#{username}
 
 	</update>
-	
+	<select id="newHouseList" resultType="com.cubic.api.model.BusHouse">
+		SELECT *,xiaoqu_name xiaoquName
+		FROM bus_house
+		GROUP BY create_time DESC
+		LIMIT 10
+	</select>
 </mapper>
