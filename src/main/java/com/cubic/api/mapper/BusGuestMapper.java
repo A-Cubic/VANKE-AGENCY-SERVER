@@ -48,4 +48,11 @@ public interface BusGuestMapper extends MyMapper<BusGuest> {
      * 
      * */	
 	List<BusGuest> listTransactionGuest(Map<String,Object> map);
+	
+	 /**
+     * 掉到共享池修改
+     * @param busGuest
+     * 
+     * */
+	void updateIsShareNull(BusGuest busGuest);
 }

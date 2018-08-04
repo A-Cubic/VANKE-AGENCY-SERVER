@@ -135,7 +135,7 @@ public class BusHouseController {
     public Result updateState(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
     	String msgContent="";
-    	String url=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
+    	String url=MessageConstant.MESSAGE_AUDIT_URL;
 		if(busHouse.getState().equals("1")){//设置为无效房源
 			busExamine.setType("3");   
 			busHouse.setState("2");
@@ -166,7 +166,7 @@ public class BusHouseController {
     public Result updateIsSpecial(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
     	String msgContent="";
-    	String url=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
+    	String url=MessageConstant.MESSAGE_AUDIT_URL;
     	if(busHouse.getIsspecial().equals("1")){//设置为特殊房源
     		busExamine.setType("1");
     		busHouse.setIsspecial("2");
@@ -197,7 +197,7 @@ public class BusHouseController {
     public Result updateIsFine(Principal user,@RequestBody BusHouse busHouse) {
     	BusExamine busExamine =new BusExamine(); 
     	String msgContent="";
-    	String url=MessageConstant.MESSAGE_HOUSE_URL+busHouse.getId();
+    	String url=MessageConstant.MESSAGE_AUDIT_URL;
     	if(busHouse.getIsfine().equals("0")){//取消优质房源
     		busExamine.setType("7");
             busHouse.setIsfine("3");

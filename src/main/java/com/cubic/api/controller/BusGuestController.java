@@ -96,7 +96,7 @@ public class BusGuestController {
     	BusExamine busExamine=new BusExamine();
     	busExamine.setGuestId(busGuest.getId());
     	String msgContent="";
-    	String url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
+    	String url=MessageConstant.MESSAGE_AUDIT_URL;
     	if("1".equals(busGuest.getIskey())){
     		//客源无效状态2:无效房源
         	busGuest.setIskey("2");

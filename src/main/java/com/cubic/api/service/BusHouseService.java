@@ -57,6 +57,13 @@ public interface BusHouseService extends Service<BusHouse> {
      * */
 	void updateRecordUser(BusHouse busHouse);
 	
+	/**
+     * 掉到共享池清空维护人列
+     * @param busHouse
+     * 
+     * */
+	void updateIsShareNull(BusHouse busHouse);
+	
 	
 	 /**
      * 改变钥匙持有人

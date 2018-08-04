@@ -146,4 +146,12 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		busHouseMapper.updateShareState(busHouse);
 		
 	}
+	/**
+	 * 掉到共享池里清空维护人
+	 * */
+	@Override
+	public void updateIsShareNull(BusHouse busHouse) {
+		busHouseMapper.updateIsShareNull(busHouse);
+		
+	}
 }

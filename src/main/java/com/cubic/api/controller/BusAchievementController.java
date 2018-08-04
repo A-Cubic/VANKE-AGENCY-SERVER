@@ -81,7 +81,7 @@ public class BusAchievementController {
     		busExamine.setTransactionId(id);
     		//消息
         	String msgContent = MessageConstant.MESSAGE_AUDIT_ALLOT;
-        	String url=MessageConstant.MESSAGE_GUEST_URL;
+        	String url=MessageConstant.MESSAGE_AUDIT_URL;
         	        //房源id
         			Long houseId=null;
         			//成交id
