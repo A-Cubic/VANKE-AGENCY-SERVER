@@ -12,8 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cubic.api.component.WebSocketServer;
 import com.cubic.api.mapper.MessageMapper;
+import com.cubic.api.model.BusGuest;
+import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.SysMessage;
 import com.cubic.api.service.MessageService;
+import com.cubic.api.util.MessageConstant;
 
 /**
  * @author cubic
@@ -87,42 +90,42 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public void sendMessageSystem(List<String> houseWarnList,List<String> houseShareList, List<String> guestWarnList, List<String> guestShareList) {
-		Map<String,String> map = new HashMap<String,String>();
-		for(String str : houseWarnList) {
+	public void sendMessageSystem(List<BusHouse> houseWarnList,List<BusHouse> houseShareList, List<BusGuest> guestWarnList, List<BusGuest> guestShareList) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		for(BusHouse str : houseWarnList) {
 			SysMessage message = new SysMessage();
 			message.setContent("您的房源已有10天未跟进，系统将于5天后，把该房源置入共享池内");
-			message.setUrl("#");
-			message.setReceiver(str);
+			message.setUrl(MessageConstant.MESSAGE_HOUSE_URL+str.getId());
+			message.setReceiver(str.getRecordUserName());
 			mapper.insertMessage(message);
-			map.put(str, str);
+			map.put(str.getRecordUserName(),str.getRecordUserName());
 		}
 		
-		for(String str : houseShareList) {
+		for(BusHouse str : houseShareList) {
 			SysMessage message = new SysMessage();
 			message.setContent("有新的房源置入共享池中");
-			message.setUrl("#");
-			message.setReceiver(str);
+			message.setUrl(MessageConstant.MESSAGE_HOUSE_URL+str.getId());
+			message.setReceiver(str.getRecordUserName());
 			mapper.insertMessage(message);
-			map.put(str, str);
+			map.put(str.getRecordUserName(),str.getRecordUserName());
 		}
 		
-		for(String str : guestWarnList) {
+		for(BusGuest str : guestWarnList) {
 			SysMessage message = new SysMessage();
 			message.setContent("您的客源已有10天未跟进，系统将于5天后，把该客源置入共享池内。");
-			message.setUrl("#");
-			message.setReceiver(str);
+			message.setUrl(MessageConstant.MESSAGE_GUEST_URL+str.getId());
+			message.setReceiver(str.getRecordUserName());
 			mapper.insertMessage(message);
-			map.put(str, str);
+			map.put(str.getRecordUserName(), str.getRecordUserName());
 		}
 		
-		for(String str : guestShareList) {
+		for(BusGuest str : guestShareList) {
 			SysMessage message = new SysMessage();
 			message.setContent("有新的客源置入共享池中");
-			message.setUrl("#");
-			message.setReceiver(str);
+			message.setUrl(MessageConstant.MESSAGE_GUEST_URL+str.getId());
+			message.setReceiver(str.getRecordUserName());
 			mapper.insertMessage(message);
-			map.put(str, str);
+			map.put(str.getRecordUserName(), str.getRecordUserName());
 		}
 		
 		for(String str : map.keySet()) {

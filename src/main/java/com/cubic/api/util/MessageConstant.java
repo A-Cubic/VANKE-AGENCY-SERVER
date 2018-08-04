@@ -20,7 +20,8 @@ public class MessageConstant {
 	//地址
 	public static final String MESSAGE_HOUSE_URL = "/admin/houseDetails/";
 	public static final String MESSAGE_GUEST_URL = "/admin/passengerDetails/";
-	public static final String MESSAGE_AUDIT_URL = "";
+	public static final String MESSAGE_AUDIT_URL = "/admin/audit";
+	public static final String MESSAGE_CLINCHDEAL_URL = "/admin/clinchDeal";
 	//审核成功
 	public static final String MESSAGE_SUCCESS_HOUSE_SPECIAL = "特殊房源申请已通过审核";
 	public static final String MESSAGE_SUCCESS_HOUSE_GOOD = "优质房源申请已通过审核";

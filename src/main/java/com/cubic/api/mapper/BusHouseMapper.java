@@ -93,5 +93,12 @@ public interface BusHouseMapper extends MyMapper<BusHouse> {
      * */
 	void updateShareState(BusHouse busHouse);
 	
+	/**
+     * 掉到共享池清空维护人列
+     * @param busHouse
+     * 
+     * */
+	void updateIsShareNull(BusHouse busHouse);
+	
 }
 

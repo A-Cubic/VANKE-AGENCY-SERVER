@@ -412,13 +412,11 @@
 							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=10 AND TO_DAYS(NOW())-TO_DAYS(bh.record_time) <15 THEN '1']]>
 							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=15 THEN '2']]>
 							END) casetype  
-				FROM `bus_house` bh ,`sys_user` su 
+				FROM `bus_house` bh 
+				LEFT JOIN `sys_user` su  ON ( su.`username`=bh.`record_user_name` OR su.`username` IN (SELECT user_name FROM  bus_house_like WHERE `house_id`=bh.`id`))
 				WHERE 
-				
-				 bh.isshare = '0'
-				AND su.`username`=bh.`record_user_name`
-				OR su.`username` IN (SELECT user_name FROM  bus_house_like WHERE `house_id`=bh.`id`)
-				AND   <![CDATA[TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=10]]>	
+				<![CDATA[(TO_DAYS(NOW())-TO_DAYS(bh.record_time)) >= 10	]]>
+					AND  bh.isshare = '0'			 
 	 </select>
 	 
 	 
@@ -462,4 +460,13 @@
 				WHERE 
 					bh.id=#{id}
 	</select>
+	
+	<update id="updateIsShareNull"   parameterType="com.cubic.api.model.BusHouse">
+	UPDATE bus_house
+	SET record_user_name=NULL,
+	     record_rel_name=NULL,
+	     isshare='1'
+	WHERE 
+		   id=#{id}
+	</update>
 </mapper>

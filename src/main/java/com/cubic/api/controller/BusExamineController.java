@@ -150,7 +150,7 @@ public class BusExamineController {
 	    		busHouseTransaction.setState("3");
 	    		busHouseTransactionService.update(busHouseTransaction);
 	    		textExamine=MessageConstant.MESSAGE_SUCCESS_AUDIT_ALLOT;
-	    		url=MessageConstant.MESSAGE_AUDIT_URL+busAchievement.getTransactionId();
+	    		url=MessageConstant.MESSAGE_CLINCHDEAL_URL;
 	    	}
     	}else if(busExamine.getResult().equals("0")){//审核未通过
     		//未通过理由
@@ -204,7 +204,7 @@ public class BusExamineController {
 	    		busHouseTransaction.setId(busExamineNew.getTransactionId());
 	    		busHouseTransaction.setState("1");
 	    		busHouseTransactionService.update(busHouseTransaction);
-	    		url=MessageConstant.MESSAGE_AUDIT_URL+busExamineNew.getTransactionId();
+	    		url=MessageConstant.MESSAGE_CLINCHDEAL_URL;
 	    	}
         	textExamine=noStr+busExamine.getContent();
     	}

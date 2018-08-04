@@ -82,4 +82,12 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 
 		return busGuestMapper.listTransactionGuest(map);
 	}
+	/**
+	 * 掉到共享池里的客源修改状态
+	 * */
+	@Override
+	public void updateIsShareNull(BusGuest busGuest) {
+		busGuestMapper.updateIsShareNull(busGuest);
+		
+	}
 }
