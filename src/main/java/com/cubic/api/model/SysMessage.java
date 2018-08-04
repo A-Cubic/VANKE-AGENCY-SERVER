@@ -1,5 +1,7 @@
 package com.cubic.api.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SysMessage {
@@ -8,8 +10,8 @@ public class SysMessage {
 	private String url;
 	private String sender="system";
 	private String receiver;
-	private Date create_time;
-	private Date last_time;
+	private String create_time;
+	private String last_time;
 	
 	public Long getId() {
 		return id;
@@ -41,16 +43,25 @@ public class SysMessage {
 	public void setReceiver(String receiver) {
 		this.receiver = receiver;
 	}
-	public Date getCreate_time() {
-		return create_time;
+	public String getCreate_time() {
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    Date date;
+	    String re = "";
+		try {
+			date = fmt.parse(create_time);
+			re = fmt.format(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return re;
 	}
-	public void setCreate_time(Date create_time) {
+	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
 	}
-	public Date getLast_time() {
+	public String getLast_time() {
 		return last_time;
 	}
-	public void setLast_time(Date last_time) {
+	public void setLast_time(String last_time) {
 		this.last_time = last_time;
 	}
 	

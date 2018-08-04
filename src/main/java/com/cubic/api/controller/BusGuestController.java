@@ -130,6 +130,7 @@ public class BusGuestController {
     		
     			busGuestNew.setId(busGuest.getId());
     			busGuestNew.setRecordUserName(user.getName());
+    			busGuestNew.setIsshare("0");
     			busGuestService.updateRecordUser(busGuestNew);
     		
     	}
