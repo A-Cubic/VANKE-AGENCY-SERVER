@@ -279,12 +279,10 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:updateIsShare')")
     @PostMapping("/updateIsShare")
     public Result updateIsShare(Principal user,@RequestBody BusHouse busHouse) {
-    	
     	if(null != busHouse){
 	    		busHouse.setRecordUserName(user.getName());
 	    		busHouse.setIsshare("0");
-	    		busHouseService.updateRecordTime(busHouse);
-    			busHouseService.update(busHouse);  		
+    			busHouseService.updateShareState(busHouse);  		
     	}
         return ResultGenerator.genOkResult("修改成功");
     }
@@ -386,6 +384,8 @@ public class BusHouseController {
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
     		busHouse.setRecordUserName(null);
+    		BusHouse busHouseNew = busHouseService.DetailAddress(map);
+    		busHouse.setClickcount(busHouseNew.getClickcount());
     	}
     	return ResultGenerator.genOkResult(busHouse);
     }
@@ -448,7 +448,8 @@ public class BusHouseController {
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
     		busHouse.setRecordUserName(null);
-    		
+    		BusHouse busHouseNew = busHouseService.DetailAddress(map);
+    		busHouse.setClickcount(busHouseNew.getClickcount());
     	}
         return ResultGenerator.genOkResult(busHouse);
     }

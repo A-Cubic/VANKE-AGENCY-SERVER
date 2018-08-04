@@ -135,4 +135,15 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 	public BusHouse detailHouse(Map<String, String> map) {
 		return busHouseMapper.detailHouse(map);
 	}
+	
+	/**
+     * 修改维护人（共享池）
+     * @param busHouse
+     * 
+     * */
+	@Override
+	public void updateShareState(BusHouse busHouse) {
+		busHouseMapper.updateShareState(busHouse);
+		
+	}
 }

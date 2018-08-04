@@ -381,6 +381,7 @@
 	 <update id="updateRecordUser" parameterType="com.cubic.api.model.BusHouse">
 	 		UPDATE bus_house bh
 	 		SET bh.record_user_name=#{recordUserName},
+	 			bh.record_time=NOW(),
 	 			bh.record_rel_name=(select su.relname from sys_user su	where su.username=#{recordUserName})
 	 		WHERE 
 	 		  bh.id=#{id}
@@ -391,6 +392,15 @@
 	 		SET bh.iskey=#{iskey},
 	 			bh.key_user_name=#{keyUserName},
 	 			bh.key_rel_name=(select su.relname from sys_user su	where su.username=#{keyUserName})
+	 		WHERE 
+	 		  bh.id=#{id}
+	 </update>
+	 <update id="updateShareState" parameterType="com.cubic.api.model.BusHouse">
+	 		UPDATE bus_house bh
+	 		SET bh.isshare=#{isshare},
+	 			bh.record_user_name=#{recordUserName},
+	 			bh.record_time=NOW(),
+	 			bh.record_rel_name=(select su.relname from sys_user su	where su.username=#{recordUserName})
 	 		WHERE 
 	 		  bh.id=#{id}
 	 </update>

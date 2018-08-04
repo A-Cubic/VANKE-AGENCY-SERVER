@@ -92,4 +92,11 @@ public interface BusHouseService extends Service<BusHouse> {
      * 
      * */
 	BusHouse detailHouse(Map<String,String> map);
+	
+	/**
+     * 修改维护人（共享池）
+     * @param busHouse
+     * 
+     * */
+	void updateShareState(BusHouse busHouse);
 }
