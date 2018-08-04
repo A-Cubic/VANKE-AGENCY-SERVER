@@ -3,10 +3,12 @@ package com.cubic.api.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,8 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.SysMessage;
 import com.cubic.api.service.MessageService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @RestController
 @RequestMapping("/vanke/message")
@@ -30,10 +34,12 @@ public class MessageController {
 	 * @return
 	 */
 	@PostMapping("/list")
-	public Result listMessage(Principal user) {
+	public Result listMessage(Principal user,@RequestBody Map<String,Object> map) {
+		PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
 		List<SysMessage> list = service.listMessage(user.getName());
 		service.updateCount(user.getName());
-		return ResultGenerator.genOkResult(list);
+		PageInfo<SysMessage> pageInfo = new PageInfo<SysMessage>(list);
+		return ResultGenerator.genOkResult(pageInfo);
 	}
 
 	/**

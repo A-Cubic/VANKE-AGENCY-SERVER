@@ -1,6 +1,7 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -24,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cubic.api.core.jwt.JwtUtil;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
-import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.BaseRegion;
+import com.cubic.api.model.BaseStreet;
 import com.cubic.api.model.LoginResponse;
 import com.cubic.api.model.Store;
 import com.cubic.api.model.User;
-import com.cubic.api.model.UserRole;
 import com.cubic.api.service.StoreService;
 import com.cubic.api.service.UserRoleService;
 import com.cubic.api.service.UserService;
@@ -176,7 +177,22 @@ public class UserController {
     @PostMapping("/storeUser")
     public Result storeUser(){
     	List<Store> userlist=storeService.storeUser();
-    	 return ResultGenerator.genOkResult(userlist);
+    	List<BaseRegion> response = new ArrayList<BaseRegion>();
+    	for(Store bean: userlist) {
+    		BaseRegion br = new BaseRegion();
+    		br.setLabel(bean.getStoreName());
+    		br.setValue(bean.getStoreName());
+    		List<BaseStreet> children = new ArrayList<BaseStreet>();;
+    		for(User user :bean.getUserlist()) {
+    			BaseStreet bs = new BaseStreet();
+    			bs.setLabel(user.getUser_no()+"-"+user.getRelname()+"("+user.getPhone()+")");
+    			bs.setValue(user.getUsername());
+    			children.add(bs);
+    		}
+    		br.setChildren(children);
+    		response.add(br);
+    	}
+    	return ResultGenerator.genOkResult(response);
     }
     /**
      * 获得 token

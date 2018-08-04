@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cubic.api.mapper.MessageMapper">
 
-	<select id="listMessage" parameterType="String"
+	<select id="listMessage" parameterType="map"
 		resultType="com.cubic.api.model.SysMessage">
 		SELECT
 		t.*
