@@ -39,5 +39,16 @@ public interface BusAchievementMapper extends MyMapper<BusAchievement> {
     * @param long
     * */
    void deleteTransactionAchievement(Long id);
+   
+   /**
+    * 系统管理员查看分店的业绩
+    * */
+   List<BusAchievement> listAchievementTow(Map<String,Object> map);
+   
+   /**
+    * 查询全部门店的业绩
+    * */
+   List<BusAchievement> listStoreAllAchievement(Map<String,Object> map);
+   
 	
 }
