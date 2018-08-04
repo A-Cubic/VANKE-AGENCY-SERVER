@@ -184,6 +184,9 @@
 	 <update id="updateRecordUser" parameterType="com.cubic.api.model.BusGuest">
 	  		UPDATE bus_guest b
 	 		SET b.record_user_name=#{recordUserName},
+		 		<if test="isshare!=null and isshare!=''">
+		 		     b.isshare=#{isshare},
+		 		</if>
 	 			b.record_time=NOW(),
 	 			b.record_rel_name=(select su.relname from sys_user su	where su.username=#{recordUserName})
 	 		WHERE 
