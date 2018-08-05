@@ -25,8 +25,6 @@ import com.cubic.api.model.BusHouseTransaction;
 import com.cubic.api.model.BusHouseTransactionRepair;
 import com.cubic.api.service.BusHouseTransactionRepairService;
 import com.cubic.api.service.BusHouseTransactionService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 /**
  * @author cubic

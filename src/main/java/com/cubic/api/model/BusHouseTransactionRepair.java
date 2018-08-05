@@ -1,7 +1,10 @@
 package com.cubic.api.model;
 
-import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "bus_house_transaction_repair")
 public class BusHouseTransactionRepair {
