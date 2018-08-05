@@ -23,8 +23,8 @@ public class ScheduleTaskServer {
     @Resource
     private MessageService messageService;
 	
-	@Scheduled(fixedRate = 1000*60) //测试使用：每隔10秒执行一次
-   //@Scheduled(cron = "0 0 6 * * ?") //正式使用：每天早6点执行一次
+	//@Scheduled(fixedRate = 1000*60) //测试使用：每隔10秒执行一次
+    @Scheduled(cron = "0 0 6 * * ?") //正式使用：每天早6点执行一次
     public void doSharedPoolTask() {
 			//房屋警告消息列表
 		    List<BusHouse> houseWarnList=new ArrayList<BusHouse>();
