@@ -126,7 +126,7 @@ public class BusExamine {
     private String userName;
 
     /**
-     * 审核状态(0:未审核,1:审核中,2:审核结束)
+     * 审核状态(0:未审核,1:审核结束)
      */
     private String state;
 

@@ -10,6 +10,7 @@
 		sys_message t
 		where
 		t.receiver = #{username}
+		order by create_time desc
 	</select>
 
 	<select id="getCount" parameterType="String" resultType="Integer">

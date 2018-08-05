@@ -154,4 +154,13 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		busHouseMapper.updateIsShareNull(busHouse);
 		
 	}
+	/**
+	 * 验证地址是否存在
+	 * @param map
+	 * */
+	@Override
+	public List<BusHouse> findIsAddress(BusHouse busHouse) {
+
+		return busHouseMapper.findIsAddress(busHouse);
+	}
 }

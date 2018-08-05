@@ -106,4 +106,11 @@ public interface BusHouseService extends Service<BusHouse> {
      * 
      * */
 	void updateShareState(BusHouse busHouse);
+	/**
+	 * 查询验证地址是否已存在
+	 * 
+	 * @param map
+	 * 
+	 */
+	List<BusHouse> findIsAddress(BusHouse busHouse);
 }

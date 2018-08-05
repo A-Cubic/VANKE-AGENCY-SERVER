@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,7 +121,7 @@ public class HomeController {
 	@PostMapping("/score/list")
 	public Result listScore(final Principal user, @RequestBody Map<String, Object> map) {
 		PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf(map.get("size").toString()));
-		if(user.toString().indexOf("ROLE_ADMIN")==-1){
+		if(user.toString().indexOf("ROLE_ADMIN")==-1 && user.toString().indexOf("ROLE_LEADER")==-1 ){
 			map.put("userName", user.getName());
 			map.put("role", "2");
 		}

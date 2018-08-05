@@ -53,16 +53,16 @@
   	
   	<select id="selectUserList" resultType="com.cubic.api.model.User">
   			SELECT id,user_no,relname,phone 
-  			FROM `sys_user`
+  			FROM `sys_user` 
   			WHERE 
   				store_id=#{id}
+  				AND username <![CDATA[<>]]> 'admin'
   	
   	</select>
   	
   	<select id="storeUser" resultMap="BaseResultMap">
   			select id,store_name
   			from  base_store
-  			
   	</select>
   	
   	

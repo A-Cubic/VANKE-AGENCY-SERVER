@@ -23,7 +23,7 @@
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="region_id" jdbcType="BIGINT" property="regionId" />
-    <result column="street_id" jdbcType="BIGINT" property="street_id" />
+    <result column="street_id" jdbcType="BIGINT" property="streetId" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="iskey" jdbcType="VARCHAR" property="iskey" />
     <result column="key_user_name" jdbcType="VARCHAR" property="keyUserName" />
@@ -261,14 +261,13 @@
 	             `introduce`,
 	             `type`,
 	             `state`,
-	              region_id,
+				  region_code,
 	              street_id,
 	              xiaoqu_name,
 	              region_name,
 	              street_name,
 	             `address`,
-	             `iskey`,
-	             
+	             `iskey`,	             
 				  record_time,
 				  isfine,
 				  isshare,
@@ -276,7 +275,6 @@
 				  searchtext,
 				  record_rel_name,
 				  create_rel_name,
-				  region_code,
 				  `owner1`,
 				  `phone1`
 				  <if test="iskey==1">
@@ -308,27 +306,25 @@
 			        #{introduce},
 			        #{type},
 			        0,
-			        0,
-			        #{regionId},
+			        #{regionCode},
 			        #{streetId},
 			        #{xiaoquName},
-			        #{regionName},
-			        #{streetName},
+			        (select region_name from base_region where region_code=#{regionCode}),
+			        (select street_name from base_street where id=#{streetId}),
 			        #{address},			      
-			        #{iskey},
-			        #{keyUserName},			       
+			        #{iskey},	       
 			     	NOW(),
 			     	0,
 			     	0,
-			     	#{searchtext},
+			     	0,
+			     	CONCAT_WS('','大连市',(select region_name from base_region where region_code=#{regionCode}),(select street_name from base_street where id=#{streetId}),#{xiaoquName},#{numfloor},#{numunit},#{numhousehold},#{address}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
-			     	#{regionCode} ,
 			     	#{owner1},
 				  	#{phone1}
 			     	<if test="iskey==1">
 				  	,(SELECT relname FROM sys_user WHERE username=#{recordUserName})
-				  	,{recordUserName}
+				  	,#{recordUserName}
 					</if>
 				  
 				);
@@ -462,7 +458,7 @@
 					bh.id=#{id}
 	</select>
 	
-	<update id="updateIsShareNull"   parameterType="com.cubic.api.model.BusHouse">
+	<update id="updateIsShareNull" parameterType="com.cubic.api.model.BusHouse">
 	UPDATE bus_house
 	SET record_user_name=NULL,
 	     record_rel_name=NULL,
@@ -470,4 +466,18 @@
 	WHERE 
 		   id=#{id}
 	</update>
+	
+	<select id="findIsAddress" parameterType="com.cubic.api.model.BusHouse" resultMap="BaseResultMap">
+		SELECT * 
+		FROM bus_house
+		WHERE
+						region_code= #{regionCode}
+						and street_id=#{streetId}
+						and xiaoqu_name=#{xiaoquName}
+						and numfloor=#{numfloor}
+						and numunit=#{numunit}
+						and numhousehold=#{numhousehold}
+						and floor=#{floor}
+			AND state <![CDATA[<>]]>'1'
+	</select>
 </mapper>

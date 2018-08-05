@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.annotation.Resource;
 
@@ -56,8 +57,11 @@ public class BusGuestLookrecordController {
     		//开始时间的转换
     		String str =busGuestLookrecord.getCreateTime();
     		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS Z");
+    		
     		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     		Date d = format.parse(str.replace("Z", " UTC"));
+    		fmt.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+    		
     		String  sre= fmt.format(d);
     		busGuestLookrecord.setCreateTime(sre);
     		//结束时间的转换

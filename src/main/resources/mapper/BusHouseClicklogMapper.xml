@@ -39,5 +39,6 @@
   		bhc.house_id=#{houseId}
   		AND bhc.type=#{type}
   		AND bhc.click_user_name=su.username
+  	ORDER BY bhc.create_time	DESC
   </select>
 </mapper>

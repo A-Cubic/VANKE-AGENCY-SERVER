@@ -32,5 +32,6 @@
 			h.xiaoqu_name as `value`,
 			h.street_name as address
 		from bus_house h
+		GROUP BY h.xiaoqu_name,h.street_name
 	</select>
 </mapper>

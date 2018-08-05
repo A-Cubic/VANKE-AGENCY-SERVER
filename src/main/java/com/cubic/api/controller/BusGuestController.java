@@ -166,10 +166,10 @@ public class BusGuestController {
     @PostMapping("/detail")
     public Result detail(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	BusGuest busGuest = busGuestService.findById(Long.valueOf(map.get("id").toString()));
-    	//不为维护人不能看
-    	if(!user.getName().equals(busGuest.getRecordUserName()) && !"1".equals(busGuest.getIsshare())){  		
-    		return ResultGenerator.genOkResult(0);
-    	}
+	    	//不为维护人不能看
+	    	if(!user.getName().equals(busGuest.getRecordUserName()) && !"1".equals(busGuest.getIsshare())){  		
+	    		busGuest.setUser_type("0");
+	    	}
 	    	//转换委托时间格式
 	     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	     	Date date = fmt.parse(busGuest.getCreateTime());

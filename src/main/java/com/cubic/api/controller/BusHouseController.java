@@ -72,9 +72,15 @@ public class BusHouseController {
     	busHouse.setCreateUserName(user.getName());
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
-    	//搜索文本条件
-    	busHouse.setSearchtext("大连市"+busHouse.getRegionName()+busHouse.getStreetName()+busHouse.getXiaoquName()+busHouse.getNumfloor()+busHouse.getNumunit()+busHouse.getNumhousehold()+busHouse.getAddress());
-    	   if(null!=busHouse.getChaoxiang()){//朝向
+//    	//搜索文本条件
+//    	String text=busHouse.getRegionCode()+busHouse.getStreetId()+busHouse.getXiaoquName()+busHouse.getNumfloor()+busHouse.getNumunit()+busHouse.getNumhousehold()+busHouse.getAddress();
+    	//验证是否为空
+    	
+    	List<BusHouse> findlist=busHouseService.findIsAddress(busHouse);   
+    	if(findlist!=null && findlist.size()!=0){
+    		return ResultGenerator.genOkResult("0");
+    	}
+    	if(null!=busHouse.getChaoxiang()){//朝向
 			   if("1".equals(busHouse.getChaoxiang())){
 				   busHouse.setChaoxiang("正南");
 			   }else  if("2".equals(busHouse.getChaoxiang())){			
@@ -384,7 +390,7 @@ public class BusHouseController {
     		//记录查询日志
     		busHouseClicklogService.insertClickLog(busHouseClicklog);
     		busHouse.setRecordUserName(null);
-    		BusHouse busHouseNew = busHouseService.DetailAddress(map);
+    		BusHouse busHouseNew = busHouseService.DetailContacts(map);
     		busHouse.setClickcount(busHouseNew.getClickcount());
     	}
     	return ResultGenerator.genOkResult(busHouse);
@@ -505,22 +511,22 @@ public class BusHouseController {
 	    	 urltext.append(busHouseNew.getShiimg());
 	     }
 	     if(null!=busHouseNew.getTingimg() && !"".equals(busHouseNew.getTingimg())){		        	    	 
-           urltext.append(","+busHouseNew.getTingimg());
+           urltext.append(busHouseNew.getTingimg());
        	     }
 	     if(null!=busHouseNew.getWeiimg() && !"".equals(busHouseNew.getWeiimg())){	    	 
-	    	 urltext.append(","+busHouseNew.getWeiimg());
+	    	 urltext.append(busHouseNew.getWeiimg());
 	     }
 	     if(null!=busHouseNew.getChuimg() && !"".equals(busHouseNew.getChuimg())){
 	    	 
-	    	 urltext.append(","+busHouseNew.getChuimg());
+	    	 urltext.append(busHouseNew.getChuimg());
 	     }
 		 if(null!=busHouseNew.getHuxingimg() && !"".equals(busHouseNew.getHuxingimg())){
 					    	 
-			urltext.append(","+busHouseNew.getHuxingimg());
+			urltext.append(busHouseNew.getHuxingimg());
 					     }
 		 if(null!=busHouseNew.getOtherimg() && !"".equals(busHouseNew.getOtherimg())){
 		  	 
-		  	 urltext.append(","+busHouseNew.getOtherimg());
+		  	 urltext.append(busHouseNew.getOtherimg());
 		   }				 
 		 busHouseNew.setImgurl(Arrays.asList(urltext.toString().split(",")));
 		 
@@ -696,21 +702,21 @@ public class BusHouseController {
 		   }
 		   
 		   if(null!=map.get("chaoxiangType")){//朝向条件
-			   if("1".equals(map.get("chaoxiangType"))){
+			   if("1".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "正南");
-			   }else  if("2".equals(map.get("chaoxiangType"))){
+			   }else  if("2".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "正北");
-			   }else  if("3".equals(map.get("chaoxiangType"))){
+			   }else  if("3".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "正东");
-			   }else  if("4".equals(map.get("chaoxiangType"))){
+			   }else  if("4".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "正西");
-			   }else  if("5".equals(map.get("chaoxiangType"))){
+			   }else  if("5".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "东南");
-			   }else  if("6".equals(map.get("chaoxiangType"))){
+			   }else  if("6".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "西南");
-			   }else  if("7".equals(map.get("chaoxiangType"))){
+			   }else  if("7".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "东北");
-			   }else  if("8".equals(map.get("chaoxiangType"))){
+			   }else  if("8".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "西北");
 			   }
 		   }

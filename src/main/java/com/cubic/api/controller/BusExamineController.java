@@ -159,27 +159,32 @@ public class BusExamineController {
     		if(!"5".equals(busExamineNew.getType()) && !"9".equals(busExamineNew.getType())&&!"10".equals(busExamineNew.getType())){
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
-		    	if(busExamineNew.getType().equals("1")){//提交特殊房源审核未通过,状态从2:提交待审核变回0:不是特殊房源
-		    		bushouse.setIsspecial("0");
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_SPECIAL;
-		    	}else if(busExamineNew.getType().equals("2")){  //提交优质房源审核未通过,状态从2:提交待审核变回0:不是优质房源		
-		    		bushouse.setIsfine("0");
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_GOOD;
-		    	}else if(busExamineNew.getType().equals("3")){//提交无效房源审核未通过,状态从2:提交待审核变回0:不是无效房源
-		    		bushouse.setState("0");
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_INVALID;
-		    	}else if(busExamineNew.getType().equals("6")){//提交取消特殊房源审核未通过,状态从2:提交待审核变回1:特殊房源
-		    		bushouse.setIsspecial("1");
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOSPECIAL;
-		    	}else if(busExamineNew.getType().equals("7")){//提交取消优质房源审核未通过,状态从2:提交待审核变回1:优质房源
-		    		bushouse.setIsfine("1");
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOGOOD;
-		    	}else if(busExamineNew.getType().equals("8")){//提交取消无效房源审核未通过,状态从2:提交待审核变回1:无效房源
-		    		bushouse.setState("1");	 
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOINVALID;
+		    	if(busExamineNew.getType().equals("4")) {
+		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_REALIMG;
+		    	}else {
+		    		if(busExamineNew.getType().equals("1")){//提交特殊房源审核未通过,状态从2:提交待审核变回0:不是特殊房源
+			    		bushouse.setIsspecial("0");
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_SPECIAL;
+			    	}else if(busExamineNew.getType().equals("2")){  //提交优质房源审核未通过,状态从2:提交待审核变回0:不是优质房源		
+			    		bushouse.setIsfine("0");
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_GOOD;
+			    	}else if(busExamineNew.getType().equals("3")){//提交无效房源审核未通过,状态从2:提交待审核变回0:不是无效房源
+			    		bushouse.setState("0");
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_INVALID;
+			    	}else if(busExamineNew.getType().equals("6")){//提交取消特殊房源审核未通过,状态从2:提交待审核变回1:特殊房源
+			    		bushouse.setIsspecial("1");
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOSPECIAL;
+			    	}else if(busExamineNew.getType().equals("7")){//提交取消优质房源审核未通过,状态从2:提交待审核变回1:优质房源
+			    		bushouse.setIsfine("1");
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOGOOD;
+			    	}else if(busExamineNew.getType().equals("8")){//提交取消无效房源审核未通过,状态从2:提交待审核变回1:无效房源
+			    		bushouse.setState("1");	 
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOINVALID;
+			    	}
+		    		busHouseService.update(bushouse);
 		    	}
+		    	
 		    	url=MessageConstant.MESSAGE_HOUSE_URL+bushouse.getId();
-		    	busHouseService.update(bushouse);
 	    	}else if(busExamineNew.getType().equals("5")){
 	    		noStr=MessageConstant.MESSAGE_FAIL_GUEST_INVALID;
 	    		BusGuest busGuest=new BusGuest();
