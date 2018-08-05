@@ -190,7 +190,7 @@ public class UserController {
     		List<BaseStreet> children = new ArrayList<BaseStreet>();;
     		for(User user :bean.getUserlist()) {
     			BaseStreet bs = new BaseStreet();
-    			bs.setLabel(user.getUser_no()+"-"+user.getRelname()+"("+user.getPhone()+")");
+    			bs.setLabel(user.getPhone()+"-"+user.getRelname()+"("+user.getUser_no()+")");
     			bs.setValue(user.getUsername());
     			children.add(bs);
     		}

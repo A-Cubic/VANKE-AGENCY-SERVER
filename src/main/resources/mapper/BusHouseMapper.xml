@@ -112,15 +112,15 @@
 		<where>
 		   1=1
 			<if test="(priceUp == null or priceUp == '') and (priceDown != null and priceDown != '')"><!-- 金额条件在XXX以下 -->
-				<![CDATA[and bh.price <= #{priceDown} ]]>
+				<![CDATA[and bh.price < #{priceDown}+0 ]]>
 			</if>
 			
 			<if test="(priceUp != null and priceUp != '') and (priceDown == null or priceDown == '')"><!-- 金额条件在XXX以上 -->
-				<![CDATA[and bh.price >= #{priceUp} ]]>
+				<![CDATA[and bh.price > #{priceUp}+0 ]]>
 			</if>
 			
 			<if test="(priceUp != null and priceUp != '') and (priceDown != null and priceDown != '')"><!-- 金额条件在XXX与XXX之间 -->
-				<![CDATA[and bh.price >= #{priceUp} and bh.price <= #{priceDown}]]>
+				<![CDATA[and bh.price >= #{priceUp}+0 and bh.price < #{priceDown}+0]]>
 			</if>
 			
 			<if test="floorType != null and floorType != 0 "><!-- 楼层条件-->
@@ -162,15 +162,15 @@
 			</if>
 			
 			<if test="(areasUp == null) and (areasDown != null)"><!-- 面积条件在XXX以下 -->
-				<![CDATA[and bh.areas <= #{areasDown} ]]>
+				<![CDATA[and bh.areas < #{areasDown}+0 ]]>
 			</if>
 			
 			<if test="(areasUp != null) and (areasDown == null)"><!-- 面积条件在XXX以上 -->
-				<![CDATA[and bh.areas >= #{areasUp} ]]>
+				<![CDATA[and bh.areas > #{areasUp}+0 ]]>
 			</if>
 			
 			<if test="(areasUp != null) and (areasDown != null)"><!-- 面积条件在XXX与XXX之间 -->
-				<![CDATA[and bh.areas >= #{areasUp} and bh.areas <= #{areasDown}]]>
+				<![CDATA[and bh.areas >= #{areasUp}+0 and bh.areas < #{areasDown}+0]]>
 			</if>
 			
 			<if test="chaoxiang != null"><!-- 朝向条件-->
