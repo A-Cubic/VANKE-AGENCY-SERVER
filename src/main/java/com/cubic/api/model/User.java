@@ -38,15 +38,14 @@ public class User {
      * 用户名
      */
     @NotEmpty(message = "用户名不能为空")
-    @Size(min = 3, message = "用户名长度不能小于3")
+//    @Size(min = 3, message = "用户名长度不能小于3")
     private String username;
 
     /**
      * 密码
      */
     @JSONField(serialize = false)
-    @NotEmpty(message = "密码不能为空")
-    @Size(min = 6, message = "密码长度不能小于6")
+//    @Size(min = 6, message = "密码长度不能小于6")
     private String password;
 
     /**

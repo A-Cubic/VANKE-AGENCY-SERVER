@@ -69,6 +69,11 @@ public class UserController {
   	  	  if(userPrincipal.toString().indexOf("ROLE_LEADER")!=-1
   	  			  ||userPrincipal.toString().indexOf("ROLE_SEC")!=-1
   	  			  ||userPrincipal.toString().indexOf("ROLE_ADMIN")!=-1){
+  	  		  
+  	  		 
+  	  	  if(user.getPassword() == null || "".equals(user.getPassword())){
+  	  		  user.setPassword("123456");
+  	  	  }
   	  		  //注册
           String returnText=this.userService.registerUser(user);
           if(!"0".equals(returnText)){      	         

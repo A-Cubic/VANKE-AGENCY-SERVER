@@ -169,7 +169,8 @@
 		  bs.`store_name`
 		  FROM sys_user su 
           LEFT JOIN  bus_achievement ba  ON  su.username =ba.user_name AND  ba.examine_type=1 
-       <if test="type!=null">
+          
+          <if test="type!=null">
 				<if test="type==1">
 					<![CDATA[ AND DATE(ba.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(ba.create_time) <= DATE(NOW())]]>
 				</if>
@@ -177,9 +178,10 @@
 					<![CDATA[ AND DATE(ba.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(ba.create_time) <= DATE(NOW())]]>
 				</if>
 			</if>
+		LEFT JOIN sys_user_role sur ON su.id=sur.user_id 
 		LEFT JOIN base_store bs ON bs.`id`=su.store_id
 		WHERE 
-		  1=1
+		   sur.role_id=2
 			<if test="role!=null and role==2">
 			  AND 	su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
 		    </if>		
