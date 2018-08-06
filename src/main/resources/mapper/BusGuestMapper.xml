@@ -177,7 +177,7 @@
 	    iskey!=1
 	    AND record_user_name=#{username}
 	    <if test="searchText !=null and searchText !=''"><!-- 搜索文本,模糊查询客源名称或客源编号 -->
-	    	AND  guestname like "%"#{searchText}"%" OR number like "%"#{searchText}"%"
+	    	AND  (guestname like "%"#{searchText}"%" OR number like "%"#{searchText}"%")
 	    </if>
 	 </select>
 	 

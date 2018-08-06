@@ -101,6 +101,11 @@ public class HomeServiceImpl implements HomeService {
 	public List<BusHouse> newHouseList() {
 		return mapper.newHouseList();
 	}
+
+	@Override
+	public List<BusHouse> listLatentScoreStore(Map<String, Object> map) {
+		return mapper.listLatentScoreStore(map);
+	}
 	 
 
 }

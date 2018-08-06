@@ -366,6 +366,11 @@ public class BusHouse {
      * 搜索框模糊匹配条件
      */
     private String searchtext;
+    /**
+     * 维护人电话
+     */
+    @Transient
+    private String recordUesrPhone;
     
     
     /**
@@ -1330,6 +1335,14 @@ public class BusHouse {
 
 	public void setExamineState(String examineState) {
 		this.examineState = examineState;
+	}
+
+	public String getRecordUesrPhone() {
+		return recordUesrPhone;
+	}
+
+	public void setRecordUesrPhone(String recordUesrPhone) {
+		this.recordUesrPhone = recordUesrPhone;
 	}
 
     

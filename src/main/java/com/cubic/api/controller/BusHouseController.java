@@ -97,6 +97,16 @@ public class BusHouseController {
 				   busHouse.setChaoxiang("东北");
 			   }else  if("8".equals(busHouse.getChaoxiang())){
 				   busHouse.setChaoxiang("西北");
+			   }else  if("9".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东西");
+			   }else  if("10".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("南北");
+			   }else  if("11".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东南北");
+			   }else  if("12".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("西南北");
+			   }else  if("13".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东南西北");
 			   }
 		   }
     	   if(null!=busHouse.getGrade()){//房屋等级
@@ -253,22 +263,32 @@ public class BusHouseController {
     	if(null != busHouse){
     		if(null!=busHouse.getChaoxiang()){//朝向
  			   if("1".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("正南");
- 			   }else  if("2".equals(busHouse.getChaoxiang())){			
- 				   busHouse.setChaoxiang("正北");
- 			   }else  if("3".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("正东");
- 			   }else  if("4".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("正西");
- 			   }else  if("5".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("东南");
- 			   }else  if("6".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("西南");
- 			   }else  if("7".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("东北");
- 			   }else  if("8".equals(busHouse.getChaoxiang())){
- 				   busHouse.setChaoxiang("西北");
- 			   }
+				   busHouse.setChaoxiang("正南");
+			   }else  if("2".equals(busHouse.getChaoxiang())){			
+				   busHouse.setChaoxiang("正北");
+			   }else  if("3".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("正东");
+			   }else  if("4".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("正西");
+			   }else  if("5".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东南");
+			   }else  if("6".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("西南");
+			   }else  if("7".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东北");
+			   }else  if("8".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("西北");
+			   }else  if("9".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东西");
+			   }else  if("10".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("南北");
+			   }else  if("11".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东南北");
+			   }else  if("12".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("西南北");
+			   }else  if("13".equals(busHouse.getChaoxiang())){
+				   busHouse.setChaoxiang("东南西北");
+			   }
  		   }
     		    //修改
     			busHouseService.update(busHouse);  		
@@ -410,33 +430,39 @@ public class BusHouseController {
     //拼接详细地址
     	if(null!=busHouse.getRegionName()){
     		//区域名
-    		stringtext.append(busHouse.getRegionName());
+    		stringtext.append(busHouse.getRegionName()+" ");
     	}
     	if(null!=busHouse.getStreetName()){
     		//街道名
-    		stringtext.append(busHouse.getStreetName());
+    		stringtext.append(busHouse.getStreetName()+" ");
     	}
     	if(null!=busHouse.getXiaoquName()){
     		//小区名
-    		stringtext.append(busHouse.getXiaoquName());
+    		stringtext.append(busHouse.getXiaoquName()+" ");
+    	}
+    	if(null!=busHouse.getAddress()){
+    		//详细地址
+    		stringtext.append(busHouse.getAddress()+" ");
     	}
     	if(null!=busHouse.getNumfloor()){
     		//楼号
-    		stringtext.append(busHouse.getNumfloor());
+    		stringtext.append(busHouse.getNumfloor()+"号楼 ");
     	}
     	if(null!=busHouse.getNumunit()){
     		//单元号
-    		stringtext.append(busHouse.getNumunit());
+    		stringtext.append(busHouse.getNumunit()+"单元 ");
+    	}
+    	if(null!=busHouse.getFloor()){
+    		//门牌号
+    		
+    		stringtext.append(busHouse.getFloor()+"楼 ");
     	}
     	if(null!=busHouse.getNumhousehold()){
     		//门牌号
     		
-    		stringtext.append(busHouse.getNumhousehold());
+    		stringtext.append(busHouse.getNumhousehold()+"号 ");
     	}
-    	if(null!=busHouse.getAddress()){
-    		//详细地址
-    		stringtext.append(busHouse.getAddress());
-    	}
+    
     	//拼接
     	busHouse.setAddressText(stringtext.toString());
     	
@@ -718,7 +744,17 @@ public class BusHouseController {
 				   map.put("chaoxiang", "东北");
 			   }else  if("8".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "西北");
-			   }
+			   }else  if("9".equals(map.get("chaoxiangType").toString())){
+				   map.put("chaoxiang", "东西");
+			   }else  if("10".equals(map.get("chaoxiangType").toString())){
+				   map.put("chaoxiang", "南北");
+			   }else  if("11".equals(map.get("chaoxiangType").toString())){
+				   map.put("chaoxiang", "东南北");
+			   }else  if("12".equals(map.get("chaoxiangType").toString())){
+				   map.put("chaoxiang", "西南北");
+			   }else  if("13".equals(map.get("chaoxiangType").toString())){
+				   map.put("chaoxiang", "东南西北");
+		      }
 		   }
 		   
 	   }

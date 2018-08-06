@@ -15,7 +15,7 @@
   </resultMap>
   
   <select id="listBusGuestLookrecord" resultType="com.cubic.api.model.BusGuestLookrecord">
-  	SELECT bgl.*,su.relname userRelName,bgl.create_time createTime,CONCAT(bh.xiaoqu_name,bh.numfloor,'号楼',bh.numunit,'单元',bh.numhousehold,'号') AS houseName 
+  	SELECT bgl.*,su.relname userRelName,bgl.create_time createTime,bh.number AS houseName 
   	FROM bus_guest_lookrecord bgl,sys_user su,`bus_house` bh	
   	WHERE bgl.guest_id=#{id}
   		    and  su.username=bgl.user_name

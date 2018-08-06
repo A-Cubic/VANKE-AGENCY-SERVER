@@ -85,7 +85,15 @@
 	<select id="findByUser" parameterType="map" resultType="com.cubic.api.model.home.CurrentUser">
 		SELECT
         u.*,
-        SUM(ba.`price`) current_score,
+        <if test="role !=null and role == 1 ">
+        	  (SELECT SUM(price) FROM bus_achievement) current_score,
+        </if>
+        <if test="role !=null and (role== 4 or role == 5)">
+             (SELECT SUM(price) FROM bus_achievement bas LEFT JOIN `sys_user` us ON us.username = bas.user_name WHERE us.store_id = bs.id) current_score,
+        </if>
+        <if test="role !=null and (role== 2 or role == 3) ">
+        	SUM(ba.`price`) current_score,
+        </if>
         bs.store_name,
         sr.desc
         FROM `sys_user` u
@@ -95,7 +103,7 @@
         LEFT JOIN sys_role sr ON sr.id = sur.role_id
         
         <where>
-            <if test="username != null">u.username = #{username}</if>
+             <if test="username != null">u.username = #{username}</if>
         </where>
 	
 	</select>
@@ -104,16 +112,72 @@
 	<select id="listLatentScore" parameterType="map" resultMap="BaseHouseMap">
 			SELECT 		
 			 bh.price,
-			 bh.record_user_name,
-			 bh.`key_user_name`,
-			 bh.`create_user_name`,
-			 bh.`exploration_user_name`
+			 <choose>
+				    <when test="role != null and (role == 2 or role == 3)">
+				       	 (CASE
+								WHEN  bh.record_user_name =#{username}   THEN  bh.record_user_name 
+								ELSE NULL
+							END) record_user_name,
+							 (CASE
+								WHEN   bh.`key_user_name` =#{username}  THEN   bh.`key_user_name`
+								ELSE NULL
+							END) key_user_name,
+							 (CASE
+								WHEN    bh.`create_user_name` =#{username}   THEN    bh.`create_user_name`
+								ELSE NULL
+							END) create_user_name,
+							 (CASE
+								WHEN     bh.`exploration_user_name` =#{username}   THEN    bh.`exploration_user_name`
+								ELSE NULL
+							END)  exploration_user_name	
+				    </when>
+				    <otherwise>
+				     	 bh.record_user_name,
+						 bh.`key_user_name`,
+						 bh.`create_user_name`,
+						 bh.`exploration_user_name`
+				    </otherwise>
+				</choose>
+
+		
 			 FROM 	bus_house bh
 			 WHERE 
-				bh.`record_user_name`=#{username}
+			 1=1
+			 <if test="role != null and (role == 2 or role == 3)">
+				 AND (bh.`record_user_name`=#{username}
 				OR bh.`key_user_name`=#{username}
 				OR bh.`create_user_name`=#{username}
-				OR bh.`exploration_user_name`=#{username}
+				OR bh.`exploration_user_name`=#{username})
+			 </if>	
+	
+	</select>
+	
+		<select id="listLatentScoreStore" parameterType="map" resultMap="BaseHouseMap">
+
+        SELECT 		
+			 bh.price,
+			(CASE
+			        WHEN   bs.id =(SELECT store_id FROM sys_user WHERE username= bh.record_user_name  ) THEN  bh.record_user_name 
+			        ELSE NULL
+				END) record_user_name,
+			(CASE
+			        WHEN   bs.id =(SELECT store_id	 FROM sys_user WHERE username= bh.key_user_name  )   THEN   bh.`key_user_name`
+			        ELSE NULL
+			        END) key_user_name,
+			(CASE
+				WHEN   bs.id =(SELECT store_id	 FROM sys_user WHERE username= bh.create_user_name  )    THEN    bh.`create_user_name`
+				ELSE NULL
+				END) create_user_name,
+			(CASE
+				WHEN    bs.id =(SELECT store_id	 FROM sys_user WHERE username= bh.exploration_user_name  )   THEN    bh.`exploration_user_name`
+				ELSE NULL
+				END)  exploration_user_name
+							
+			
+			 FROM 	bus_house bh
+			 LEFT JOIN  `sys_user` u ON u.`username` =#{username}
+			 LEFT JOIN base_store bs ON bs.id = u.store_id	
+			 
 	
 	</select>
 	

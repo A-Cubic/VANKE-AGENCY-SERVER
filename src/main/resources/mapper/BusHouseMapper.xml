@@ -317,7 +317,7 @@
 			     	0,
 			     	0,
 			     	0,
-			     	CONCAT_WS('','大连市',(select region_name from base_region where region_code=#{regionCode}),(select street_name from base_street where id=#{streetId}),#{xiaoquName},#{numfloor},#{numunit},#{numhousehold},#{address}),
+			     	CONCAT_WS('','大连市',(select region_name from base_region where region_code=#{regionCode}),(select street_name from base_street where id=#{streetId}),#{xiaoquName},#{address},#{numfloor},#{numunit},#{numhousehold}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	#{owner1},
@@ -353,6 +353,7 @@
 	            bh.street_name,
 	            bh.numfloor,
 				bh.numunit,
+				bh.floor,
 				bh.numhousehold,
 				bh.address,(select COUNT(DISTINCT house_id)  
 	 							FROM bus_house_clicklog  
@@ -445,6 +446,7 @@
 	<select id="detailHouse" parameterType="map" resultMap="BaseResultMap">
 			SELECT
 				 <include refid="selectSql"/>
+				 ,su.phone   recordUesrPhone
 				 ,(SELECT  COUNT(1) 
 				           FROM `bus_house_like` 
 				            WHERE 
@@ -454,6 +456,7 @@
 				(DATE_ADD(create_time,INTERVAL 1 DAY)>NOW()) explorationTimeType,
 				(SELECT be.state FROM  bus_examine be WHERE be.house_id=bh.`id` AND be.state = 0 AND be.type=4)  examineState
 				FROM bus_house bh
+				LEFT JOIN sys_user su	 ON su.username=bh.record_user_name
 				WHERE 
 					bh.id=#{id}
 	</select>

@@ -20,6 +20,7 @@ public interface HomeService {
 	List<CurrentScore> listScore();
 	List<BaseXiaoQu> listHouseGood();
 	List<BusHouse> listLatentScore(Map<String,Object> map);
+	List<BusHouse> listLatentScoreStore(Map<String,Object> map);
 	List<CurrentScore> listRankings(Map<String,Object> map);
 	void upadateInfo(User user);
 	void upadateImg(String url,String username);
