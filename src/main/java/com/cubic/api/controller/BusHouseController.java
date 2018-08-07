@@ -72,8 +72,7 @@ public class BusHouseController {
     	busHouse.setCreateUserName(user.getName());
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
-//    	//搜索文本条件
-//    	String text=busHouse.getRegionCode()+busHouse.getStreetId()+busHouse.getXiaoquName()+busHouse.getNumfloor()+busHouse.getNumunit()+busHouse.getNumhousehold()+busHouse.getAddress();
+
     	//验证是否为空
     	
     	List<BusHouse> findlist=busHouseService.findIsAddress(busHouse);   
@@ -119,7 +118,12 @@ public class BusHouseController {
     		   }    		   
     	   }
     	   
-    	busHouseService.insertBusHouse(busHouse);
+    	 //转换成整数,例:(150.85万 -转换成-1508500)
+			double d = Double.parseDouble(busHouse.getPrice())*10000;
+			BigDecimal bd = new BigDecimal(d);
+			int d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
+			busHouse.setPrice(String.valueOf(d1));
+    	    busHouseService.insertBusHouse(busHouse);
 
     
     	if(busHouse.getId()!=null){
@@ -261,6 +265,14 @@ public class BusHouseController {
     @PostMapping("/update")
     public Result update(@RequestBody BusHouse busHouse) {
     	if(null != busHouse){
+    		BusHouse newBean=busHouseService.findById(busHouse.getId());
+    		if("1".equals(newBean.getType())){
+	    		 //转换成整数,例:(150.85万 -转换成-1508500)
+				double d = Double.parseDouble(busHouse.getPrice())*10000;
+				BigDecimal bd = new BigDecimal(d);
+				int d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
+				busHouse.setPrice(String.valueOf(d1));
+    		}
     		if(null!=busHouse.getChaoxiang()){//朝向
  			   if("1".equals(busHouse.getChaoxiang())){
 				   busHouse.setChaoxiang("正南");
@@ -382,9 +394,23 @@ public class BusHouseController {
     		busHouse.setIskey("1");
     		busHouse.setKeyUserName(user.getName());
   			busHouseService.updateKey(busHouse);
-  			busHouse=busHouseService.findById(busHouse.getId());
+  	
+  			
 
-        return ResultGenerator.genOkResult(busHouse.getKeyrelName());
+        return ResultGenerator.genOkResult("1");
+    }
+    /**
+     * 更新钥匙状态和拥有者
+     * 
+     * ,@RequestBody BusHouse busHouse
+     * */
+    @PreAuthorize("hasAuthority('house:updateCancelKey')")
+    @PostMapping("/updateCancelKey")
+    public Result updateCancelKey(Principal user,@RequestBody BusHouse busHouse){
+    	
+			busHouseService.updateCancelKey(busHouse);
+
+        return ResultGenerator.genOkResult("0");
     }
 	 /**
      * 点击查看详细联系方式及房主姓名
@@ -504,6 +530,15 @@ public class BusHouseController {
 	    if(busHouseNew.getExamineState()==null){
 	    	busHouseNew.setExamineState("3");
 	    }
+	    //判断钥匙人是否存在
+	    if(busHouseNew.getKeyUserName()!=null){
+	    	//判断当前登陆人是否是钥匙人
+	    	if(user.getName().equals(busHouseNew.getKeyUserName())){
+	    		busHouseNew.setKeyUserType("1");
+	    	}else{
+	    		busHouseNew.setKeyUserType("0");
+	    	}	    	
+	    }
     	//转换时间格式
      	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
      	Date date = fmt.parse(busHouseNew.getCreateTime());
@@ -518,12 +553,25 @@ public class BusHouseController {
 				double d = Double.parseDouble(busHouseNew.getPrice())/10000;
 				BigDecimal bd = new BigDecimal(d);
 				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-				busHouseNew.setPriceText(d1+"万");
+				
+				double d2=d1;
+				int d3=(int)d1;
+				if(d2==d3){
+					busHouseNew.setPriceText(d3+"万");
+				}else{
+					busHouseNew.setPriceText(d1+"万");
+				}
 				//计算每平米多少钱
-				double doione = Double.parseDouble(busHouseNew.getPrice())/Integer.parseInt(busHouseNew.getAreas());
+				double doione = Double.parseDouble(busHouseNew.getPrice())/Double.parseDouble(busHouseNew.getAreas());
 				BigDecimal bdone = new BigDecimal(doione);
-				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				int done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
 				busHouseNew.setPriceOneText(done+"元/平");
+				//改变前台的显示形式
+				if(d2==d3){
+					busHouseNew.setPrice(String.valueOf(d3));
+				}else{
+					busHouseNew.setPrice(String.valueOf(d1));
+				}
 			}
 		}else if("2".equals(busHouseNew.getType())){	
 			//租赁价格单位为每月多少钱
@@ -590,11 +638,18 @@ public class BusHouseController {
     				double d = Double.parseDouble(bushouses.getPrice())/10000;
     				BigDecimal bd = new BigDecimal(d);
     				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-    				bushouses.setPriceText(d1+"万");
-    				
-    				double doione = Double.parseDouble(bushouses.getPrice())/Integer.parseInt(bushouses.getAreas());
+
+    				double d2=d1;
+    				int d3=(int)d1;
+    				if(d2==d3){
+    					bushouses.setPriceText(d3+"万");
+    				}else{
+    					bushouses.setPriceText(d1+"万");
+    				}
+    				//计算每平米多少钱
+    				double doione = Double.parseDouble(bushouses.getPrice())/Double.parseDouble(bushouses.getAreas());
     				BigDecimal bdone = new BigDecimal(doione);
-    				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    				int done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
     				bushouses.setPriceOneText(done+"元/平");
     			}
     		}else if("2".equals(bushouses.getType())){			
@@ -781,12 +836,21 @@ public class BusHouseController {
     				double d = Double.parseDouble(busHouse.getPrice())/10000;
     				BigDecimal bd = new BigDecimal(d);
     				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-    				busHouse.setPriceText(d1+"万");
     				
-    				double doione = Double.parseDouble(busHouse.getPrice())/Integer.parseInt(busHouse.getAreas());
+    				
+    				double d2=d1;
+    				int d3=(int)d1;
+    				if(d2==d3){
+    					busHouse.setPriceText(d3+"万");
+    				}else{
+    					busHouse.setPriceText(d1+"万");
+    				}
+    				//计算每平米多少钱
+    				double doione = Double.parseDouble(busHouse.getPrice())/Double.parseDouble(busHouse.getAreas());
     				BigDecimal bdone = new BigDecimal(doione);
-    				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+    				int done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
     				busHouse.setPriceOneText(done+"元/平");
+    				
     			}
     		}else if("2".equals(busHouse.getType())){			
     			if(null !=busHouse.getPrice()){
@@ -815,11 +879,19 @@ public class BusHouseController {
 	    				double d = Double.parseDouble(busHouse.getPrice())/10000;
 	    				BigDecimal bd = new BigDecimal(d);
 	    				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-	    				busHouse.setPriceText(d1+"万");
 	    				
-	    				double doione = Double.parseDouble(busHouse.getPrice())/Integer.parseInt(busHouse.getAreas());
+	    			
+	    				double d2=d1;
+	    				int d3=(int)d1;
+	    				if(d2==d3){
+	    					busHouse.setPriceText(d3+"万");
+	    				}else{
+	    					busHouse.setPriceText(d1+"万");
+	    				}
+	    				//计算每平米多少钱
+	    				double doione = Double.parseDouble(busHouse.getPrice())/Double.parseDouble(busHouse.getAreas());
 	    				BigDecimal bdone = new BigDecimal(doione);
-	    				double done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	    				int done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
 	    				busHouse.setPriceOneText(done+"元/平");
 	    			}
 	    		}else if("2".equals(busHouse.getType())){			

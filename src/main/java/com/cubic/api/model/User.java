@@ -1,13 +1,18 @@
 package com.cubic.api.model;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * @author fei.yu

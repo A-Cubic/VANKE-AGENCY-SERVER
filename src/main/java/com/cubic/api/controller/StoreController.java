@@ -95,4 +95,14 @@ public class StoreController {
 		List<Store> list = storeService.ListBaseStore(map);
 		return ResultGenerator.genOkResult(list);
 	}
+	
+	
+	/**
+	 * 查询全部
+	 * */
+	@PostMapping("/listStore")
+	public Result listStore(Principal user) {
+		List<Store> list = storeService.findAll();
+		return ResultGenerator.genOkResult(list);
+	}
 }

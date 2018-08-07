@@ -50,9 +50,12 @@
     <result column="key_rel_name" jdbcType="VARCHAR" property="keyrelName" />
     <result column="exploration_rel_name" jdbcType="VARCHAR" property="explorationrelName" />
     <result column="exclusive_rel_name" jdbcType="VARCHAR" property="exclusiverelName" />
-   <result column="titleimg" jdbcType="VARCHAR" property="titleimg" />
+    <result column="titleimg" jdbcType="VARCHAR" property="titleimg" />
     <result column="owner1" jdbcType="VARCHAR" property="owner1" />
-     <result column="phone1" jdbcType="VARCHAR" property="phone1" />
+    <result column="phone1" jdbcType="VARCHAR" property="phone1" />
+    <result column="key_number" jdbcType="VARCHAR" property="keyNumber" />
+    <result column="key_store_id" jdbcType="VARCHAR" property="keyStoreId" />
+    <result column="layout" jdbcType="VARCHAR" property="layout" />
   </resultMap>
   
   <sql id="selectSql">
@@ -87,7 +90,7 @@
 		  bh.isshare,
 		  bh.isfine,
 		  bh.isspecial,
-		  CONCAT(bh.huxingshi,'-',bh.huxingting,'-',bh.huxingwei,'-',bh.huxingchu) AS huxing,
+		  CONCAT(bh.huxingshi,'-',bh.huxingting,'-',bh.huxingchu,'-',bh.huxingwei) AS huxing,
 		  bh.huxingshi,
 		  bh.huxingting,
 		  bh.huxingwei,
@@ -97,7 +100,10 @@
 		  bh.key_rel_name,
 		  bh.exploration_rel_name,
 		  bh.xiaoqu_name,
-		  bh.titleimg
+		  bh.titleimg,
+		  bh.key_store_id,
+		  bh.key_number,
+		  bh.layout
 		  
   </sql>
   
@@ -276,10 +282,13 @@
 				  record_rel_name,
 				  create_rel_name,
 				  `owner1`,
-				  `phone1`
+				  `phone1`,
+				  layout
 				  <if test="iskey==1">
 				  	,key_rel_name
 				  	 ,key_user_name
+				  	 ,key_store_id
+		  			,key_number
 				  </if>
 	             
 	             )
@@ -321,10 +330,13 @@
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	(SELECT relname FROM sys_user WHERE username=#{recordUserName}),
 			     	#{owner1},
-				  	#{phone1}
+				  	#{phone1},
+				  	 #{layout}
 			     	<if test="iskey==1">
 				  	,(SELECT relname FROM sys_user WHERE username=#{recordUserName})
-				  	,#{recordUserName}
+				  	,#{recordUserName},
+				  	#{keyStoreId},
+				  	#{keyNumber}
 					</if>
 				  
 				);
@@ -388,7 +400,20 @@
 	 		UPDATE bus_house bh
 	 		SET bh.iskey=#{iskey},
 	 			bh.key_user_name=#{keyUserName},
-	 			bh.key_rel_name=(select su.relname from sys_user su	where su.username=#{keyUserName})
+	 			bh.key_rel_name=(select su.relname from sys_user su	where su.username=#{keyUserName}),
+	 			bh.key_store_id=#{keyStoreId},
+				bh.key_number=#{keyNumber}
+	 		WHERE 
+	 		  bh.id=#{id}
+	 </update>
+	 
+	 <update id="updateCancelKey" parameterType="com.cubic.api.model.BusHouse">
+	 		UPDATE bus_house bh
+	 		SET bh.iskey=0,
+	 			bh.key_user_name='',
+	 			bh.key_rel_name='',
+	 			bh.key_store_id='',
+				bh.key_number=''
 	 		WHERE 
 	 		  bh.id=#{id}
 	 </update>
@@ -455,8 +480,10 @@
 				) likeType,
 				(DATE_ADD(create_time,INTERVAL 1 DAY)>NOW()) explorationTimeType,
 				(SELECT be.state FROM  bus_examine be WHERE be.house_id=bh.`id` AND be.state = 0 AND be.type=4)  examineState
+				,bs.store_name ketStoreName
 				FROM bus_house bh
 				LEFT JOIN sys_user su	 ON su.username=bh.record_user_name
+				LEFT JOIN base_store bs  ON bs.id=bh.key_store_id
 				WHERE 
 					bh.id=#{id}
 	</select>

@@ -163,4 +163,13 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 
 		return busHouseMapper.findIsAddress(busHouse);
 	}
+	/**
+	 * 取消钥匙人
+	 * @param busHouse
+	 * */
+	@Override
+	public void updateCancelKey(BusHouse busHouse) {
+		busHouseMapper.updateCancelKey(busHouse);
+		
+	}
 }

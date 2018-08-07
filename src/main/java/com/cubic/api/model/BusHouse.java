@@ -39,6 +39,11 @@ public class BusHouse {
     @Transient
     private String title;
     /**
+     * 是否是钥匙人
+     */
+    @Transient
+    private String keyUserType;
+    /**
      * 维护时间的type(1:大于等于10天但是小于15天,2:大于等于15天)
      */
     @Transient
@@ -82,6 +87,23 @@ public class BusHouse {
      * 房屋最大楼层
      */
     private String maxfloor;
+    
+    /**
+     * 钥匙协议号
+     */
+    @Column(name = " key_number")
+    private String keyNumber;
+    
+    /**
+     * 钥匙所在店
+     */
+    @Column(name = " key_store_id")
+    private String keyStoreId;
+    /**
+     * 钥匙所在店名称
+     */
+    @Transient
+    private String ketStoreName;
     
 
     /**
@@ -206,6 +228,10 @@ public class BusHouse {
     @Column(name = "street_id")
     private Long streetId;
     
+    /**
+     * 装修
+     */
+    private String layout;
     
     /**
      * 房屋区号地址
@@ -1345,5 +1371,45 @@ public class BusHouse {
 		this.recordUesrPhone = recordUesrPhone;
 	}
 
+	public String getKeyNumber() {
+		return keyNumber;
+	}
+
+	public void setKeyNumber(String keyNumber) {
+		this.keyNumber = keyNumber;
+	}
+
+	public String getKeyStoreId() {
+		return keyStoreId;
+	}
+
+	public void setKeyStoreId(String keyStoreId) {
+		this.keyStoreId = keyStoreId;
+	}
+
+	public String getKeyUserType() {
+		return keyUserType;
+	}
+
+	public void setKeyUserType(String keyUserType) {
+		this.keyUserType = keyUserType;
+	}
+
+	public String getLayout() {
+		return layout;
+	}
+
+	public void setLayout(String layout) {
+		this.layout = layout;
+	}
+
+	public String getKetStoreName() {
+		return ketStoreName;
+	}
+
+	public void setKetStoreName(String ketStoreName) {
+		this.ketStoreName = ketStoreName;
+	}
+	
     
 }

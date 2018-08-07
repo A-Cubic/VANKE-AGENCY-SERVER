@@ -71,6 +71,13 @@ public interface BusHouseService extends Service<BusHouse> {
      * 
      * */
 	void updateKey(BusHouse busHouse);
+	/**
+	 * 取消钥匙人
+	 * 
+	 * @param busHouse
+	 * 
+	 */
+	void updateCancelKey(BusHouse busHouse);
 	
 	 /**
      * 时间任务的查看所有上次维护时间距离现在时间大于10天或15天的房源
