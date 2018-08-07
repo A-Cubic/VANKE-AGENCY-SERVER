@@ -103,7 +103,8 @@
 		  bh.titleimg,
 		  bh.key_store_id,
 		  bh.key_number,
-		  bh.layout
+		  bh.layout,
+		  bh.`phone`
 		  
   </sql>
   

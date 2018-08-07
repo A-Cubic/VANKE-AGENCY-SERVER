@@ -165,7 +165,7 @@ public class BusAchievementController {
     	BusHouseTransaction busHouseTransaction=null;
     	List<BusAchievement> list=new ArrayList<BusAchievement>();
     	//验证成交id是否为空
-    	if(busAchievement.getTransactionId() != null && !"".equals(busAchievement.getTransactionId())){
+    	if(busAchievement.getTransactionId() != null){
     		Map<String,Object> map =new HashMap<String,Object>();
     		map.put("id", busAchievement.getTransactionId());
     		//按照成交id查询成交详情

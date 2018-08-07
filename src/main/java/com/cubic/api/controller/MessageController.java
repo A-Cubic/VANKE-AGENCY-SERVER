@@ -50,11 +50,11 @@ public class MessageController {
 	 */
 	@RequestMapping(value = "/sendAll", method = RequestMethod.GET)
 	String sendAllMessage(@RequestParam(required = true) String message) {
-		try {
-			WebSocketServer.BroadCastInfo(message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			WebSocketServer.BroadCastInfo(message);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		return "ok";
 	}
 
@@ -69,11 +69,11 @@ public class MessageController {
 	 */
 	@RequestMapping(value = "/sendOne", method = RequestMethod.GET)
 	String sendOneMessage(@RequestParam(required = true) String message, @RequestParam(required = true) String id) {
-		try {
-			WebSocketServer.SendMessageByUserName(id, message);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			WebSocketServer.SendMessageByUserName(id, message);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		return "ok";
 	}
 }
