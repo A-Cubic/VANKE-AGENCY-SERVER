@@ -172,4 +172,31 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		busHouseMapper.updateCancelKey(busHouse);
 		
 	}
+	/**
+	 * 查询房源详情的可修改字段(维护人能调用)
+	 * @param busHouse
+	 * */
+	@Override
+	public BusHouse detailUpdateInfo(BusHouse busHouse) {
+
+		return busHouseMapper.detailUpdateInfo(busHouse);
+	}
+	/**
+	 * 店长查询本店所有维护的房源
+	 * @param map
+	 * */
+	@Override
+	public List<BusHouse> listBusHouseRecord(Map<String, Object> map) {
+		
+		return busHouseMapper.listBusHouseRecord(map);
+	}
+	/**
+	 * 变动价格添加价格记录
+	 * @param map
+	 * */
+	@Override
+	public void insertPriceLog(Map<String, Object> map) {
+		busHouseMapper.insertPriceLog(map);
+		
+	}
 }

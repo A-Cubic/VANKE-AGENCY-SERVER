@@ -120,4 +120,29 @@ public interface BusHouseService extends Service<BusHouse> {
 	 * 
 	 */
 	List<BusHouse> findIsAddress(BusHouse busHouse);
+	
+	/**
+	 * 查询房源详情要可修改的字段信息(维护人能调用)
+	 * 
+	 * @param busHouse
+	 * 
+	 */
+	BusHouse detailUpdateInfo(BusHouse busHouse);
+	
+	
+	/**
+	 * 店长查询本店所有维护的房源
+	 * 
+	 * @param map
+	 * 
+	 */
+	List<BusHouse> listBusHouseRecord(Map<String, Object> map);
+	
+	/**
+	 * 变动价格添加价格记录
+	 * 
+	 * @param map
+	 * 
+	 */
+	void insertPriceLog(Map<String, Object> map);
 }

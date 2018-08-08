@@ -117,15 +117,16 @@ public class BusHouseController {
     			   busHouse.setGrade("C");
     		   }    		   
     	   }
-    	   
-    	 //转换成整数,例:(150.85万 -转换成-1508500)
-			double d = Double.parseDouble(busHouse.getPrice())*10000;
-			BigDecimal bd = new BigDecimal(d);
-			int d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
-			busHouse.setPrice(String.valueOf(d1));
-    	    busHouseService.insertBusHouse(busHouse);
-
-    
+    	   //如果是买卖计算为万
+    	   if("1".equals(busHouse.getType())){
+	    	 //转换成整数,例:(150.85万 -转换成-1508500)   		   
+				double d = Double.parseDouble(busHouse.getPrice())*10000;
+				BigDecimal bd = new BigDecimal(d);
+				int d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
+				busHouse.setPrice(String.valueOf(d1));
+	    	   
+    	   }
+    	   busHouseService.insertBusHouse(busHouse);
     	if(busHouse.getId()!=null){
     		//根据id得到房源编号并更新
     		String num = NumberUtil.geoEquipmentNo("H",busHouse.getId());
@@ -273,6 +274,28 @@ public class BusHouseController {
 				int d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
 				busHouse.setPrice(String.valueOf(d1));
     		}
+    		//记录价格修改日志
+//    		if(!newBean.getPrice().equals(busHouse.getPrice())){
+//    			Map<String,Object> newMap=new HashMap<String,Object>();
+//    			//原价格
+//    			int priceold = Integer.valueOf(newBean.getPrice());
+//    			//新价格
+//    			int pricenew = Integer.valueOf(busHouse.getPrice());
+//    			//计算差价
+//    			int lockprice = pricenew-priceold;
+//    			//判断是上涨了还是下降了(1:上涨,2:下降)
+//    			int upordown=0;
+//    			if(lockprice>=1){
+//    				upordown=1;
+//    			}else if(lockprice<=-1){
+//    				upordown=2;
+//    			}
+//    			newMap.put("priceold", priceold);
+//    			newMap.put("pricenew", pricenew);
+//    			newMap.put("lockprice", lockprice);
+//    			newMap.put("upordown", upordown);
+//    			busHouseService.insertPriceLog(newMap);
+//    		}
     		if(null!=busHouse.getChaoxiang()){//朝向
  			   if("1".equals(busHouse.getChaoxiang())){
 				   busHouse.setChaoxiang("正南");
@@ -394,9 +417,6 @@ public class BusHouseController {
     		busHouse.setIskey("1");
     		busHouse.setKeyUserName(user.getName());
   			busHouseService.updateKey(busHouse);
-  	
-  			
-
         return ResultGenerator.genOkResult("1");
     }
     /**
@@ -522,6 +542,7 @@ public class BusHouseController {
     public Result detail(Principal user,@RequestBody Map<String,String> map) throws ParseException {
     	map.put("username", user.getName());
     	BusHouse busHouseNew=busHouseService.detailHouse(map);
+    	
     	//关注状态(0:未关注,1:关注)
 	    if(!"0".equals(busHouseNew.getLikeType())){
 	    	busHouseNew.setLikeType("1");
@@ -610,6 +631,14 @@ public class BusHouseController {
     	//是否是维护人(1:是,0:否)
     	if(user.getName().equals(busHouseNew.getRecordUserName())){
     		busHouseNew.setUser_type("1");
+    		//查询可修改字段
+    		BusHouse busHouseTow=busHouseService.detailUpdateInfo(busHouseNew);
+    		//房主姓名1
+    		busHouseNew.setOwner1(busHouseTow.getOwner1());
+    		//房主联系方式
+    		busHouseNew.setPhone(busHouseTow.getPhone());
+    		//房主联系方式1
+    		busHouseNew.setPhone1(busHouseTow.getPhone1());
     	}else{
     		busHouseNew.setUser_type("0");
     	}
@@ -826,9 +855,21 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:myRecordHouseList')")
     @PostMapping("/myRecordHouseList")
     public Result myRecordHouselist(Principal user,@RequestBody Map<String,Object> map) {
-	      map.put("recordUserName", user.getName());
+	      
 	      PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
-	      List<BusHouse> list = busHouseService.ListBusHouse(map);
+	      
+
+	      
+	        List<BusHouse> list =new ArrayList<BusHouse>();
+//	        //如果是店长的话查询本店所有维护的房源
+//	        if(user.toString().indexOf("ROLE_MANAGER")!=-1){
+//	        	  map.put("username", user.getName());
+//	        	  list = busHouseService.listBusHouseRecord(map);
+//	        	
+//	        }else{//经济人查询自己维护的房源
+	        	map.put("recordUserName", user.getName());
+	        	list = busHouseService.ListBusHouse(map);
+//	        }
     	  for(BusHouse busHouse:list){
     		  
       		if("1".equals(busHouse.getType())){

@@ -103,8 +103,7 @@
 		  bh.titleimg,
 		  bh.key_store_id,
 		  bh.key_number,
-		  bh.layout,
-		  bh.`phone`
+		  bh.layout
 		  
   </sql>
   
@@ -143,11 +142,19 @@
 					<![CDATA[and CONVERT(bh.`floor`,SIGNED) >  (CONVERT(bh.`maxfloor`,SIGNED)/2)+(CONVERT(bh.`maxfloor`,SIGNED)/10)]]>
 				</if>
 			</if>
-			
-			<if test="searchText != null and searchText != ''"><!-- 搜索条件-->
-				 and bh.searchtext like "%"#{searchText}"%"
+			<if test="floor!=null and floor !=''"><!-- 楼层输入查询 -->
+			   AND     bh.`floor`=#{floor}
 			</if>
-			
+			<if test="searchType!=null and searchType == '1'">
+				<if test="searchText != null and searchText != ''"><!-- 搜索条件(地址)-->
+					 and bh.searchtext like "%"#{searchText}"%"
+				</if>
+			</if>
+			<if test="searchType!=null and searchType == '2'">
+				<if test="searchText != null and searchText != ''"><!-- 搜索条件(经济人)-->
+					 and (bh.record_rel_name = #{searchText} or bh.record_user_name =(select username from sys_user where user_no = "VK000"#{searchText})) 
+				</if>
+			</if>
 			<if test="huxingType != null and huxingType != 0"><!-- 户型几室条件-->
 				<if test="huxingType == 6 "><!-- 户型5室以上条件-->
 					 <![CDATA[ and CONVERT(bh.huxingshi,SIGNED) > 5 ]]>
@@ -204,7 +211,7 @@
 			<if test="isspecial != null"><!-- 特殊房源条件-->
 				 and bh.isspecial = #{isspecial}
 			</if>
-			<if test="type != null"><!-- 类型条件-->
+			<if test="type != null and type!=''"><!-- 类型条件-->
 				 and bh.type = #{type}
 			</if>
 			<if test="isshare!=null and isshare == 0">
@@ -218,10 +225,10 @@
 				 and bh.isshare = 1
 			</if>
 			
-			<if test="grade != null"><!-- 房源等级条件-->
+			<if test="grade != null and grade!=''"><!-- 房源等级条件-->
 				 and bh.grade = #{grade}
 			</if>
-			<if test="iskey != null"><!-- 是否有钥匙条件-->
+			<if test="iskey != null and  iskey !='' "><!-- 是否有钥匙条件-->
 				 and bh.iskey = #{iskey}
 			</if>
 			
@@ -232,8 +239,8 @@
 					and  bh.street_name=bsr.street_name
 				
 			</if>
-			<if test="recordUserName!=null"><!-- 维护人的条件 -->
-					and record_user_name=#{recordUserName}
+			<if test="recordUserName!=null and recordUserName!=''"><!-- 维护人的条件 -->
+					and bh.record_user_name=#{recordUserName}
 			</if>
 	
 		</where>
@@ -501,14 +508,70 @@
 	<select id="findIsAddress" parameterType="com.cubic.api.model.BusHouse" resultMap="BaseResultMap">
 		SELECT * 
 		FROM bus_house
-		WHERE
-						region_code= #{regionCode}
+		WHERE           type = #{type}
+						AND region_code= #{regionCode}
 						and street_id=#{streetId}
 						and xiaoqu_name=#{xiaoquName}
 						and numfloor=#{numfloor}
 						and numunit=#{numunit}
 						and numhousehold=#{numhousehold}
 						and floor=#{floor}
+						and address=#{address}
 			AND state <![CDATA[<>]]>'1'
+			
 	</select>
+	
+	<select id="detailUpdateInfo"  parameterType="com.cubic.api.model.BusHouse" resultMap="BaseResultMap">
+		select 
+		   id,
+		   owner,
+		   owner1,
+		   phone,
+		   phone1
+		from bus_house
+		where id = #{id}	
+	</select>
+	
+	<select id="listBusHouseRecord" parameterType="map" resultMap="BaseResultMap">
+		SELECT  
+		<include refid="selectSql"/>
+		FROM bus_house bh,sys_user su
+		WHERE
+			su.username=#{username}
+			AND bh.`record_user_name` IN (SELECT username FROM sys_user WHERE store_id=su.`store_id`)
+			<if test="exploration!=null and exploration=='1'">
+			AND	exploration_user_name IS NOT NULL
+			</if>
+			<if test="exploration!=null and exploration=='2'">
+			AND	exploration_user_name IS  NULL
+			</if>
+			<if test="iskey!=null and iskey!=''">
+			AND	iskey =#{iskey}
+			</if>
+			<if test="type!=null and type!=''">
+			AND	type =#{type}
+			</if>
+		ORDER BY bh.create_time DESC
+	</select>
+	
+	<!--  <select id="listBusHouseRou"></select>-->
+	
+	<insert id="insertPriceLog" parameterType="map">
+		INSERT INTO bus_house_pricelog(
+								hosue_id,
+								oldprice,
+								newprice,
+								pricelock,
+								create_time,
+								upordown
+								)
+								VALUES(
+								#{houseId},
+								#{oldpirce},
+								#{newprice},
+								#{pricelock},
+								NOW(),
+								#{upordown}
+								)
+	</insert>
 </mapper>
