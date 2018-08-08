@@ -145,12 +145,12 @@
 			<if test="floor!=null and floor !=''"><!-- 楼层输入查询 -->
 			   AND     bh.`floor`=#{floor}
 			</if>
-			<if test="searchType!=null and searchType == '1'">
+			<if test="searchType!=null and searchType == 1">
 				<if test="searchText != null and searchText != ''"><!-- 搜索条件(地址)-->
 					 and bh.searchtext like "%"#{searchText}"%"
 				</if>
 			</if>
-			<if test="searchType!=null and searchType == '2'">
+			<if test="searchType!=null and searchType == 2">
 				<if test="searchText != null and searchText != ''"><!-- 搜索条件(经济人)-->
 					 and (bh.record_rel_name = #{searchText} or bh.record_user_name =(select username from sys_user where user_no = "VK000"#{searchText})) 
 				</if>
