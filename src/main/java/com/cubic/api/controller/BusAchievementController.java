@@ -13,7 +13,6 @@ import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -122,11 +121,11 @@ public class BusAchievementController {
         return ResultGenerator.genOkResult();
     }
 
-    @PutMapping
-    public Result update(@RequestBody BusAchievement busAchievement) {
-    	busAchievementService.update(busAchievement);
-        return ResultGenerator.genOkResult();
-    }
+//    @PutMapping
+//    public Result update(@RequestBody BusAchievement busAchievement) {
+//    	busAchievementService.update(busAchievement);
+//        return ResultGenerator.genOkResult();
+//    }
 	/**
 	 * 查看分配业绩
 	 * @param map

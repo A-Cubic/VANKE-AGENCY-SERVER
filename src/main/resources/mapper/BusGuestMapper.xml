@@ -103,60 +103,69 @@
 	 <select id="listBusGuest" parameterType="map" resultMap="BaseResultMap">
 	 				
 				SELECT
-				  `id`,
-				  `number`,
-				  `guestname`,
-				  `sex`,
-				  `guestgrade`,
-				  `type`,
-				  `heartprice`,
-				  `remarks`,
-				  `areas`,
-				  `position`,
-				  `purpose`,
-				  `label`,
-				  `iskey`,
-				  `record_user_name`,
-				  `create_user_name`,
-				  `create_time`,
-				  `collaboratorids`,
-				  `record_time`,
-				  `huxingshi`,
-				  `huxingting`,
-				  `huxingwei`,
-				  `huxingchu`,
-				  `isshare`,
-				   record_rel_name,
-                   create_rel_name,
-                   phonetow
-				FROM bus_guest
-				
+				  bg.`id`,
+				  bg.`number`,
+				  bg.`guestname`,
+				  bg.`sex`,
+				  bg.`guestgrade`,
+				  bg.`type`,
+				  bg.`heartprice`,
+				  bg.`remarks`,
+				  bg.`areas`,
+				  bg.`position`,
+				  bg.`purpose`,
+				  bg.`label`,
+				  bg.`iskey`,
+				  bg.`record_user_name`,
+				  bg.`create_user_name`,
+				  bg.`create_time`,
+				  bg.`collaboratorids`,
+				  bg.`record_time`,
+				  bg.`huxingshi`,
+				  bg.`huxingting`,
+				  bg.`huxingwei`,
+				  bg.`huxingchu`,
+				  bg.`isshare`,
+				  bg.record_rel_name,
+                  bg.create_rel_name,
+                  bg.phonetow
+				FROM bus_guest bg
+				<if test="role!=null and role == 4">
+						LEFT JOIN sys_user su  ON su.username=#{username}
+				</if>
 				<where>
 				1=1
 					<if test="isShare ==null or isShare==0">
-						and  record_user_name=#{recordUserName}
-					 </if>
-					 <if test="isShare !=null and isShare==1">
-						and  isshare=#{isShare}
+						<if test="role!=null and role != 4">
+							and  bg.record_user_name=#{recordUserName}
+						</if>
+						<if test="role!=null and role == 4"><!-- 店长可以看本店全部人的客源 -->
+							and  bg.record_user_name in (select username from sys_user where `store_id` = su.`store_id` )
+						</if>
+					</if>
+					<if test="isShare !=null and isShare==1">
+						    and  bg.isshare=#{isShare}
 					 </if>
 					<if test="guestname!=null and guestname != ''"><!-- 客源姓名 -->
-							and guestname like "%"#{guestname}"%"
+							and bg.guestname like "%"#{guestname}"%"
 					</if>
 					
 					<if test="sex!=null"><!-- 客源性别 -->
-							and sex=#{sex}
+							and bg.sex=#{sex}
 					</if>
 					
 					<if test="guestgrade!=null and guestgrade != ''"><!-- 客源星级 -->
-							and guestgrade=#{guestgrade}
+							and bg.guestgrade=#{guestgrade}
 					</if>
 					
 					<if test="type!=null"><!-- 客源类型(0买,1租)-->
-							and type=#{type}
+							and bg.type=#{type}
 					</if>
-								
+					<if test="iskey!=null and iskey!=''"><!-- 是否是无效房源(0:不是,1:是) -->
+						and bg.iskey=#{iskey}
+					</if>
 					<if test="collaboratorName!=null"><!-- 查看当前登录人为合作人的客源-->
-							and collaboratorids like "%"#{recordUserName}"%"
+							and bg.collaboratorids like "%"#{recordUserName}"%"
 					</if>
 				</where>
 	 </select>

@@ -1,6 +1,7 @@
 package com.cubic.api.model;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -42,6 +43,13 @@ public class Store {
      * */
     @Transient
     private List<User> userlist;
+    
+    
+    /**
+     * 用户列表
+     * */
+    @Transient
+    private List<Map<String,Object>> storeRangeList;
 
     /**
      * @return id
@@ -115,6 +123,14 @@ public class Store {
 
 	public void setUserlist(List<User> userlist) {
 		this.userlist = userlist;
+	}
+
+	public List<Map<String, Object>> getStoreRangeList() {
+		return storeRangeList;
+	}
+
+	public void setStoreRangeList(List<Map<String, Object>> storeRangeList) {
+		this.storeRangeList = storeRangeList;
 	}
     
     

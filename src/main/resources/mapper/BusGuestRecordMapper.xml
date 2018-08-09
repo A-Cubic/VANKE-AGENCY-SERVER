@@ -37,18 +37,16 @@
   
   <update id="updateGuestRecordIsTopOne" parameterType="com.cubic.api.model.BusGuestRecord">
   		UPDATE bus_guest_record
-  		SET istop = #{istop},
-  			toptime = NOW(),
-  			topicon = #{topicon}
+  		SET istop = 1,
+  			toptime = NOW()
   		WHERE 
   			id=#{id}	
   </update>
   
     <update id="updateGuestRecordIsTopZero" parameterType="com.cubic.api.model.BusGuestRecord">
   		UPDATE bus_guest_record
-  		SET istop = #{istop},
-  			toptime = create_time,
-  			topicon = #{topicon}
+  		SET istop = 0,
+  			toptime = create_time
   		WHERE 
   			id=#{id}	
   </update>
@@ -59,6 +57,6 @@
   		WHERE 
   			guest_id = #{id}
   			and su.username=bgr.user_name
-  		order by  toptime desc		
+        ORDER BY istop DESC,toptime DESC,create_time DESC	
   </select>
 </mapper>

@@ -37,8 +37,7 @@
   <update id="updateHouseRecordIsTopOne" parameterType="com.cubic.api.model.BusHouseRecord">
   		UPDATE bus_house_record
   		SET istop = 1,
-  			toptime = NOW(),
-  			topicon = #{topicon}
+  			toptime = NOW()
   		WHERE 
   			id=#{id}	
   </update>
@@ -46,8 +45,7 @@
     <update id="updateHouseRecordIsTopZero" parameterType="com.cubic.api.model.BusHouseRecord">
   		UPDATE bus_house_record
   		SET istop = 0,
-  			toptime = NULL,
-  			topicon = #{topicon}
+  			toptime = create_time
   		WHERE 
   			id=#{id}	
   </update>
@@ -58,7 +56,7 @@
   		WHERE 
   			house_id = #{houseId} 
   			and  su.username=b.user_name
-  		ORDER BY toptime DESC,create_time DESC
+  		ORDER BY istop DESC,toptime DESC,create_time DESC
   </select>
   
 </mapper>

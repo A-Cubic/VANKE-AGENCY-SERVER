@@ -11,6 +11,15 @@
     <collection property="userlist" column="id" ofType="com.cubic.api.model.User" select="selectUserList"/>
   </resultMap>
   
+    <resultMap id="BaseResultStoreMap" type="com.cubic.api.model.Store">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="store_name" jdbcType="VARCHAR" property="storeName" />
+    <result column="store_adress" jdbcType="VARCHAR" property="storeAdress" />
+    <collection property="storeRangeList" column="id" ofType="map" select="selectStoreRange"/>
+  </resultMap>
   
     <select id="ListBaseStore" parameterType="map"  resultType="com.cubic.api.model.Store">
   		SELECT bs.store_name storeName,bs.store_adress storeAdress,bs.id
@@ -50,7 +59,34 @@
 		        (SELECT street_name FROM `base_street` WHERE id = #{streetId}));
   	
   	</insert>
+  	<select id="detailStoreInFo" parameterType="map"  resultMap="BaseResultStoreMap">
+  		select *
+  		from base_store 
+  		where 
+  			id=#{id}
+  	</select>
   	
+  	<select id="selectStoreRange" resultType="map">
+  		SELECT 
+		  		bsr.*,
+		  		br.`region_code`,
+		  		bstr.`id` streetId,
+		  		br.`id` regionId
+			FROM `base_store_range` bsr
+			LEFT JOIN `base_region` br ON br.`region_name`=bsr.`region_name`
+			LEFT JOIN `base_street` bstr ON bstr.`street_name`=bsr.`street_name`
+			WHERE store_id=#{id}
+  	</select>
+  	<update id="updateStore" parameterType="com.cubic.api.model.Store">
+  			update base_store
+  			set store_name = #{storeName},
+  			set store_adress = #{storeAdress}
+  			where id = #{id}
+  	</update>
+  	<delete id="deleteStoreRange" parameterType="String">
+  		DELETE FROM base_store_range 
+  		WHERE store_id=#{id} 
+  	</delete>
   	<select id="selectUserList" resultType="com.cubic.api.model.User">
   			SELECT id,user_no,relname,phone 
   			FROM `sys_user` 
@@ -60,7 +96,10 @@
   	
   	</select>
   	
-  	<select id="storeUser" resultMap="BaseResultMap">
+  	
+
+  	
+  	<select id="storeUser" resultMap="BaseResultMap" >
   			select id,store_name
   			from  base_store
   	</select>

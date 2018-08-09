@@ -10,11 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -104,23 +100,23 @@ public class BusHouseTransactionRepairController {
     	return ResultGenerator.genOkResult("1");
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busHouseTransactionRepairService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
-
-    @PutMapping
-    public Result update(@RequestBody BusHouseTransactionRepair busHouseTransactionRepair) {
-    	busHouseTransactionRepairService.update(busHouseTransactionRepair);
-        return ResultGenerator.genOkResult();
-    }
-
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusHouseTransactionRepair busHouseTransactionRepair = busHouseTransactionRepairService.findById(id);
-        return ResultGenerator.genOkResult(busHouseTransactionRepair);
-    }
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busHouseTransactionRepairService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @PutMapping
+//    public Result update(@RequestBody BusHouseTransactionRepair busHouseTransactionRepair) {
+//    	busHouseTransactionRepairService.update(busHouseTransactionRepair);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    	BusHouseTransactionRepair busHouseTransactionRepair = busHouseTransactionRepairService.findById(id);
+//        return ResultGenerator.genOkResult(busHouseTransactionRepair);
+//    }
     
     /**
      * 查询补交记录

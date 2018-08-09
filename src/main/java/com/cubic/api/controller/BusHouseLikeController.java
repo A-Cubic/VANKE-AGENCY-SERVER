@@ -50,17 +50,17 @@ public class BusHouseLikeController {
         return ResultGenerator.genOkResult("取消关注");
     }
 
-    @PutMapping
-    public Result update(@RequestBody BusHouseLike busHouseLike) {
-    	busHouseLikeService.update(busHouseLike);
-        return ResultGenerator.genOkResult();
-    }
-
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusHouseLike busHouseLike = busHouseLikeService.findById(id);
-        return ResultGenerator.genOkResult(busHouseLike);
-    }
+//    @PutMapping
+//    public Result update(@RequestBody BusHouseLike busHouseLike) {
+//    	busHouseLikeService.update(busHouseLike);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    	BusHouseLike busHouseLike = busHouseLikeService.findById(id);
+//        return ResultGenerator.genOkResult(busHouseLike);
+//    }
 
     @PostMapping("/list")
     public Result list(Principal user,@RequestBody Map<String,Object> map) {

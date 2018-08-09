@@ -9,11 +9,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,29 +34,29 @@ public class BusHouseLookrecordController {
     @Resource
     private UserService userService;
 
-    @PostMapping
-    public Result add(@RequestBody BusHouseLookrecord busHouseLookrecord) {
-    	busHouseLookrecordService.save(busHouseLookrecord);
-        return ResultGenerator.genOkResult();
-    }
+//    @PostMapping
+//    public Result add(@RequestBody BusHouseLookrecord busHouseLookrecord) {
+//    	busHouseLookrecordService.save(busHouseLookrecord);
+//        return ResultGenerator.genOkResult();
+//    }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busHouseLookrecordService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
-
-    @PutMapping
-    public Result update(@RequestBody BusHouseLookrecord busHouseLookrecord) {
-    	busHouseLookrecordService.update(busHouseLookrecord);
-        return ResultGenerator.genOkResult();
-    }
-
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusHouseLookrecord busHouseLookrecord = busHouseLookrecordService.findById(id);
-        return ResultGenerator.genOkResult(busHouseLookrecord);
-    }
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busHouseLookrecordService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @PutMapping
+//    public Result update(@RequestBody BusHouseLookrecord busHouseLookrecord) {
+//    	busHouseLookrecordService.update(busHouseLookrecord);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    	BusHouseLookrecord busHouseLookrecord = busHouseLookrecordService.findById(id);
+//        return ResultGenerator.genOkResult(busHouseLookrecord);
+//    }
     	/**
     	 * 查询带看记录
     	 * @param   map

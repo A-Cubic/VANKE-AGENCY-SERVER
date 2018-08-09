@@ -10,9 +10,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,11 +55,11 @@ public class BusHouseRecordController {
     
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busHouseRecordService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busHouseRecordService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
     /**
      * 设置跟进置顶
      * @param busHouseRecord
@@ -71,7 +68,6 @@ public class BusHouseRecordController {
     @PreAuthorize("hasAuthority('houserecord:updateIsTopOne')")
     @PostMapping("/updateIsTopOne")
     public Result updateIsTopOne(Principal user,@RequestBody BusHouseRecord busHouseRecord) {	
-    		busHouseRecord.setTopicon("");
         	busHouseRecordService.updateHouseRecordIsTopOne(busHouseRecord);
             return ResultGenerator.genOkResult("置顶成功");	
     }
@@ -83,16 +79,15 @@ public class BusHouseRecordController {
     @PreAuthorize("hasAuthority('houserecord:updateIsTopZero')")
     @PostMapping("/updateIsTopZero")
     public Result updateIsTopZero(@RequestBody BusHouseRecord busHouseRecord) {
-    	busHouseRecord.setTopicon(null);
     	busHouseRecordService.updateHouseRecordIsTopZero(busHouseRecord);
         return ResultGenerator.genOkResult("取消置顶");
     }
 
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusHouseRecord busHouseRecord = busHouseRecordService.findById(id);
-        return ResultGenerator.genOkResult(busHouseRecord);
-    }
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    	BusHouseRecord busHouseRecord = busHouseRecordService.findById(id);
+//        return ResultGenerator.genOkResult(busHouseRecord);
+//    }
     /**
      * 查询跟进信息
      * @param map

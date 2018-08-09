@@ -10,9 +10,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,11 +57,11 @@ public class BusGuestRecordController {
         return ResultGenerator.genOkResult("添加成功");
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busGuestRecordService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busGuestRecordService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
     /**
      * 取消跟进置顶
      * @param busGuestRecord
@@ -73,7 +70,7 @@ public class BusGuestRecordController {
     @PreAuthorize("hasAuthority('guestrecord:updateIsTopOne')")
     @PostMapping("/updateIsTopOne")
     public Result updateIsTopOne(@RequestBody BusGuestRecord busGuestRecord) {
-    	busGuestRecordService.update(busGuestRecord);
+    	 busGuestRecordService.updateGuestRecordIsTopOne(busGuestRecord);
     	  return ResultGenerator.genOkResult("置顶成功");
     }
     /**
@@ -84,15 +81,15 @@ public class BusGuestRecordController {
     @PreAuthorize("hasAuthority('guestrecord:updateIsTopZero')")
     @PostMapping("/updateIsTopZero")
     public Result updateIsTopZero(@RequestBody BusGuestRecord busGuestRecord) {
-    	busGuestRecordService.update(busGuestRecord);
+    	busGuestRecordService.updateGuestRecordIsTopZero(busGuestRecord);
         return ResultGenerator.genOkResult("取消置顶");
     }
 
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusGuestRecord busGuestRecord = busGuestRecordService.findById(id);
-        return ResultGenerator.genOkResult(busGuestRecord);
-    }
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    	BusGuestRecord busGuestRecord = busGuestRecordService.findById(id);
+//        return ResultGenerator.genOkResult(busGuestRecord);
+//    }
     /**查询跟进信息
      * @param map
      * @throws ParseException 

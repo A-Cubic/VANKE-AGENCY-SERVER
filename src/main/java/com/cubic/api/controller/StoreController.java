@@ -8,11 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,21 +55,44 @@ public class StoreController {
 		return ResultGenerator.genOkResult("1");
 	}
 
-	@DeleteMapping("/{id}")
-	public Result delete(@PathVariable Long id) {
-		storeService.deleteById(id);
-		return ResultGenerator.genOkResult();
-	}
-
-	@PutMapping
+//	@DeleteMapping("/{id}")
+//	public Result delete(@PathVariable Long id) {
+//		storeService.deleteById(id);
+//		return ResultGenerator.genOkResult();
+//	}
+	
+	/**
+	 * 门店信息修改
+	 * */
+	@PreAuthorize("hasAuthority('store:update')")
+	@PostMapping("/update")
 	public Result update(@RequestBody Store store) {
-		storeService.update(store);
+//		storeService.updateStore(store);
+	
+		if(store.getId()!=null){	
+			
+			if(store.getStreetId()!=null&&store.getStreetId().size()!=0){
+				//修改范围前删除原有范围
+				storeService.deleteStoreRange(String.valueOf(store.getId()));
+				
+				//添加门店范围
+				for(String id:store.getStreetId()){
+					Map<String,Object> map=new HashMap<String,Object>();
+					map.put("storeId", store.getId());
+					map.put("streetId", id);
+					storeService.insertStoreRange(map);
+				}
+			}
+		}
 		return ResultGenerator.genOkResult();
 	}
-
-	@GetMapping("/{id}")
-	public Result detail(@PathVariable Long id) {
-		Store store = storeService.findById(id);
+	/**
+	 * 查询门店详情(带范围)
+	 * */
+	@PreAuthorize("hasAuthority('store:detail')")
+	@PostMapping("/detail")
+	public Result detail(@RequestBody  Map<String,Object> map) {
+		Store store = storeService.detailStoreInFo(map);
 		return ResultGenerator.genOkResult(store);
 	}
 	/**
@@ -102,6 +121,16 @@ public class StoreController {
 	 * */
 	@PostMapping("/listStore")
 	public Result listStore(Principal user) {
+		List<Store> list = storeService.findAll();
+		return ResultGenerator.genOkResult(list);
+	}
+	/**
+	 * 查询全部(门店列表显示)系统管理员可看
+	 * */
+	@PreAuthorize("hasAuthority('store:listStoreAll')")
+	@PostMapping("/listStoreAll")
+	public Result listStoreAll(Principal user){
+		
 		List<Store> list = storeService.findAll();
 		return ResultGenerator.genOkResult(list);
 	}

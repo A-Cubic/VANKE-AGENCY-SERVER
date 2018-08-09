@@ -11,8 +11,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,17 +54,17 @@ public class BusExamineController {
     private BusHouseTransactionService busHouseTransactionService;
 
 
-    @PostMapping
-    public Result add(@RequestBody BusExamine busExamine) {
-    	busExamineService.save(busExamine);
-        return ResultGenerator.genOkResult();
-    }
-
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busExamineService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
+//    @PostMapping
+//    public Result add(@RequestBody BusExamine busExamine) {
+//    	busExamineService.save(busExamine);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busExamineService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
     /**
      * 处理审批
      * @param busGuest

@@ -9,11 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,29 +31,29 @@ public class BusHouseClicklogController {
     @Resource
     private BusHouseClicklogService busHouseClicklogService;
 
-    @PostMapping
-    public Result add(@RequestBody BusHouseClicklog busHouseClicklog) {
-    	busHouseClicklogService.save(busHouseClicklog);
-        return ResultGenerator.genOkResult();
-    }
+//    @PostMapping
+//    public Result add(@RequestBody BusHouseClicklog busHouseClicklog) {
+//    	busHouseClicklogService.save(busHouseClicklog);
+//        return ResultGenerator.genOkResult();
+//    }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busHouseClicklogService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
-
-    @PutMapping
-    public Result update(@RequestBody BusHouseClicklog busHouseClicklog) {
-    	busHouseClicklogService.update(busHouseClicklog);
-        return ResultGenerator.genOkResult();
-    }
-
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    	BusHouseClicklog busHouseClicklog = busHouseClicklogService.findById(id);
-        return ResultGenerator.genOkResult(busHouseClicklog);
-    }
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busHouseClicklogService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @PutMapping
+//    public Result update(@RequestBody BusHouseClicklog busHouseClicklog) {
+//    	busHouseClicklogService.update(busHouseClicklog);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    	BusHouseClicklog busHouseClicklog = busHouseClicklogService.findById(id);
+//        return ResultGenerator.genOkResult(busHouseClicklog);
+//    }
 	/**
 	 * 记录log
 	 * @throws ParseException 

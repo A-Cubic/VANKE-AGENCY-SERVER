@@ -10,10 +10,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -73,17 +70,17 @@ public class BusGuestController {
         return ResultGenerator.genOkResult("添加成功");
     }
 
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    	busGuestService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
-
-    @PutMapping
-    public Result update(@RequestBody BusGuest busGuest) {
-    	busGuestService.update(busGuest);
-        return ResultGenerator.genOkResult();
-    }
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    	busGuestService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
+//
+//    @PutMapping
+//    public Result update(@RequestBody BusGuest busGuest) {
+//    	busGuestService.update(busGuest);
+//        return ResultGenerator.genOkResult();
+//    }
     /**
      * 设置为无效房客源
      * @param busGuest
@@ -156,6 +153,8 @@ public class BusGuestController {
     	}
         return ResultGenerator.genOkResult("修改成功");
     }
+    
+
     /**
      * 详情查询
      * @param map
@@ -170,6 +169,8 @@ public class BusGuestController {
 	    	if(!user.getName().equals(busGuest.getRecordUserName()) && !"1".equals(busGuest.getIsshare())){  		
 	    		busGuest.setUser_type("0");
 	    	}
+	    	
+	
 	    	//转换委托时间格式
 	     	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	     	Date date = fmt.parse(busGuest.getCreateTime());
@@ -192,10 +193,17 @@ public class BusGuestController {
     @PostMapping("/list")
     public Result list(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+    	if(user.toString().indexOf("ROLE_MANAGER")!=-1){//店长看本店的
+    		
+    		map.put("username", user.getName());
+    		map.put("role", "4");
+    	}else{
+    		map.put("role", "2");
+    		map.put("recordUserName", user.getName());
+    	}
     	
-    	map.put("recordUserName", user.getName());
    	    List<BusGuest> list = busGuestService.listBusGuest(map);
-
+   	  
  		for(BusGuest busGuest:list){
  			
  	    	//转换委托时间格式
