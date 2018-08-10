@@ -78,7 +78,7 @@
   	<update id="updateStore" parameterType="com.cubic.api.model.Store">
   			update base_store
   			set store_name = #{storeName},
-  			set store_adress = #{storeAdress}
+  			store_adress = #{storeAdress}
   			where id = #{id}
   	</update>
   	<delete id="deleteStoreRange" parameterType="String">

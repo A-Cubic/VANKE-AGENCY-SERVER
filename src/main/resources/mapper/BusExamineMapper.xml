@@ -24,7 +24,13 @@
     <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />   
     <result column="user_rel_name" jdbcType="VARCHAR" property="userRelName" />
     <result column="examine_rel_name" jdbcType="VARCHAR" property="examineRelName" />
-       <result column="transaction_id" jdbcType="BIGINT" property="transactionId" />
+    <result column="transaction_id" jdbcType="BIGINT" property="transactionId" />
+    <result column="chaoxiang" jdbcType="VARCHAR" property="chaoxiang" />
+    <result column="number" jdbcType="VARCHAR" property="number" />
+    <result column="huxingshi" jdbcType="VARCHAR" property="huxingshi" />
+    <result column="huxingting" jdbcType="VARCHAR" property="huxingting" />
+    <result column="huxingchu" jdbcType="VARCHAR" property="huxingchu" />
+    <result column="huxingwei" jdbcType="VARCHAR" property="huxingwei" />
   </resultMap>
   
   
@@ -90,34 +96,35 @@
   </update>
   
   <select id="listBusExamine" resultMap="BaseResultMap">
-  	SELECT be.*
-	FROM `bus_examine` be ,`sys_user` su,`sys_user_role` sur
+  	SELECT be.*,bh.number,bh.chaoxiang,bh.huxingshi,bh.huxingting,bh.huxingchu,bh.huxingwei
+	FROM `bus_examine` be ,`sys_user` su,`sys_user_role` sur,`bus_house` bh
 	WHERE 
 		be.`user_name`=su.`username` 
 		AND su.id=sur.user_id
+		AND be.house_id=bh.id
 		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
 		
 		<if test="role!=null and role==3"><!-- 验证权限(助理只能看实勘的) AND sur.role_id=#{role}-->
-			AND type = '4'
+			AND be.type = '4'
 		</if>
 		<if test="role==null or role!=3"><!-- 不是助理的不能看实勘-->
-			AND type != '4'
+			AND be.type != '4'
 		</if>
 		<if test="state!=null and state!=''"><!-- 审核状态条件(0:未审核,1:已审核) -->
-			AND state=#{state}	
+			AND be.state=#{state}	
 		</if>
 		<if test="type!=null and  role!=3 and type!=''"><!-- 审核类型(1:特殊房源,2:优质房源,3:无效房源,4:实勘图片(助理能看),5:无效客源,6:取消特殊房源.7:取消优质房源,8取消无效房源,9:取消无效客源,10:成交审核) -->
-			AND type=#{type}	
+			AND be.type=#{type}	
 		</if>
 		<if test="result!=null and result!=''"><!-- 审核结果条件(0:未通过,1:通过) -->
-			AND result=#{result}	
+			AND be.result=#{result}	
 		</if>
 
 	    <if test="(createTimeStart!=null )and (createTimeEnd!=null )"><!-- 申请时间在两个时间值之间 -->
-			<![CDATA[AND DATE(create_time) > #{createTimeStart}	AND　DATE(create_time) < #{createTimeEnd}]]>
+			<![CDATA[AND DATE(be.create_time) > #{createTimeStart}	AND　DATE(be.create_time) < #{createTimeEnd}]]>
 		</if>
 		<if test="(examineTimeStart!=null )and (examineTimeEnd!=null )"><!-- 审批时间在两个时间值之间 -->
-			<![CDATA[AND DATE(examine_time) > #{examineTimeStart}	AND　DATE(examine_time) < #{examineTimeEnd}]]>
+			<![CDATA[AND DATE(be.examine_time) > #{examineTimeStart}	AND　DATE(be.examine_time) < #{examineTimeEnd}]]>
 		</if>		
 
 		ORDER BY be.state ,be.`create_time`DESC

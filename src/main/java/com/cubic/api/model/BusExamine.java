@@ -152,8 +152,64 @@ public class BusExamine {
      */
     @Column(name = "examine_time")
     private String examineTime;
+    
+    private String number;
+    private String chaoxiang;
+    private String huxingshi;
+    private String huxingting;
+    private String huxingchu;
+    private String huxingwei;
+    
 
-    /**
+    public String getNumber() {
+		return number;
+	}
+
+	public void setNumber(String number) {
+		this.number = number;
+	}
+
+	public String getChaoxiang() {
+		return chaoxiang;
+	}
+
+	public void setChaoxiang(String chaoxiang) {
+		this.chaoxiang = chaoxiang;
+	}
+
+	public String getHuxingshi() {
+		return huxingshi;
+	}
+
+	public void setHuxingshi(String huxingshi) {
+		this.huxingshi = huxingshi;
+	}
+
+	public String getHuxingting() {
+		return huxingting;
+	}
+
+	public void setHuxingting(String huxingting) {
+		this.huxingting = huxingting;
+	}
+
+	public String getHuxingchu() {
+		return huxingchu;
+	}
+
+	public void setHuxingchu(String huxingchu) {
+		this.huxingchu = huxingchu;
+	}
+
+	public String getHuxingwei() {
+		return huxingwei;
+	}
+
+	public void setHuxingwei(String huxingwei) {
+		this.huxingwei = huxingwei;
+	}
+
+	/**
      * @return id
      */
     public Long getId() {

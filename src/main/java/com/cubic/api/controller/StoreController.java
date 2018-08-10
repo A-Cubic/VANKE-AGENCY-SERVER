@@ -70,7 +70,6 @@ public class StoreController {
 	@PostMapping("/update")
 	public Result update(@RequestBody Store store) {
 	
-
 		if(store.getId()!=null){	
 			storeService.updateStore(store);
 			if(store.getStreetId()!=null&&store.getStreetId().size()!=0){
@@ -86,7 +85,7 @@ public class StoreController {
 				}
 			}
 		}
-		return ResultGenerator.genOkResult();
+		return ResultGenerator.genOkResult("1");
 	}
 	/**
 	 * 查询门店详情(带范围)
