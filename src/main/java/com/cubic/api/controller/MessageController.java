@@ -1,6 +1,5 @@
 package com.cubic.api.controller;
 
-import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cubic.api.component.WebSocketServer;
 import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.SysMessage;

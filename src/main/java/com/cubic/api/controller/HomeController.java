@@ -25,8 +25,6 @@ import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.HomeService;
 import com.cubic.api.service.UserService;
 import com.cubic.api.util.OSSUtil;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 /**
  * 首页

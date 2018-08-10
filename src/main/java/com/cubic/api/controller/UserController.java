@@ -213,6 +213,7 @@ public class UserController {
         final String username = user.getUsername();
         final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         final String token = this.jwtUtil.sign(username, userDetails.getAuthorities());
+        userService.updateTokenDB(username, token);
         LoginResponse response = new LoginResponse();
         response.setToken(token);
         for(Object o : userDetails.getAuthorities()) {

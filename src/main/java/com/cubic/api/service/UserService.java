@@ -69,4 +69,7 @@ public interface UserService extends Service<User> {
      * 
      */   
     String registerUser(User user);
+    
+    String getTokenFromDB(String username);
+    void updateTokenDB(String username,String token);
 }

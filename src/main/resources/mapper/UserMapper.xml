@@ -94,6 +94,18 @@
     </insert>
     
 
+     <update id="updateTokenDB">
+        UPDATE `sys_user` SET
+        token = #{token}
+        WHERE username = #{username}
+    </update>
     
+    <select id="getTokenFromDB" parameterType="String" resultType="String"> 
+	    	SELECT 
+	    		  `token`
+	    	FROM 	`sys_user`
+	    	WHERE 
+	    		username = #{username}
+    </select>
 
 </mapper>

@@ -141,4 +141,14 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	        }
 		
 	}
+
+	@Override
+	public String getTokenFromDB(String username) {
+		return userMapper.getTokenFromDB(username);
+	}
+	
+	@Override
+	public void updateTokenDB(String username,String token) {
+		 userMapper.updateTokenDB(username,token);
+	}
 }

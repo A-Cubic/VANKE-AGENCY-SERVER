@@ -50,5 +50,7 @@ public interface UserMapper extends MyMapper<User> {
      */   
     void registerUser(User user);
     
-
+    String getTokenFromDB(@Param("username") String username);
+    void updateTokenDB(@Param("username") String username,@Param("token") String token);
+    
 }
