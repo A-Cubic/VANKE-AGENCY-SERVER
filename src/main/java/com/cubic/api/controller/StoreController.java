@@ -17,6 +17,8 @@ import com.cubic.api.core.response.Result;
 import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.Store;
 import com.cubic.api.service.StoreService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * @author cubic
@@ -67,10 +69,10 @@ public class StoreController {
 	@PreAuthorize("hasAuthority('store:update')")
 	@PostMapping("/update")
 	public Result update(@RequestBody Store store) {
-//		storeService.updateStore(store);
 	
+
 		if(store.getId()!=null){	
-			
+			storeService.updateStore(store);
 			if(store.getStreetId()!=null&&store.getStreetId().size()!=0){
 				//修改范围前删除原有范围
 				storeService.deleteStoreRange(String.valueOf(store.getId()));
@@ -92,8 +94,8 @@ public class StoreController {
 	@PreAuthorize("hasAuthority('store:detail')")
 	@PostMapping("/detail")
 	public Result detail(@RequestBody  Map<String,Object> map) {
-		Store store = storeService.detailStoreInFo(map);
-		return ResultGenerator.genOkResult(store);
+		//Store store = storeService.listStoreInFo(map);
+		return ResultGenerator.genOkResult(map);
 	}
 	/**
 	 * 查询全部
@@ -129,9 +131,10 @@ public class StoreController {
 	 * */
 	@PreAuthorize("hasAuthority('store:listStoreAll')")
 	@PostMapping("/listStoreAll")
-	public Result listStoreAll(Principal user){
-		
-		List<Store> list = storeService.findAll();
-		return ResultGenerator.genOkResult(list);
+	public Result listStoreAll(Principal user,@RequestBody  Map<String,Object> map){
+		PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf(map.get("size").toString()));
+		List<Store> list = storeService.listStoreInFo(map);
+		PageInfo<Store> pageInfo = new PageInfo<Store>(list);
+		return ResultGenerator.genOkResult(pageInfo);
 	}
 }

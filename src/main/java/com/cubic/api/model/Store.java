@@ -46,7 +46,7 @@ public class Store {
     
     
     /**
-     * 用户列表
+     * 范围列表
      * */
     @Transient
     private List<Map<String,Object>> storeRangeList;

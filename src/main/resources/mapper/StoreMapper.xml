@@ -59,11 +59,9 @@
 		        (SELECT street_name FROM `base_street` WHERE id = #{streetId}));
   	
   	</insert>
-  	<select id="detailStoreInFo" parameterType="map"  resultMap="BaseResultStoreMap">
+  	<select id="listStoreInFo" parameterType="map"  resultMap="BaseResultStoreMap">
   		select *
   		from base_store 
-  		where 
-  			id=#{id}
   	</select>
   	
   	<select id="selectStoreRange" resultType="map">

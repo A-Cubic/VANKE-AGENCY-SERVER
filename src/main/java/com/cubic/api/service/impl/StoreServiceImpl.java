@@ -65,9 +65,9 @@ public class StoreServiceImpl extends AbstractService<Store> implements StoreSer
 	 * 查询门店信息(带门店范围)
 	 * */
 	@Override
-	public Store detailStoreInFo(Map<String, Object> map) {
+	public  List<Store> listStoreInFo(Map<String, Object> map) {
 		
-		return storeMapper.detailStoreInFo(map);
+		return storeMapper.listStoreInFo(map);
 	}
 	@Override
 	public void deleteStoreRange(String id) {

@@ -40,7 +40,7 @@ public interface StoreMapper extends MyMapper<Store> {
 	 * 查询门店详情信息(带门店范围)
 	 *
 	 * */
-	Store detailStoreInFo(Map<String, Object> map);
+	 List<Store> listStoreInFo(Map<String, Object> map);
 	/**
 	 * 修改门店信息时先删除门店范围
 	 *

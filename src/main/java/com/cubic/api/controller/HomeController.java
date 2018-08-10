@@ -156,7 +156,7 @@ public class HomeController {
 	 */
 	@PostMapping("/score/list")
 	public Result listScore(final Principal user, @RequestBody Map<String, Object> map) {
-		PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf(map.get("size").toString()));
+//		PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf(map.get("size").toString()));
 		if(user.toString().indexOf("ROLE_ADMIN")==-1 && user.toString().indexOf("ROLE_LEADER")==-1 ){
 			map.put("userName", user.getName());
 			map.put("role", "2");
@@ -170,8 +170,9 @@ public class HomeController {
 				
 			}
 		}
-		PageInfo<CurrentScore> pageInfo = new PageInfo<CurrentScore>(list);
-		return ResultGenerator.genOkResult(pageInfo);
+		
+//		PageInfo<CurrentScore> pageInfo = new PageInfo<CurrentScore>(list);
+		return ResultGenerator.genOkResult(list);
 	}
 
 	/**
