@@ -1,5 +1,8 @@
 package com.cubic.api.model.home;
 
+import java.util.List;
+import java.util.Map;
+
 public class CurrentScore {
 	private Long id;
 	private String rank;
@@ -9,6 +12,60 @@ public class CurrentScore {
 	private Long store_id;
 	private String store_name;
 	private String score;
+	private String houseScore="0";//房积分
+	private String guestScore="0";//客积分
+	private String lookrecordScore="0";//带看积分
+	private String keyScore="0";//钥匙积分
+    private String sumScore="0";//总积分
+	/**
+	 *本店量化带看积分列表
+	 *返回map里的内容:
+	 *createTime:但看时间
+	 *countScore:每条的积分
+	 * 
+	 * */
+	private List<Map<String,Object>> myStoreLookList;
+	
+	/**
+	 *本店量化钥匙积分列表
+	 *返回map里的内容:
+	 *createTime:但看时间
+	 *countScore:每条的积分
+	 * 
+	 * */
+	private List<Map<String,Object>> myStoreKeyList; 
+	/**
+	 *所有门店量化带看积分列表
+	 *返回map里的内容:
+	 *createTime:但看时间
+	 *countScore:每条的积分
+	 * 
+	 * */
+	private List<Map<String,Object>> storeAllLookList;
+	/**
+	 *所有门店量化钥匙积分列表
+	 *返回map里的内容:
+	 *createTime:但看时间
+	 *countScore:每条的积分
+	 * 
+	 * */
+	private List<Map<String,Object>> storeAllKeyList; 
+
+	public List<Map<String, Object>> getMyStoreLookList() {
+		return myStoreLookList;
+	}
+
+	public void setMyStoreLookList(List<Map<String, Object>> myStoreLookList) {
+		this.myStoreLookList = myStoreLookList;
+	}
+
+	public List<Map<String, Object>> getStoreAllLookList() {
+		return storeAllLookList;
+	}
+
+	public void setStoreAllLookList(List<Map<String, Object>> storeAllLookList) {
+		this.storeAllLookList = storeAllLookList;
+	}
 
 	public String getScore() {
 		return score;
@@ -72,6 +129,62 @@ public class CurrentScore {
 
 	public void setStore_name(String store_name) {
 		this.store_name = store_name;
+	}
+
+	public String getHouseScore() {
+		return houseScore;
+	}
+
+	public void setHouseScore(String houseScore) {
+		this.houseScore = houseScore;
+	}
+
+	public String getGuestScore() {
+		return guestScore;
+	}
+
+	public void setGuestScore(String guestScore) {
+		this.guestScore = guestScore;
+	}
+
+	public String getLookrecordScore() {
+		return lookrecordScore;
+	}
+
+	public void setLookrecordScore(String lookrecordScore) {
+		this.lookrecordScore = lookrecordScore;
+	}
+
+	public String getKeyScore() {
+		return keyScore;
+	}
+
+	public void setKeyScore(String keyScore) {
+		this.keyScore = keyScore;
+	}
+
+	public String getSumScore() {
+		return sumScore;
+	}
+
+	public void setSumScore(String sumScore) {
+		this.sumScore = sumScore;
+	}
+
+	public List<Map<String, Object>> getMyStoreKeyList() {
+		return myStoreKeyList;
+	}
+
+	public void setMyStoreKeyList(List<Map<String, Object>> myStoreKeyList) {
+		this.myStoreKeyList = myStoreKeyList;
+	}
+
+	public List<Map<String, Object>> getStoreAllKeyList() {
+		return storeAllKeyList;
+	}
+
+	public void setStoreAllKeyList(List<Map<String, Object>> storeAllKeyList) {
+		this.storeAllKeyList = storeAllKeyList;
 	}
 
 }

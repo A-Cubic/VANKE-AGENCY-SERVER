@@ -25,4 +25,6 @@ public interface HomeService {
 	void upadateInfo(User user);
 	void upadateImg(String url,String username);
 	List<BusHouse> newHouseList();
+	List<CurrentScore> myStoreRankings(Map<String,Object> map);
+	List<CurrentScore> storeAllRankings(Map<String,Object> map);
 }

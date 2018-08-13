@@ -9,6 +9,21 @@
 		<collection property="children" ofType="com.cubic.api.model.BaseStreet" select="getStreets" column="region_code">
 		</collection>
 	</resultMap>
+	
+	
+	
+   <resultMap type="com.cubic.api.model.home.CurrentScore" id="currentScoreMap">
+		<collection property="myStoreLookList" ofType="map" select="selectStoreLook" column="username">
+		</collection>
+		<collection property="myStoreKeyList" ofType="map" select="selectStoreKey" column="username">
+		</collection>
+	</resultMap>
+	<resultMap type="com.cubic.api.model.home.CurrentScore" id="currentAllScoreMap">
+		<collection property="storeAllLookList" ofType="map" select="selectAllStoreLook" column="store_id">
+		</collection>
+		<collection property="storeAllKeyList" ofType="map" select="selectAllStoreKey" column="store_id">
+		</collection>
+	</resultMap>
 	<resultMap id="BaseHouseMap" type="com.cubic.api.model.BusHouse">
     <!--
       WARNING - @mbg.generated
@@ -264,7 +279,106 @@
 	<select id="newHouseList" resultType="com.cubic.api.model.BusHouse">
 		SELECT *,xiaoqu_name xiaoquName
 		FROM bus_house
+		WHERE 
+			type='1'
 		GROUP BY create_time DESC
 		LIMIT 10
+	</select>
+	
+	<select id="myStoreRankings"  parameterType="map"  resultMap="currentScoreMap">
+		 		  SELECT a.*,@rownum:=@rownum+1 AS rank FROM (
+		 	SELECT su.*,su.username user_name,su.relname real_name,COUNT(bh.`id`) houseScore,COUNT(bg.`id`) guestScore,(COUNT(bh.`id`)*2)+COUNT(bg.`id`) sumScore
+			FROM  `sys_user` su
+			LEFT JOIN `bus_house` bh ON su.`username`=bh.`create_user_name`	          
+				<if test="type!=null">
+					<if test="type==1">
+						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+					</if>
+					<if test="type==2">
+						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+					</if>
+				</if>
+			LEFT JOIN `bus_guest` bg ON su.`username`=bg.`create_user_name`
+				<if test="type!=null">
+					<if test="type==1">
+						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+					</if>
+					<if test="type==2">
+						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+					</if>
+				</if>
+			LEFT JOIN `sys_user_role` sur ON su.id=sur.`user_id`
+			WHERE 
+				su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
+				AND sur.`role_id`='2'
+			GROUP BY su.`username`	
+			ORDER BY sumScore DESC
+		) a,(SELECT @rownum:=0) r
+	
+	</select>
+	
+	<select id="selectStoreLook" parameterType="String" resultType="map">
+			SELECT DATE(bgl.create_time) createTime,COUNT(bgl.house_id) countScore
+				FROM  `bus_guest_lookrecord` bgl
+				LEFT JOIN `sys_user` su ON su.username= bgl.user_name
+				WHERE 
+					bgl.user_name=#{username}
+				GROUP BY bgl.guest_id,DATE(bgl.create_time)
+	</select>
+	
+	<select id="selectStoreKey" parameterType="String" resultType="map">
+		SELECT COUNT(key_user_name) keyScore,DATE(key_create_time) createTime FROM bus_house
+			WHERE key_user_name = #{username}
+			AND state <![CDATA[<>]]> '1' 
+			AND key_create_time IS NOT NULL
+	</select>
+	
+		<select id="storeAllRankings"  parameterType="map"  resultMap="currentAllScoreMap">
+		 		  SELECT a.*,@rownum:=@rownum+1 AS rank FROM (
+		 	SELECT bs.*,bs.id store_id,COUNT(bh.`id`) houseScore,COUNT(bg.`id`) guestScore,(COUNT(bh.`id`)*2)+COUNT(bg.`id`) sumScore
+			FROM  `base_store` bs
+			LEFT JOIN `sys_user` su ON su.store_id = bs.id
+			LEFT JOIN `bus_house` bh ON su.`username`=bh.`create_user_name`	          
+				<if test="type!=null">
+					<if test="type==1">
+						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+					</if>
+					<if test="type==2">
+						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+					</if>
+				</if>
+			LEFT JOIN `bus_guest` bg ON su.`username`=bg.`create_user_name`
+				<if test="type!=null">
+					<if test="type==1">
+						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+					</if>
+					<if test="type==2">
+						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+					</if>
+				</if>
+			LEFT JOIN `sys_user_role` sur ON su.id=sur.`user_id`
+			WHERE 
+				 sur.`role_id`='2'
+			GROUP BY bs.store_name
+			ORDER BY sumScore DESC
+		) a,(SELECT @rownum:=0) r
+	
+	</select>
+	<select id="selectAllStoreLook" parameterType="String" resultType="map">
+		SELECT DATE(bgl.create_time) createTime, COUNT(bgl.house_id) countScore
+						FROM  `bus_guest_lookrecord` bgl
+						LEFT JOIN `sys_user` su ON su.username= bgl.user_name
+						LEFT JOIN `base_store` bs ON su.`store_id`=bs.`id`
+						LEFT JOIN `sys_user_role` sur ON su.id=sur.`user_id`
+						WHERE 
+							su.`store_id`=#{store_id}
+							AND sur.`role_id`='2'
+						GROUP BY bgl.guest_id,DATE(bgl.create_time)
+	</select>
+	<select id="selectAllStoreKey" parameterType="String" resultType="map">
+		SELECT COUNT(key_user_name) keyScore,DATE(key_create_time) createTime FROM bus_house
+			WHERE key_store_id = #{store_id}
+			AND state <![CDATA[<>]]> '1' 
+			AND key_create_time IS NOT NULL
 	</select>
 </mapper>

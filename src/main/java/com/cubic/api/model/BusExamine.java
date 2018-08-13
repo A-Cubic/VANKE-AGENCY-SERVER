@@ -152,12 +152,35 @@ public class BusExamine {
      */
     @Column(name = "examine_time")
     private String examineTime;
-    
+    /**
+     * 房屋编号
+     * */
+    @Transient
     private String number;
+    /**
+     * 朝向
+     * */
+    @Transient
     private String chaoxiang;
+    /**
+     * 室
+     * */
+    @Transient
     private String huxingshi;
+    /**
+     * 厅
+     * */
+    @Transient
     private String huxingting;
+    /**
+     * 厨
+     * */
+    @Transient
     private String huxingchu;
+    /**
+     * 卫
+     * */
+    @Transient
     private String huxingwei;
     
 
