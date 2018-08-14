@@ -655,6 +655,20 @@ public class BusHouseController {
     public Result list(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	map.put("userName", user.getName());
         PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+        //权限
+        if(user.toString().indexOf("ROLE_ADMIN")!=-1){//系统管理
+        	map.put("role","1");
+        }else if(user.toString().indexOf("ROLE_LEADER")!=-1){//店经理
+        	map.put("role","5");
+        }else if(user.toString().indexOf("ROLE_MANAGER")!=-1){//店长
+        	map.put("role","4");
+        }else if(user.toString().indexOf("ROLE_SEC")!=-1){//店助理
+        	  map.put("role","3");
+        	  return ResultGenerator.genOkResult("0");
+        }else if(user.toString().indexOf("ROLE_USER")!=-1){//经纪人
+        	map.put("role","2");
+        }
+        
         Map<String,Object> mapnew=resMap(map);
         List<BusHouse> list = busHouseService.ListBusHouse(mapnew);
         
@@ -715,7 +729,7 @@ public class BusHouseController {
     //房源条件筛选转换
    public Map<String,Object> resMap(Map<String,Object> map){
 	   if(null != map){
-		   if(null!=map.get("positionType")){//位置条件
+		   if(null!=map.get("positionType") && "0".equals(map.get("positionType").toString())){//位置条件
 			   map.put("regionCode", map.get("positionType"));
 			   
 		   }
@@ -729,87 +743,12 @@ public class BusHouseController {
 			   }
 			   
 		   }
-//		   if(null !=map.get("priceType")){
-//			   if(map.get("type") != null && "1".equals(map.get("type").toString())){//买卖房源
-//				   if("1".equals(map.get("priceType").toString())){//30万以下
-//					   map.put("priceDown",300000);
-//				   }else if("2".equals(map.get("priceType").toString())){//30万-40万
-//					   map.put("priceUp",300000);
-//					   map.put("priceDown",400000);
-//				   }else if("3".equals(map.get("priceType").toString())){//40万-50万
-//					   map.put("priceUp",400000);
-//					   map.put("priceDown",500000);
-//				   }else if("4".equals(map.get("priceType").toString())){//50万-60万
-//					   map.put("priceUp",500000);
-//					   map.put("priceDown",600000);
-//				   }else if("5".equals(map.get("priceType").toString())){//60万-80万
-//					   map.put("priceUp",600000);
-//					   map.put("priceDown",800000);
-//				   }else if("6".equals(map.get("priceType").toString())){//80万-100万
-//					   map.put("priceUp",800000);
-//					   map.put("priceDown",1000000);
-//				   }else if("7".equals(map.get("priceType").toString())){//100万-150万
-//					   map.put("priceUp",1000000);
-//					   map.put("priceDown",1500000);
-//				   }else if("8".equals(map.get("priceType").toString())){//150万-200万
-//					   map.put("priceUp",1500000);
-//					   map.put("priceDown",2000000);
-//				   }else if("9".equals(map.get("priceType").toString())){//200万以上
-//					   map.put("priceUp",2000000);
-//				   }
-//				   
-//			   }else if(map.get("type") != null && "2".equals(map.get("type").toString())){
-//				   if("1".equals(map.get("priceType").toString())){//500以下
-//					   map.put("priceDown",500);
-//				   }else if("2".equals(map.get("priceType").toString())){//500元-800元
-//					   map.put("priceUp",500);
-//					   map.put("priceDown",800);
-//				   }else if("3".equals(map.get("priceType").toString())){//800元-1500元
-//					   map.put("priceUp",800);
-//					   map.put("priceDown",1500);
-//				   }else if("4".equals(map.get("priceType").toString())){//1500元-2000元
-//					   map.put("priceUp",1500);
-//					   map.put("priceDown",2000);
-//				   }else if("5".equals(map.get("priceType").toString())){//2000元-3000元
-//					   map.put("priceUp",2000);
-//					   map.put("priceDown",3000);
-//				   }else if("6".equals(map.get("priceType").toString())){//3000元-5000元
-//					   map.put("priceUp",3000);
-//					   map.put("priceDown",5000);
-//				   }else if("7".equals(map.get("priceType").toString())){//5000元以上
-//					   map.put("priceUp",5000);
-//				   }
-//			   }
-//		   }
-		   
-		   if(null !=map.get("areaType")){
-			   if("1".equals(map.get("areaType").toString())){//50平以下
-				   map.put("areasDown",50);
-			   }else  if("2".equals(map.get("areaType").toString())){//50平-70平
-				   map.put("areasUp",50);
-				   map.put("areasDown",70);
-			   }else  if("3".equals(map.get("areaType").toString())){//70平-90平
-				   map.put("areasUp",70);
-				   map.put("areasDown",90);
-			   }else  if("4".equals(map.get("areaType").toString())){//90平-110平
-				   map.put("areasUp",90);
-				   map.put("areasDown",110);
-			   }else  if("5".equals(map.get("areaType").toString())){//110平-130平
-				   map.put("areasUp",110);
-				   map.put("areasDown",130);
-			   }else  if("6".equals(map.get("areaType").toString())){//130平-150平
-				   map.put("areasUp",130);
-				   map.put("areasDown",150);
-			   }else  if("7".equals(map.get("areaType").toString())){//150平-200平
-				   map.put("areasUp",150);
-				   map.put("areasDown",200);
-			   }else  if("8".equals(map.get("areaType").toString())){//200平以上
-				   map.put("areasUp",200);
-				
-			   }
+		   //如果输入了楼层则清空低中高楼层类型
+		   if(map.get("floor")!=null && !"".equals(map.get("floor").toString())){
+			   map.put("floorType", "0");
 		   }
 		   
-		   if(null!=map.get("chaoxiangType")){//朝向条件
+		   if(null!=map.get("chaoxiangType")&&"".equals(map.get("chaoxiangType").toString())){//朝向条件
 			   if("1".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "正南");
 			   }else  if("2".equals(map.get("chaoxiangType").toString())){
@@ -838,6 +777,86 @@ public class BusHouseController {
 				   map.put("chaoxiang", "东南西北");
 		      }
 		   }
+		   
+//		   if(null !=map.get("priceType")){
+//		   if(map.get("type") != null && "1".equals(map.get("type").toString())){//买卖房源
+//			   if("1".equals(map.get("priceType").toString())){//30万以下
+//				   map.put("priceDown",300000);
+//			   }else if("2".equals(map.get("priceType").toString())){//30万-40万
+//				   map.put("priceUp",300000);
+//				   map.put("priceDown",400000);
+//			   }else if("3".equals(map.get("priceType").toString())){//40万-50万
+//				   map.put("priceUp",400000);
+//				   map.put("priceDown",500000);
+//			   }else if("4".equals(map.get("priceType").toString())){//50万-60万
+//				   map.put("priceUp",500000);
+//				   map.put("priceDown",600000);
+//			   }else if("5".equals(map.get("priceType").toString())){//60万-80万
+//				   map.put("priceUp",600000);
+//				   map.put("priceDown",800000);
+//			   }else if("6".equals(map.get("priceType").toString())){//80万-100万
+//				   map.put("priceUp",800000);
+//				   map.put("priceDown",1000000);
+//			   }else if("7".equals(map.get("priceType").toString())){//100万-150万
+//				   map.put("priceUp",1000000);
+//				   map.put("priceDown",1500000);
+//			   }else if("8".equals(map.get("priceType").toString())){//150万-200万
+//				   map.put("priceUp",1500000);
+//				   map.put("priceDown",2000000);
+//			   }else if("9".equals(map.get("priceType").toString())){//200万以上
+//				   map.put("priceUp",2000000);
+//			   }
+//			   
+//		   }else if(map.get("type") != null && "2".equals(map.get("type").toString())){
+//			   if("1".equals(map.get("priceType").toString())){//500以下
+//				   map.put("priceDown",500);
+//			   }else if("2".equals(map.get("priceType").toString())){//500元-800元
+//				   map.put("priceUp",500);
+//				   map.put("priceDown",800);
+//			   }else if("3".equals(map.get("priceType").toString())){//800元-1500元
+//				   map.put("priceUp",800);
+//				   map.put("priceDown",1500);
+//			   }else if("4".equals(map.get("priceType").toString())){//1500元-2000元
+//				   map.put("priceUp",1500);
+//				   map.put("priceDown",2000);
+//			   }else if("5".equals(map.get("priceType").toString())){//2000元-3000元
+//				   map.put("priceUp",2000);
+//				   map.put("priceDown",3000);
+//			   }else if("6".equals(map.get("priceType").toString())){//3000元-5000元
+//				   map.put("priceUp",3000);
+//				   map.put("priceDown",5000);
+//			   }else if("7".equals(map.get("priceType").toString())){//5000元以上
+//				   map.put("priceUp",5000);
+//			   }
+//		   }
+//	   }
+	   
+//	   if(null !=map.get("areaType")){
+//		   if("1".equals(map.get("areaType").toString())){//50平以下
+//			   map.put("areasDown",50);
+//		   }else  if("2".equals(map.get("areaType").toString())){//50平-70平
+//			   map.put("areasUp",50);
+//			   map.put("areasDown",70);
+//		   }else  if("3".equals(map.get("areaType").toString())){//70平-90平
+//			   map.put("areasUp",70);
+//			   map.put("areasDown",90);
+//		   }else  if("4".equals(map.get("areaType").toString())){//90平-110平
+//			   map.put("areasUp",90);
+//			   map.put("areasDown",110);
+//		   }else  if("5".equals(map.get("areaType").toString())){//110平-130平
+//			   map.put("areasUp",110);
+//			   map.put("areasDown",130);
+//		   }else  if("6".equals(map.get("areaType").toString())){//130平-150平
+//			   map.put("areasUp",130);
+//			   map.put("areasDown",150);
+//		   }else  if("7".equals(map.get("areaType").toString())){//150平-200平
+//			   map.put("areasUp",150);
+//			   map.put("areasDown",200);
+//		   }else  if("8".equals(map.get("areaType").toString())){//200平以上
+//			   map.put("areasUp",200);
+//			
+//		   }
+//	   }
 		   
 	   }
 	   

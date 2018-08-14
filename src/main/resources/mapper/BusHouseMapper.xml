@@ -110,13 +110,29 @@
   <select id="ListBusHouse" parameterType="Map" resultMap="BaseResultMap">
 		SELECT
 		 <include refid="selectSql"/>
-		 
-		  
-		FROM bus_house bh,base_store_range  bsr,sys_user su
-		
-		
+
+		FROM bus_house bh
+		<if test="rangeType!=null and rangeType!='' and rangeType!=5">
+		   LEFT JOIN sys_user su on  su.username=#{userName}
+		   <if test="rangeType!=null and (rangeType==1 or rangeType==2)"> 
+			  LEFT JOIN base_store_range  bsr ON bsr.`store_id`=su.`store_id`
+		   </if>
+		</if>
+	
+		<if test="rangeType!=null and rangeType==5"><!-- 关注的房源条件-->
+		 LEFT JOIN bus_house_like bhk ON  bhk.user_name=#{userName}		
+		</if>
+
 		<where>
 		   1=1
+		  <!--   <if test="role!=null and (role == 1 or role ==5 or role == 4)"	>
+		   		
+		    </if>
+
+		    <if test="role!=null and role == 2">
+		    	
+		    </if>
+		    --> 
 			<if test="(priceUp == null or priceUp == '') and (priceDown != null and priceDown != '')"><!-- 金额条件在XXX以下 -->
 				<![CDATA[and bh.price < #{priceDown}+0 ]]>
 			</if>
@@ -128,7 +144,9 @@
 			<if test="(priceUp != null and priceUp != '') and (priceDown != null and priceDown != '')"><!-- 金额条件在XXX与XXX之间 -->
 				<![CDATA[and bh.price >= #{priceUp}+0 and bh.price < #{priceDown}+0]]>
 			</if>
-			
+			<if test="floor!=null and floor !=''"><!-- 楼层输入查询 -->
+			   AND     bh.`floor`=#{floor}
+			</if>
 			<if test="floorType != null and floorType != 0 "><!-- 楼层条件-->
 				<if test="floorType==1"><!-- 低楼层条件-->
 					<![CDATA[and CONVERT(bh.`floor`,SIGNED) <= (CONVERT(bh.`maxfloor`,SIGNED)/3)]]>
@@ -142,9 +160,7 @@
 					<![CDATA[and CONVERT(bh.`floor`,SIGNED) >  (CONVERT(bh.`maxfloor`,SIGNED)/2)+(CONVERT(bh.`maxfloor`,SIGNED)/10)]]>
 				</if>
 			</if>
-			<if test="floor!=null and floor !=''"><!-- 楼层输入查询 -->
-			   AND     bh.`floor`=#{floor}
-			</if>
+		
 			<if test="searchType!=null and searchType == 1">
 				<if test="searchText != null and searchText != ''"><!-- 搜索条件(地址)-->
 					 and bh.searchtext like "%"#{searchText}"%"
@@ -175,15 +191,15 @@
 				 and bh.huxingchu = #{huxingchu}
 			</if>
 			
-			<if test="(areasUp == null) and (areasDown != null)"><!-- 面积条件在XXX以下 -->
+			<if test="(areasUp == null or areasUp=='') and (areasDown != null and areasDown!='')"><!-- 面积条件在XXX以下 -->
 				<![CDATA[and bh.areas < #{areasDown}+0 ]]>
 			</if>
 			
-			<if test="(areasUp != null) and (areasDown == null)"><!-- 面积条件在XXX以上 -->
+			<if test="(areasUp != null and areasUp!='') and (areasDown == null or areasDown=='')"><!-- 面积条件在XXX以上 -->
 				<![CDATA[and bh.areas > #{areasUp}+0 ]]>
 			</if>
 			
-			<if test="(areasUp != null) and (areasDown != null)"><!-- 面积条件在XXX与XXX之间 -->
+			<if test="(areasUp != null and areasUp!='') and (areasDown != null and areasDown!='')"><!-- 面积条件在XXX与XXX之间 -->
 				<![CDATA[and bh.areas >= #{areasUp}+0 and bh.areas < #{areasDown}+0]]>
 			</if>
 			
@@ -198,10 +214,10 @@
 				 and bh.street_id = #{streetId}
 			</if>
 			<if test="xiaoquName != null and xiaoquName != ''"><!--  小区查询-->
-				and  xiaoqu_name like "%"#{xiaoquName}"%"
+				and  bh.xiaoqu_name like "%"#{xiaoquName}"%"
 			</if>
 			<if test="number != null and number != ''"><!--  编号查询-->
-				and  number like "%"#{number}"%"
+				and  bh.number like "%"#{number}"%"
 			</if>
 		
 			
@@ -217,14 +233,25 @@
 			<if test="isshare!=null and isshare == 0">
 			     and bh.isshare = 0
 			</if>
-			<if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->
-				 and  su.username=#{userName}	
-				 and  bsr.store_id=su.store_id					
+			<if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->	
+					
 				 and  bh.region_name=bsr.region_name
 				 and  bh.street_name=bsr.street_name
 				 and bh.isshare = 1
 			</if>
+			<if test="rangeType!=null and rangeType==4"><!-- 维护房源条件-->
+				    <if test="role!=null and (role == 1 or role ==5 or role == 4)"	><!-- 店长和店经理可以看本店所有人维护的房源 -->
+			   				 and  bh.record_user_name in (select username from sys_user where store_id=su.store_id)
+				    </if>
+		
+				    <if test="role!=null and role == 2"><!-- 经济人看自己维护的房源 -->
+				    	and  bh.record_user_name = #{userName}
+				    </if>
+			</if>
 			
+			<if test="rangeType!=null and rangeType==5"><!-- 关注房源条件-->
+			     and bhk.house_id=bh.id	
+			</if>	
 			<if test="grade != null and grade!=''"><!-- 房源等级条件-->
 				 and bh.grade = #{grade}
 			</if>
@@ -232,9 +259,7 @@
 				 and bh.iskey = #{iskey}
 			</if>
 			
-			<if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->
-					and  su.username=#{userName}	
-					and  bsr.store_id=su.store_id					
+			<if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->				
 					and  bh.region_name=bsr.region_name
 					and  bh.street_name=bsr.street_name
 				
@@ -245,8 +270,32 @@
 	
 		</where>
 		group by  bh.id
-		order by  bh.create_time desc
-  
+		order by  
+		<if test="priceOrderby != null and priceOrderby!=''"><!-- 价格排序 -->
+		  <if test="priceOrderby == 1 "><!-- 价格从高到低 -->
+		   CAST(bh.price AS DECIMAL) desc,
+		  </if>
+		  <if test="priceOrderby == 2 "><!-- 价格从低到高 -->
+		   CAST(bh.price AS DECIMAL),
+		  </if>
+		</if>
+		<if test="areasOrderby != null and areasOrderby!=''"><!-- 面积排序 -->
+		  <if test="areasOrderby == 1 "><!-- 面积从高到低 -->
+		   CAST(bh.areas AS DECIMAL) desc,
+		  </if>
+		  <if test="areasOrderby == 2 "><!-- 面积从低到高 -->
+		   CAST(bh.areas AS DECIMAL),
+		  </if>
+		</if>
+		<if test="floorOrderby != null and floorOrderby!=''"><!-- 楼层排序 -->
+		  <if test="floorOrderby == 1 "><!-- 楼层从高到低 -->
+		   CAST(bh.floor AS SIGNED) desc,
+		  </if>
+		  <if test="floorOrderby == 2 "><!-- 楼层从低到高 -->
+		   CAST(bh.floor AS SIGNED),
+		  </if>
+		</if>
+  			bh.create_time desc
   </select>
   
   
