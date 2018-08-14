@@ -339,7 +339,7 @@ public class HomeController {
 					//按照时间计算
 					if(maplist.get("createTime")!=null&&!"".equals(maplist.get("createTime"))){
 						LocalDate cr2=LocalDate.parse(maplist.get("createTime").toString(),fmt);
-						if("1".equals(map.get("type").toString())){
+						if("1".equals(map.get("type").toString())){//周
 							long num=cr.toEpochDay()-cr2.toEpochDay();
 							if(num<=7){
 								
@@ -354,7 +354,7 @@ public class HomeController {
 								}
 							}
 						}
-						if("2".equals(map.get("type").toString())){
+						if("2".equals(map.get("type").toString())){//月
 							long num=cr.toEpochDay()-cr2.toEpochDay();
 							if(num<=30){
 								
