@@ -729,7 +729,7 @@ public class BusHouseController {
     //房源条件筛选转换
    public Map<String,Object> resMap(Map<String,Object> map){
 	   if(null != map){
-		   if(null!=map.get("positionType") && "0".equals(map.get("positionType").toString())){//位置条件
+		   if(map.get("positionType")!=null && !"0".equals(map.get("positionType").toString())){//位置条件
 			   map.put("regionCode", map.get("positionType"));
 			   
 		   }
@@ -748,7 +748,7 @@ public class BusHouseController {
 			   map.put("floorType", "0");
 		   }
 		   
-		   if(null!=map.get("chaoxiangType")&&"".equals(map.get("chaoxiangType").toString())){//朝向条件
+		   if(map.get("chaoxiangType")!=null && !"".equals(map.get("chaoxiangType").toString())){//朝向条件
 			   if("1".equals(map.get("chaoxiangType").toString())){
 				   map.put("chaoxiang", "正南");
 			   }else  if("2".equals(map.get("chaoxiangType").toString())){
