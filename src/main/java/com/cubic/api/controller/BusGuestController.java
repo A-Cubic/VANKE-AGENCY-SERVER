@@ -154,6 +154,17 @@ public class BusGuestController {
         return ResultGenerator.genOkResult("修改成功");
     }
     
+    /**
+     * 分配客源
+     * @param map recordUserName createUserName
+     * 
+     * */
+    @PreAuthorize("hasAuthority('guest:updateAllocation')")
+    @PostMapping("/updateAllocation")
+    public Result updateAllocation(Principal user,@RequestBody Map<String,Object> map){
+    	busGuestService.updateAllocation(map);
+    	return ResultGenerator.genOkResult("修改成功");
+    }
 
     /**
      * 详情查询
@@ -203,7 +214,7 @@ public class BusGuestController {
     	}
     	
    	    List<BusGuest> list = busGuestService.listBusGuest(map);
-   	  
+   	    
  		for(BusGuest busGuest:list){
  			
  	    	//转换委托时间格式

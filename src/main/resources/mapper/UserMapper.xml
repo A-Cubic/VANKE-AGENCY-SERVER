@@ -107,5 +107,41 @@
 	    	WHERE 
 	    		username = #{username}
     </select>
-
+    
+    <select id="findMyStoreUser" parameterType="map" resultType="com.cubic.api.model.home.CurrentUser">
+    	SELECT 
+    			      su.`id`,
+					  su.`user_no`,
+					  su.`username`,
+					  su.`avatar`,
+					  su.`resume`,
+					  su.`register_time`,
+					  su.`phone`, 
+					  su.`store_id`,
+					  su.`relname`,
+					  su.sign,
+					  bs.`store_name` 
+    	FROM sys_user su
+    	LEFT JOIN `base_store` bs ON su.`store_id`=bs.`id`
+    	LEFT JOIN sys_user_role sur ON sur.user_id=su.id
+    	WHERE 
+    	   su.username<![CDATA[<>]]>'admin'
+    	   and su.`store_id`=#{storeId}
+    	   <if test="role!=null and role!=1"><!-- 权限不是管理员不能看管理员的账号 -->
+    	   	and sur.role_id<![CDATA[<>]]>1
+    	   </if>
+    	   <if test="searchText!=null and searchText!=''"><!-- 条件查询经纪人名称或编号 -->
+    	 	  and (su.relname=#{searchText} or su.user_no="VK000"#{searchText})
+   		   </if>
+   		 	ORDER BY  su.`username`  
+    </select>
+    <update id="updateSign" parameterType="map">
+    	UPDATE sys_user
+    	SET  sign=#{sign}
+    			<if test="sign==0">
+    				,token=NULL
+    			</if>
+    	WHERE 
+    		id=#{id}
+    </update>
 </mapper>

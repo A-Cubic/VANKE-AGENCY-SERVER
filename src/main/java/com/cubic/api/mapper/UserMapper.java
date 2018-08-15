@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.cubic.api.core.mapper.MyMapper;
 import com.cubic.api.model.User;
+import com.cubic.api.model.home.CurrentUser;
 
 /**
  * @author fei.yu
@@ -49,6 +50,16 @@ public interface UserMapper extends MyMapper<User> {
      * 
      */   
     void registerUser(User user);
+   /**
+    * 冻结账户或者解冻
+    * 
+    * */
+    void updateSign(Map<String, Object> map);
+    
+    /**
+     * 查询账户列表
+     * */
+    List<CurrentUser> findMyStoreUser(Map<String, Object> param);
     
     String getTokenFromDB(@Param("username") String username);
     void updateTokenDB(@Param("username") String username,@Param("token") String token);

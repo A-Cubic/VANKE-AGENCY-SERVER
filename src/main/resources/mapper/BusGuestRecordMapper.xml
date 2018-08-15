@@ -53,10 +53,9 @@
   
   <select id="listGuestRecord" parameterType="map" resultMap="BaseResultMap">
   		SELECT bgr.*,su.relname userRelName
-  		FROM  bus_guest_record bgr,sys_user su	
-  		WHERE 
+  		FROM  bus_guest_record bgr
+  		LEFT JOIN  sys_user su ON su.username=bgr.user_name
   			guest_id = #{id}
-  			and su.username=bgr.user_name
         ORDER BY istop DESC,toptime DESC,create_time DESC	
   </select>
 </mapper>

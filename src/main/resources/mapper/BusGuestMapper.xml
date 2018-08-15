@@ -135,6 +135,9 @@
 				</if>
 				<where>
 				1=1
+					<if test="type!=null"><!-- 客源类型(0买,1租)-->
+							and bg.type=#{type}
+					</if>
 					<if test="isShare ==null or isShare==0">
 						<if test="role!=null and role != 4">
 							and  bg.record_user_name=#{recordUserName}
@@ -145,10 +148,22 @@
 					</if>
 					<if test="isShare !=null and isShare==1">
 						    and  bg.isshare=#{isShare}
-					 </if>
-					<if test="guestname!=null and guestname != ''"><!-- 客源姓名 -->
-							and bg.guestname like "%"#{guestname}"%"
 					</if>
+					<if test="search_type==null or search_type==1">
+						<if test="guestname!=null and guestname != ''"><!-- 客源姓名 -->
+							and bg.guestname like "%"#{guestname}"%"
+						</if>
+					</if>
+					<if test="search_type!=null and search_type==2">
+						<if test="guestname!=null and guestname != ''"><!-- 经济人搜索条件 -->
+							and (bg.record_rel_name=#{guestname} or bg.record_user_name=(select username from sys_user where user_no = "VK000"#{guestname}))
+						</if>
+					</if>
+					<if test="iskey!=null and iskey!=''"><!-- 是否是无效房源(0:不是,1:是) -->
+						and bg.iskey=#{iskey}
+					</if>
+				
+				
 					
 					<if test="sex!=null"><!-- 客源性别 -->
 							and bg.sex=#{sex}
@@ -157,13 +172,7 @@
 					<if test="guestgrade!=null and guestgrade != ''"><!-- 客源星级 -->
 							and bg.guestgrade=#{guestgrade}
 					</if>
-					
-					<if test="type!=null"><!-- 客源类型(0买,1租)-->
-							and bg.type=#{type}
-					</if>
-					<if test="iskey!=null and iskey!=''"><!-- 是否是无效房源(0:不是,1:是) -->
-						and bg.iskey=#{iskey}
-					</if>
+
 					<if test="collaboratorName!=null"><!-- 查看当前登录人为合作人的客源-->
 							and bg.collaboratorids like "%"#{recordUserName}"%"
 					</if>
@@ -183,8 +192,8 @@
 				   create_time	 
 	   FROM bus_guest
 	   WHERE 
-	    iskey!=1
-	    AND record_user_name=#{username}
+		   record_user_name=#{username}
+		   AND  iskey!=1   
 	    <if test="searchText !=null and searchText !=''"><!-- 搜索文本,模糊查询客源名称或客源编号 -->
 	    	AND  (guestname like "%"#{searchText}"%" OR number like "%"#{searchText}"%")
 	    </if>
@@ -226,5 +235,24 @@
 	 			isshare=1
 	 		WHERE 
 	 		 id=#{id}		 		
+	 </update>
+	 
+	 <update id="updateAllocation" parameterType="map">
+	 	UPDATE bus_guest
+	 	 <choose>
+		 	 	<when test="recordUserName!=null and recordUserName!=''">
+				 	SET record_user_name=#{recordUserName},
+				 		record_rel_name=(select relname from sys_user where username=#{recordUserName})
+			 	</when>
+			 	<when test="createUserName!=null and createUserName!=''">
+			 	    SET record_user_name=#{createUserName},
+				 		record_rel_name=(select relname from sys_user where username=#{createUserName})
+			 	</when>
+			 	<otherwise>
+			 	SET record_user_name=record_user_name
+			 	</otherwise>
+	    </choose>
+	    WHERE 
+	    	id=#{id}
 	 </update>
 </mapper>

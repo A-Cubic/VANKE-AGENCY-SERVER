@@ -34,11 +34,11 @@
   
   <select id="listClickLog" parameterType="map" resultMap="BaseResultMap">
   	SELECT bhc.*,su.relname clickRelName
-  	FROM bus_house_clicklog  bhc,sys_user su
+  	FROM bus_house_clicklog  bhc
+  	LEFT JOIN  sys_user su ON bhc.click_user_name=su.username
   	WHERE 
   		bhc.house_id=#{houseId}
   		AND bhc.type=#{type}
-  		AND bhc.click_user_name=su.username
   	ORDER BY bhc.create_time	DESC
   </select>
 </mapper>

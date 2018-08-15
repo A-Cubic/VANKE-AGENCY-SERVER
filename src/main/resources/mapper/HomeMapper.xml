@@ -327,8 +327,10 @@
 	</select>
 	
 	<select id="selectStoreKey" parameterType="String" resultType="map">
-		SELECT COUNT(key_user_name) keyScore,DATE(key_create_time) createTime FROM bus_house
-			WHERE key_user_name = #{username}
+		SELECT COUNT(key_user_name) keyScore,DATE(key_create_time) createTime 
+		FROM bus_house
+			WHERE 
+			key_user_name = #{username}
 			AND state <![CDATA[<>]]> '1' 
 			AND key_create_time IS NOT NULL
 	</select>

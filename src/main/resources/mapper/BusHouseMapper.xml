@@ -133,6 +133,51 @@
 		    	
 		    </if>
 		    --> 
+		    <if test="type != null and type!=''"><!-- 类型条件-->
+				 and bh.type = #{type}
+			</if>
+			
+		    <if test="searchType!=null and searchType == 1">
+				<if test="searchText != null and searchText != ''"><!-- 搜索条件(地址)-->
+					 and bh.searchtext like "%"#{searchText}"%"
+				</if>
+			</if>
+			<if test="searchType!=null and searchType == 2">
+				<if test="searchText != null and searchText != ''"><!-- 搜索条件(经济人)-->
+					 and (bh.record_rel_name = #{searchText} or bh.record_user_name =(select username from sys_user where user_no = "VK000"#{searchText})) 
+				</if>
+			</if>
+		    
+		    <if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->				
+					and  bh.region_name=bsr.region_name
+					and  bh.street_name=bsr.street_name
+				
+			</if>
+		    <if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->	
+					
+				 and  bh.region_name=bsr.region_name
+				 and  bh.street_name=bsr.street_name
+				 and bh.isshare = 1
+			</if>
+			<if test="rangeType!=null and rangeType==4"><!-- 维护房源条件-->
+				    <if test="role!=null and (role == 1 or role ==5 or role == 4)"	><!-- 店长和店经理可以看本店所有人维护的房源 -->
+			   				 and  bh.record_user_name in (select username from sys_user where store_id=su.store_id)
+				    </if>
+		
+				    <if test="role!=null and role == 2"><!-- 经济人看自己维护的房源 -->
+				    	and  bh.record_user_name = #{userName}
+				    </if>
+			</if>
+			<if test="rangeType!=null and rangeType==5"><!-- 关注房源条件-->
+			     and bhk.house_id=bh.id	
+			</if>
+				
+			<if test="regionCode != null and regionCode!=0"><!-- 区条件-->
+				 and bh.region_code = #{regionCode}
+			</if>
+			<if test="streetId != null and  streetId != ''"><!-- 街道条件-->
+				 and bh.street_id = #{streetId}
+			</if>
 			<if test="(priceUp == null or priceUp == '') and (priceDown != null and priceDown != '')"><!-- 金额条件在XXX以下 -->
 				<![CDATA[and bh.price < #{priceDown}+0 ]]>
 			</if>
@@ -144,6 +189,33 @@
 			<if test="(priceUp != null and priceUp != '') and (priceDown != null and priceDown != '')"><!-- 金额条件在XXX与XXX之间 -->
 				<![CDATA[and bh.price >= #{priceUp}+0 and bh.price < #{priceDown}+0]]>
 			</if>
+			
+			<if test="(areasUp == null or areasUp=='') and (areasDown != null and areasDown!='')"><!-- 面积条件在XXX以下 -->
+				<![CDATA[and bh.areas < #{areasDown}+0 ]]>
+			</if>
+			
+			<if test="(areasUp != null and areasUp!='') and (areasDown == null or areasDown=='')"><!-- 面积条件在XXX以上 -->
+				<![CDATA[and bh.areas > #{areasUp}+0 ]]>
+			</if>
+			
+			<if test="(areasUp != null and areasUp!='') and (areasDown != null and areasDown!='')"><!-- 面积条件在XXX与XXX之间 -->
+				<![CDATA[and bh.areas >= #{areasUp}+0 and bh.areas < #{areasDown}+0]]>
+			</if>
+			
+			<if test="huxingType != null and huxingType != 0"><!-- 户型几室条件-->
+				<if test="huxingType == 6 "><!-- 户型5室以上条件-->
+					 <![CDATA[ and CONVERT(bh.huxingshi,SIGNED) > 5 ]]>
+				</if>
+				<if test="huxingType != 6 "><!-- 户型几室条件-->
+					and bh.huxingshi = #{huxingType}
+				</if>
+				 
+			</if>
+			
+			<if test="chaoxiang != null"><!-- 朝向条件-->
+				 and bh.chaoxiang = #{chaoxiang}
+			</if>
+			
 			<if test="floor!=null and floor !=''"><!-- 楼层输入查询 -->
 			   AND     bh.`floor`=#{floor}
 			</if>
@@ -160,59 +232,7 @@
 					<![CDATA[and CONVERT(bh.`floor`,SIGNED) >  (CONVERT(bh.`maxfloor`,SIGNED)/2)+(CONVERT(bh.`maxfloor`,SIGNED)/10)]]>
 				</if>
 			</if>
-		
-			<if test="searchType!=null and searchType == 1">
-				<if test="searchText != null and searchText != ''"><!-- 搜索条件(地址)-->
-					 and bh.searchtext like "%"#{searchText}"%"
-				</if>
-			</if>
-			<if test="searchType!=null and searchType == 2">
-				<if test="searchText != null and searchText != ''"><!-- 搜索条件(经济人)-->
-					 and (bh.record_rel_name = #{searchText} or bh.record_user_name =(select username from sys_user where user_no = "VK000"#{searchText})) 
-				</if>
-			</if>
-			<if test="huxingType != null and huxingType != 0"><!-- 户型几室条件-->
-				<if test="huxingType == 6 "><!-- 户型5室以上条件-->
-					 <![CDATA[ and CONVERT(bh.huxingshi,SIGNED) > 5 ]]>
-				</if>
-				<if test="huxingType != 6 "><!-- 户型几室条件-->
-					and bh.huxingshi = #{huxingType}
-				</if>
-				 
-			</if>
-			
-			<if test="huxingting != null"><!-- 户型几厅条件-->
-				 and bh.huxingting = #{huxingting}
-			</if>
-			<if test="huxingwei != null"><!-- 户型几卫条件-->
-				 and bh.huxingwei = #{huxingwei}
-			</if>
-			<if test="huxingchu != null"><!-- 户型几厨条件-->
-				 and bh.huxingchu = #{huxingchu}
-			</if>
-			
-			<if test="(areasUp == null or areasUp=='') and (areasDown != null and areasDown!='')"><!-- 面积条件在XXX以下 -->
-				<![CDATA[and bh.areas < #{areasDown}+0 ]]>
-			</if>
-			
-			<if test="(areasUp != null and areasUp!='') and (areasDown == null or areasDown=='')"><!-- 面积条件在XXX以上 -->
-				<![CDATA[and bh.areas > #{areasUp}+0 ]]>
-			</if>
-			
-			<if test="(areasUp != null and areasUp!='') and (areasDown != null and areasDown!='')"><!-- 面积条件在XXX与XXX之间 -->
-				<![CDATA[and bh.areas >= #{areasUp}+0 and bh.areas < #{areasDown}+0]]>
-			</if>
-			
-			<if test="chaoxiang != null"><!-- 朝向条件-->
-				 and bh.chaoxiang = #{chaoxiang}
-			</if>
-			
-			<if test="regionCode != null and regionCode!=0"><!-- 区条件-->
-				 and bh.region_code = #{regionCode}
-			</if>
-			<if test="streetId != null and  streetId != ''"><!-- 街道条件-->
-				 and bh.street_id = #{streetId}
-			</if>
+
 			<if test="xiaoquName != null and xiaoquName != ''"><!--  小区查询-->
 				and  bh.xiaoqu_name like "%"#{xiaoquName}"%"
 			</if>
@@ -221,80 +241,57 @@
 			</if>
 		
 			
-			<if test="state != null"><!-- 状态条件-->
+			<if test="state != null"><!-- 无效房源条件-->
 				 and bh.state = #{state}
 			</if>
+			
 			<if test="isspecial != null"><!-- 特殊房源条件-->
 				 and bh.isspecial = #{isspecial}
 			</if>
-			<if test="type != null and type!=''"><!-- 类型条件-->
-				 and bh.type = #{type}
-			</if>
+	
 			<if test="isshare!=null and isshare == 0">
 			     and bh.isshare = 0
 			</if>
-			<if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->	
-					
-				 and  bh.region_name=bsr.region_name
-				 and  bh.street_name=bsr.street_name
-				 and bh.isshare = 1
-			</if>
-			<if test="rangeType!=null and rangeType==4"><!-- 维护房源条件-->
-				    <if test="role!=null and (role == 1 or role ==5 or role == 4)"	><!-- 店长和店经理可以看本店所有人维护的房源 -->
-			   				 and  bh.record_user_name in (select username from sys_user where store_id=su.store_id)
-				    </if>
 		
-				    <if test="role!=null and role == 2"><!-- 经济人看自己维护的房源 -->
-				    	and  bh.record_user_name = #{userName}
-				    </if>
-			</if>
-			
-			<if test="rangeType!=null and rangeType==5"><!-- 关注房源条件-->
-			     and bhk.house_id=bh.id	
-			</if>	
+		
 			<if test="grade != null and grade!=''"><!-- 房源等级条件-->
 				 and bh.grade = #{grade}
 			</if>
+			
 			<if test="iskey != null and  iskey !='' "><!-- 是否有钥匙条件-->
 				 and bh.iskey = #{iskey}
 			</if>
 			
-			<if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->				
-					and  bh.region_name=bsr.region_name
-					and  bh.street_name=bsr.street_name
-				
-			</if>
-			<if test="recordUserName!=null and recordUserName!=''"><!-- 维护人的条件 -->
-					and bh.record_user_name=#{recordUserName}
-			</if>
+	
+
 	
 		</where>
 		group by  bh.id
 		order by  
-		<if test="priceOrderby != null and priceOrderby!=''"><!-- 价格排序 -->
-		  <if test="priceOrderby == 1 "><!-- 价格从高到低 -->
-		   CAST(bh.price AS DECIMAL) desc,
-		  </if>
-		  <if test="priceOrderby == 2 "><!-- 价格从低到高 -->
-		   CAST(bh.price AS DECIMAL),
-		  </if>
-		</if>
-		<if test="areasOrderby != null and areasOrderby!=''"><!-- 面积排序 -->
-		  <if test="areasOrderby == 1 "><!-- 面积从高到低 -->
-		   CAST(bh.areas AS DECIMAL) desc,
-		  </if>
-		  <if test="areasOrderby == 2 "><!-- 面积从低到高 -->
-		   CAST(bh.areas AS DECIMAL),
-		  </if>
-		</if>
-		<if test="floorOrderby != null and floorOrderby!=''"><!-- 楼层排序 -->
-		  <if test="floorOrderby == 1 "><!-- 楼层从高到低 -->
-		   CAST(bh.floor AS SIGNED) desc,
-		  </if>
-		  <if test="floorOrderby == 2 "><!-- 楼层从低到高 -->
-		   CAST(bh.floor AS SIGNED),
-		  </if>
-		</if>
+			<if test="priceOrderby != null and priceOrderby!=''"><!-- 价格排序 -->
+			  <if test="priceOrderby == 1 "><!-- 价格从高到低 -->
+			   CAST(bh.price AS DECIMAL) desc,
+			  </if>
+			  <if test="priceOrderby == 2 "><!-- 价格从低到高 -->
+			   CAST(bh.price AS DECIMAL),
+			  </if>
+			</if>
+			<if test="areasOrderby != null and areasOrderby!=''"><!-- 面积排序 -->
+			  <if test="areasOrderby == 1 "><!-- 面积从高到低 -->
+			   CAST(bh.areas AS DECIMAL) desc,
+			  </if>
+			  <if test="areasOrderby == 2 "><!-- 面积从低到高 -->
+			   CAST(bh.areas AS DECIMAL),
+			  </if>
+			</if>
+			<if test="floorOrderby != null and floorOrderby!=''"><!-- 楼层排序 -->
+			  <if test="floorOrderby == 1 "><!-- 楼层从高到低 -->
+			   CAST(bh.floor AS SIGNED) desc,
+			  </if>
+			  <if test="floorOrderby == 2 "><!-- 楼层从低到高 -->
+			   CAST(bh.floor AS SIGNED),
+			  </if>
+			</if>
   			bh.create_time desc
   </select>
   
@@ -310,10 +307,10 @@
 	              numfloor,
 				  numunit,
 				  numhousehold,
-	             huxingshi,
-	             huxingting,
-	             huxingwei,
-	             huxingchu,
+	              huxingshi,
+	              huxingting,
+	              huxingwei,
+	              huxingchu,
 	             `areas`,
 	              hiddenarea,
 	             `chaoxiang`,
@@ -603,7 +600,7 @@
 		ORDER BY bh.create_time DESC
 	</select>
 	
-	<!--  <select id="listBusHouseRou"></select>-->
+
 	
 	<insert id="insertPriceLog" parameterType="map">
 		INSERT INTO bus_house_pricelog(

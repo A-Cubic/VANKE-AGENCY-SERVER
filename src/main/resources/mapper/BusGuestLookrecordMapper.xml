@@ -16,10 +16,11 @@
   
   <select id="listBusGuestLookrecord" resultType="com.cubic.api.model.BusGuestLookrecord">
   	SELECT bgl.*,su.relname userRelName,bgl.create_time createTime,bh.number AS houseName 
-  	FROM bus_guest_lookrecord bgl,sys_user su,`bus_house` bh	
-  	WHERE bgl.guest_id=#{id}
-  		    and  su.username=bgl.user_name
-  			and bh.id=bgl.house_id
+  	FROM bus_guest_lookrecord bgl
+  	LEFT JOIN  sys_user su ON su.username=bgl.user_name
+  	LEFT JOIN `bus_house` bh ON bh.id=bgl.house_id
+  	WHERE 
+  			bgl.guest_id=#{id}		   
   	ORDER BY bgl.create_time DESC	
   </select>
   

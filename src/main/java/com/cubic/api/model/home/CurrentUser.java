@@ -87,6 +87,10 @@ public class CurrentUser {
      * 注册时间
      */
     private String register_time;
+    /**
+     * 标识
+     */
+    private String sign;
 
     
     
@@ -224,6 +228,14 @@ public class CurrentUser {
 
 	public void setDescId(String descId) {
 		this.descId = descId;
+	}
+
+	public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
 	}
     
     

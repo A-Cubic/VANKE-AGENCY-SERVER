@@ -18,6 +18,7 @@ import com.cubic.api.mapper.UserMapper;
 import com.cubic.api.mapper.UserRoleMapper;
 import com.cubic.api.model.User;
 import com.cubic.api.model.UserRole;
+import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.UserService;
 
 /**
@@ -150,5 +151,17 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 	@Override
 	public void updateTokenDB(String username,String token) {
 		 userMapper.updateTokenDB(username,token);
+	}
+
+	@Override
+	public List<CurrentUser> findMyStoreUser(Map<String, Object> param) {
+		
+		return userMapper.findMyStoreUser(param);
+	}
+
+	@Override
+	public void updateSign(Map<String, Object> map) {
+		userMapper.updateSign(map);
+		
 	}
 }

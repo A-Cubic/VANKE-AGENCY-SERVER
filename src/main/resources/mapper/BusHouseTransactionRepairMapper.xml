@@ -15,7 +15,7 @@
   </resultMap>
   <select id="ListTransactionRepair" parameterType="map" resultMap="BaseResultMap">
   	SELECT * 
-  	FROM `bus_house_transaction_repair`
+  	FROM bus_house_transaction_repair
   	WHERE 
   		transaction_id=#{transactionId}
   </select>

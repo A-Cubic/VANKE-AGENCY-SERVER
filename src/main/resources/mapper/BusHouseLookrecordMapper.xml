@@ -15,10 +15,10 @@
   
   <select id="listBusHouseLookrecord" parameterType="Map" resultMap="BaseResultMap">
   		SELECT bhl.* ,su.relname userRelName
-  		FROM bus_house_lookrecord bhl,sys_user su
+  		FROM bus_house_lookrecord bhl
+  		LEFT JOIN sys_user su ON  su.username=bhl.user_name
   		WHERE 
   			bhl.house_id=#{houseId}
-  			and  su.username=bhl.user_name
   		
   		ORDER BY bhl.create_time DESC	
   

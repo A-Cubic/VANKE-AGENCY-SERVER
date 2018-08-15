@@ -79,6 +79,19 @@ public class User {
     private String sex;
     
     /**
+     * 标识
+     */
+    private String sign;
+    
+    public String getSign() {
+		return sign;
+	}
+
+	public void setSign(String sign) {
+		this.sign = sign;
+	}
+
+	/**
      * 真实姓名
      */
     private String relname;

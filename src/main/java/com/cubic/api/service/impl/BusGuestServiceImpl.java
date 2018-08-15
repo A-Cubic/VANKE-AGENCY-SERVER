@@ -90,4 +90,13 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 		busGuestMapper.updateIsShareNull(busGuest);
 		
 	}
+	/**
+	 * 分配客源
+	 * @param map
+	 * */
+	@Override
+	public void updateAllocation(Map<String, Object> map) {
+		busGuestMapper.updateAllocation(map);
+		
+	}
 }

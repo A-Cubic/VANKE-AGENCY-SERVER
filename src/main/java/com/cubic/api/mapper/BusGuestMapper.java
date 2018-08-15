@@ -55,4 +55,11 @@ public interface BusGuestMapper extends MyMapper<BusGuest> {
      * 
      * */
 	void updateIsShareNull(BusGuest busGuest);
+	
+	/**
+	 * 分配客源
+	 * @param map
+	 * 
+	 * */
+	void updateAllocation(Map<String,Object> map);
 }

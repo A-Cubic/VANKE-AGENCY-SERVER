@@ -97,12 +97,12 @@
   
   <select id="listBusExamine" resultMap="BaseResultMap">
   	SELECT be.*,bh.number,bh.chaoxiang,bh.huxingshi,bh.huxingting,bh.huxingchu,bh.huxingwei
-	FROM `bus_examine` be ,`sys_user` su,`sys_user_role` sur,`bus_house` bh
+	FROM `bus_examine` be 
+	LEFT JOIN sys_user su ON be.`user_name`=su.`username` 
+	LEFT JOIN sys_user_role sur ON su.id=sur.user_id
+	LEFT JOIN bus_house bh ON be.house_id=bh.id
 	WHERE 
-		be.`user_name`=su.`username` 
-		AND su.id=sur.user_id
-		AND be.house_id=bh.id
-		AND su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
+		 su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
 		
 		<if test="role!=null and role==3"><!-- 验证权限(助理只能看实勘的) AND sur.role_id=#{role}-->
 			AND be.type = '4'

@@ -19,6 +19,11 @@ public class BusGuest {
 	@Transient
 	private String user_type="1";
 	/**
+	 * 搜索类型(1:客源名称,2:维护人名称)
+	 */
+	@Transient
+	private String search_type="1";
+	/**
 	 * 客源编号
 	 */
 	private String number;
@@ -597,6 +602,14 @@ public class BusGuest {
 
 	public void setUser_type(String user_type) {
 		this.user_type = user_type;
+	}
+
+	public String getSearch_type() {
+		return search_type;
+	}
+
+	public void setSearch_type(String search_type) {
+		this.search_type = search_type;
 	}
 
 }

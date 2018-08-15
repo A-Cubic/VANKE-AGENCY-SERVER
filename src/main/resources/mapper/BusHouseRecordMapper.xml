@@ -52,10 +52,10 @@
   
   <select id="listHouseRecord" parameterType="map" resultMap="BaseResultMap">
   		SELECT b.*,su.relname userRelName
-  		FROM  bus_house_record b,sys_user su	
+  		FROM  bus_house_record b
+  		LEFT JOIN sys_user su ON su.username=b.user_name  		
   		WHERE 
   			house_id = #{houseId} 
-  			and  su.username=b.user_name
   		ORDER BY istop DESC,toptime DESC,create_time DESC
   </select>
   

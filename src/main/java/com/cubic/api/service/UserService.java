@@ -2,6 +2,8 @@ package com.cubic.api.service;
 
 import com.cubic.api.core.service.Service;
 import com.cubic.api.model.User;
+import com.cubic.api.model.home.CurrentUser;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
@@ -69,6 +71,17 @@ public interface UserService extends Service<User> {
      * 
      */   
     String registerUser(User user);
+    
+    /**
+     * 冻结账户或者解冻
+     * 
+     * */
+     void updateSign(Map<String, Object> map);
+    
+    /**
+     * 查询账户列表
+     * */
+    List<CurrentUser> findMyStoreUser(Map<String, Object> param);
     
     String getTokenFromDB(String username);
     void updateTokenDB(String username,String token);

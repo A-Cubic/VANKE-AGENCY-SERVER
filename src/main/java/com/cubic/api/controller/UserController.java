@@ -1,8 +1,12 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -30,6 +34,7 @@ import com.cubic.api.model.BaseStreet;
 import com.cubic.api.model.LoginResponse;
 import com.cubic.api.model.Store;
 import com.cubic.api.model.User;
+import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.StoreService;
 import com.cubic.api.service.UserRoleService;
 import com.cubic.api.service.UserService;
@@ -124,7 +129,7 @@ public class UserController {
         return ResultGenerator.genOkResult(userDB);
     }
 
-    @PreAuthorize("hasAuthority('user:list')")
+   
     @GetMapping
     public Result list(@RequestParam(defaultValue = "0") final Integer page,
                        @RequestParam(defaultValue = "0") final Integer size) {
@@ -145,6 +150,10 @@ public class UserController {
         if (user.getPassword() == null) {
             return ResultGenerator.genFailedResult("空密码");
         }
+        User signUser=this.userService.findBy("username", user.getUsername());
+        if ("0".equals(signUser.getSign())) {
+            return ResultGenerator.genFailedResult("账号已冻结");
+        }
         // 用户名登录
         User dbUser = null;
         if (user.getUsername() != null) {
@@ -154,13 +163,13 @@ public class UserController {
             }
         }
         // 邮箱登录
-        if (user.getEmail() != null) {
-            dbUser = this.userService.findBy("email", user.getEmail());
-            if (dbUser == null) {
-                return ResultGenerator.genFailedResult("错误的邮箱地址");
-            }
-            user.setUsername(dbUser.getUsername());
-        }
+//        if (user.getEmail() != null) {
+//            dbUser = this.userService.findBy("email", user.getEmail());
+//            if (dbUser == null) {
+//                return ResultGenerator.genFailedResult("错误的邮箱地址");
+//            }
+//            user.setUsername(dbUser.getUsername());
+//        }
         // 验证密码
         //noinspection ConstantConditions
         if (!this.userService.verifyPassword(user.getPassword(), dbUser.getPassword())) {
@@ -198,6 +207,49 @@ public class UserController {
     		response.add(br);
     	}
     	return ResultGenerator.genOkResult(response);
+    }
+    /**
+     * 查看账户列表
+     * @param map
+     * @throws ParseException 
+     * */
+    @PreAuthorize("hasAuthority('user:list')")
+    @PostMapping("/list")
+    public Result findMyStoreUser(Principal user,@RequestBody  Map<String,Object> map) throws ParseException{
+    	PageHelper.startPage(Integer.valueOf(map.get("page").toString()), Integer.valueOf(map.get("size").toString()));
+    	if(user.toString().indexOf("ROLE_ADMIN")!=-1){//管理员 		
+    		map.put("role", "1");
+    	}else if(user.toString().indexOf("ROLE_SEC")!=-1){//助理
+    		map.put("role", "3");
+    	}else if(user.toString().indexOf("ROLE_LEADER")!=-1){//经理
+    		map.put("role", "5");
+    	}
+    	List<CurrentUser> list=userService.findMyStoreUser(map);
+    	for(CurrentUser suser:list){
+    		//转换注册时间
+    		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    		Date date = fmt.parse(suser.getRegister_time());
+    		String sre = fmt.format(date);
+    		suser.setRegister_time(sre);
+    	}
+    	PageInfo<CurrentUser> pageInfo = new PageInfo<CurrentUser>(list);
+    	return ResultGenerator.genOkResult(pageInfo);
+    }
+    
+    /**
+     * 冻结账户或解冻账户
+     * 
+     * */
+    @PostMapping("/updateSign")
+    public Result updateSign(@RequestBody  Map<String,Object> map){
+    	if("0".equals(map.get("sign").toString())){
+    		userService.updateSign(map);
+    		return ResultGenerator.genOkResult("1");
+    	}else if("1".equals(map.get("sign").toString())){
+    		userService.updateSign(map);
+    		return ResultGenerator.genOkResult("1");
+    	}
+    	return ResultGenerator.genOkResult("0");
     }
     /**
      * 获得 token
