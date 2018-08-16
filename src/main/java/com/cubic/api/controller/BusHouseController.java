@@ -25,6 +25,7 @@ import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseClicklog;
 import com.cubic.api.model.User;
+import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusHouseClicklogService;
 import com.cubic.api.service.BusHouseService;
@@ -991,5 +992,88 @@ public class BusHouseController {
     	}
     	 return ResultGenerator.genOkResult(list);
     }
+    /**
+     * 分配维护人
+     * @param map
+     * */
+    @PreAuthorize("hasAuthority('house:updateRecordUserName')")
+    @PostMapping("/updateRecordUserName")
+    public Result updateRecordUserName(Principal user,@RequestBody Map<String,Object> map){
+    			//修改维护人			
+    			busHouseService.updateRecordUserName(map);
+    			return ResultGenerator.genOkResult("1");
+    	
+    }
+    
+    
+    /**
+     * 分配录入人
+     * @param map
+     * */
+    @PreAuthorize("hasAuthority('house:updateCreateUserName')")
+    @PostMapping("/updateCreateUserName")
+    public Result updateCreateUserName(Principal user,@RequestBody Map<String,Object> map){
+    			//修改录入人			
+    			busHouseService.updateCreateUserName(map);
+    			return ResultGenerator.genOkResult("1");
+    }
+    
+    /**
+     * 分配实勘录入人
+     * @param map
+     * */
+    @PreAuthorize("hasAuthority('house:updateExplorationUserName')")
+    @PostMapping("/updateExplorationUserName")
+    public Result updateExplorationUserName(Principal user,@RequestBody Map<String,Object> map){
+    			//修改实勘人			
+    			busHouseService.updateExplorationUserName(map);
+    			return ResultGenerator.genOkResult("1");
+    	
+    }
+    
+    
+    /**
+     * 分配钥匙人
+     * @param map
+     * */
+    @PreAuthorize("hasAuthority('house:updateKeyUserName')")
+    @PostMapping("/updateKeyUserName")
+    public Result updateKeyUserName(Principal user,@RequestBody Map<String,Object> map){
+    			//修改钥匙人			
+    			busHouseService.updateKeyUserName(map);
+    			return ResultGenerator.genOkResult("1");
+    }
+    /**
+     * 分配账户列表
+     * 
+     * 
+     * */
+    @PreAuthorize("hasAuthority('house:findByUserInfo')")
+    @PostMapping("/findByUserInfo")
+    public Result findByUserInfo(Principal user,@RequestBody Map<String,Object> map){
+			PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
+	    	 List<CurrentUser> listUser=busHouseService.findByUserInfo(map);
+	    	 PageInfo<CurrentUser> pageInfo = new PageInfo<CurrentUser>(listUser);
+	    	return ResultGenerator.genOkResult(pageInfo);
+    	
+    }
+    /**
+     * 验证是否是要分配身份的的店长
+     * 
+     * 
+     * */
+    @PreAuthorize("hasAuthority('house:isMyStore')")
+    @PostMapping("/isMyStore")
+    public Result isMyStore(Principal user,@RequestBody Map<String,Object> map){
+    	map.put("userName", user.getName());
+		//验证是否是要分配身份的的店长
+		String isStore=busHouseService.isMyStore(map); 
+			if(isStore!=null && !"".equals(isStore)){ 			
+				return ResultGenerator.genOkResult("1");
+			}else{  			
+				return ResultGenerator.genOkResult("0");
+			}
+		}
+    
 
 }

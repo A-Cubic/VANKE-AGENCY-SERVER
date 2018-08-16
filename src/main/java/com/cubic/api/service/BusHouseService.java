@@ -1,6 +1,7 @@
 package com.cubic.api.service;
 
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.home.CurrentUser;
 
 import java.util.List;
 import java.util.Map;
@@ -145,4 +146,45 @@ public interface BusHouseService extends Service<BusHouse> {
 	 * 
 	 */
 	void insertPriceLog(Map<String, Object> map);
+	
+	
+	
+	/**
+	 * 验证是否是本店的
+	 * @param map
+	 * */
+	String isMyStore(Map<String, Object> map);
+	
+	/**
+	 * 分配维护人
+	 * @param map
+	 * */
+	void updateRecordUserName(Map<String, Object> map);
+	
+	/**
+	 * 分配录入人
+	 * @param map
+	 * */
+	void updateCreateUserName(Map<String, Object> map);
+
+	
+	/**
+	 * 分配实勘人
+	 * @param map
+	 * */
+	void updateExplorationUserName(Map<String, Object> map);
+
+	
+	/**
+	 * 分配钥匙人
+	 * @param map
+	 * */
+	void updateKeyUserName(Map<String, Object> map);
+	
+	
+	/**
+	 * 分配列表
+	 * @param map
+	 * */
+	List<CurrentUser> findByUserInfo(Map<String, Object> map);
 }

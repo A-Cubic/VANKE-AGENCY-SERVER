@@ -2,6 +2,7 @@ package com.cubic.api.service.impl;
 
 import com.cubic.api.mapper.BusHouseMapper;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.core.service.AbstractService;
 import org.springframework.stereotype.Service;
@@ -198,5 +199,50 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 	public void insertPriceLog(Map<String, Object> map) {
 		busHouseMapper.insertPriceLog(map);
 		
+	}
+	/**
+	 * 验证是否是本店的
+	 * */
+	@Override
+	public String isMyStore(Map<String, Object> map) {
+
+		return busHouseMapper.isMyStore(map);
+	}
+	/**
+	 * 分配维护人
+	 * */
+	@Override
+	public void updateRecordUserName(Map<String, Object> map) {
+		busHouseMapper.updateRecordUserName(map);
+		
+	}
+	/**
+	 * 分配录入人
+	 * */
+	@Override
+	public void updateCreateUserName(Map<String, Object> map) {
+		busHouseMapper.updateCreateUserName(map);
+		
+	}
+	/**
+	 * 分配实勘人
+	 * */
+	@Override
+	public void updateExplorationUserName(Map<String, Object> map) {
+		busHouseMapper.updateExplorationUserName(map);
+		
+	}
+	/**
+	 * 分配钥匙人
+	 * */
+	@Override
+	public void updateKeyUserName(Map<String, Object> map) {
+		busHouseMapper.updateKeyUserName(map);
+		
+	}
+
+	@Override
+	public List<CurrentUser> findByUserInfo(Map<String, Object> map) {
+		return busHouseMapper.findByUserInfo(map);
 	}
 }
