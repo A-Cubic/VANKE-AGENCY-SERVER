@@ -245,8 +245,8 @@
 				 		record_rel_name=(select relname from sys_user where username=#{recordUserName})
 			 	</when>
 			 	<when test="createUserName!=null and createUserName!=''">
-			 	    SET record_user_name=#{createUserName},
-				 		record_rel_name=(select relname from sys_user where username=#{createUserName})
+			 	    SET create_user_name=#{createUserName},
+				 		create_rel_name=(select relname from sys_user where username=#{createUserName})
 			 	</when>
 			 	<otherwise>
 			 	SET record_user_name=record_user_name

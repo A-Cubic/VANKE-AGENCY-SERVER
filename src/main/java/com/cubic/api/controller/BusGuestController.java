@@ -163,7 +163,7 @@ public class BusGuestController {
     @PostMapping("/updateAllocation")
     public Result updateAllocation(Principal user,@RequestBody Map<String,Object> map){
     	busGuestService.updateAllocation(map);
-    	return ResultGenerator.genOkResult("修改成功");
+    	return ResultGenerator.genOkResult("1");
     }
 
     /**

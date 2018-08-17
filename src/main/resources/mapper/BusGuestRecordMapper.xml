@@ -55,7 +55,7 @@
   		SELECT bgr.*,su.relname userRelName
   		FROM  bus_guest_record bgr
   		LEFT JOIN  sys_user su ON su.username=bgr.user_name
-  			guest_id = #{id}
+  		WHERE	bgr.guest_id = #{id}
         ORDER BY istop DESC,toptime DESC,create_time DESC	
   </select>
 </mapper>
