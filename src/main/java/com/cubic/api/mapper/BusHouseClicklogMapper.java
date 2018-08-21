@@ -20,4 +20,10 @@ public interface BusHouseClicklogMapper extends MyMapper<BusHouseClicklog> {
      * 
      * */
 	List<BusHouseClicklog> listClickLog(Map<String,Object> map);
+	 /**
+     * 删除点击记录
+     * @param houseId
+     * 
+     * */
+	void deleteClick(String houseId);
 }

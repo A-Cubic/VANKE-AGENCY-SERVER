@@ -41,6 +41,11 @@ public class BusHouseClicklogServiceImpl extends AbstractService<BusHouseClicklo
 
 		return busHouseClicklogMapper.listClickLog(map);
 	}
+	@Override
+	public void deleteClick(String houseId) {
+		busHouseClicklogMapper.deleteClick(houseId);
+		
+	}
 
 
 }

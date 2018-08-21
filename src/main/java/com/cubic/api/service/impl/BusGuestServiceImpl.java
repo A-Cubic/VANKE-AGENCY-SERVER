@@ -99,4 +99,14 @@ public class BusGuestServiceImpl extends AbstractService<BusGuest> implements Bu
 		busGuestMapper.updateAllocation(map);
 		
 	}
+	@Override
+	public void updateGuestIsKeyDown(BusGuest busGuest) {
+		busGuestMapper.updateGuestIsKeyDown(busGuest);
+		
+	}
+	@Override
+	public void updateGuestIsKeyUp(Map<String, Object> map) {
+		busGuestMapper.updateGuestIsKeyUp(map);
+		
+	}
 }

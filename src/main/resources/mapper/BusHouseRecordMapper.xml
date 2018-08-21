@@ -59,4 +59,10 @@
   		ORDER BY istop DESC,toptime DESC,create_time DESC
   </select>
   
+  <delete id="deleteRecord" parameterType="String">
+  	DELETE FROM bus_house_record
+  	WHERE 
+  	    house_id = #{houseId} 
+  </delete>
+  
 </mapper>

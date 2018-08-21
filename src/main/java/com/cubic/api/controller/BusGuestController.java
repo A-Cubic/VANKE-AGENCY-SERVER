@@ -82,29 +82,34 @@ public class BusGuestController {
 //        return ResultGenerator.genOkResult();
 //    }
     /**
-     * 设置为无效房客源
+     * 设置为无效客源
      * @param busGuest
      * (0:普通,1:无效,2:提交待审核)
      * */
     @PreAuthorize("hasAuthority('guest:updateState')")
     @PostMapping("/updateState")
-    public Result updateState(Principal user,@RequestBody BusGuest busGuest) {
+    public Result updateState(Principal user,@RequestBody  Map<String,Object> map) {
+    	BusGuest busGuest=new BusGuest();
+    	
+    	busGuest.setId(Long.valueOf(map.get("id").toString()));
     	//审核信息
     	BusExamine busExamine=new BusExamine();
     	busExamine.setGuestId(busGuest.getId());
     	String msgContent="";
     	String url=MessageConstant.MESSAGE_AUDIT_URL;
-    	if("1".equals(busGuest.getIskey())){
-    		//客源无效状态2:无效房源
+    	if("1".equals(map.get("iskey").toString())){
+    		//客源无效状态2:无效客源
         	busGuest.setIskey("2");
     		busExamine.setType("5");
+    		busExamine.setReasontext(map.get("reasontext").toString());
     		msgContent = MessageConstant.MESSAGE_GUEST_INVALID;
-    	}else if("0".equals(busGuest.getIskey())){
-    		busExamine.setType("9");
-    		//客源无效状态3:取消无效房源
-        	busGuest.setIskey("3");
-    		msgContent = MessageConstant.MESSAGE_GUEST_NOINVALID;
     	}
+//    	else if("0".equals(map.get("iskey").toString())){
+//    		busExamine.setType("9");
+//    		//客源无效状态3:取消无效客源
+//        	busGuest.setIskey("3");
+//    		msgContent = MessageConstant.MESSAGE_GUEST_NOINVALID;
+//    	}
     	//提交审核消息
     	messageService.sendMessage("1", msgContent, url, user.getName());
     
@@ -112,6 +117,16 @@ public class BusGuestController {
     	busExamine.setUserName(user.getName());
     	busExamineService.insertBusExamine(busExamine);
         return ResultGenerator.genOkResult(busGuest.getIskey());
+    }
+    
+    /**
+     * 把无效客源上网
+     * */
+    @PostMapping("/updateGuestIsKeyUp")
+    public Result updateGuestIsKeyUp(Principal user,@RequestBody Map<String,Object> map){
+    	map.put("userName", user.getName());
+    	busGuestService.updateGuestIsKeyUp(map);
+    	return ResultGenerator.genOkResult("1");
     }
     
     /**
@@ -212,7 +227,10 @@ public class BusGuestController {
     		map.put("role", "2");
     		map.put("recordUserName", user.getName());
     	}
-    	
+    	if(map.get("isShare")!=null && !"".equals(map.get("isShare").toString())){
+    		map.put("isType", map.get("isShare").toString());
+    		
+    	}
    	    List<BusGuest> list = busGuestService.listBusGuest(map);
    	    
  		for(BusGuest busGuest:list){

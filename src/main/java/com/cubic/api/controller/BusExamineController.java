@@ -22,10 +22,18 @@ import com.cubic.api.model.BusAchievement;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusGuest;
 import com.cubic.api.model.BusHouse;
+import com.cubic.api.model.BusHouseClicklog;
+import com.cubic.api.model.BusHouseLookrecord;
+import com.cubic.api.model.BusHouseRecord;
 import com.cubic.api.model.BusHouseTransaction;
 import com.cubic.api.service.BusAchievementService;
 import com.cubic.api.service.BusExamineService;
+import com.cubic.api.service.BusGuestLookrecordService;
+import com.cubic.api.service.BusGuestRecordService;
 import com.cubic.api.service.BusGuestService;
+import com.cubic.api.service.BusHouseClicklogService;
+import com.cubic.api.service.BusHouseLookrecordService;
+import com.cubic.api.service.BusHouseRecordService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.BusHouseTransactionService;
 import com.cubic.api.service.MessageService;
@@ -45,7 +53,19 @@ public class BusExamineController {
     @Resource
     private BusHouseService busHouseService;
     @Resource
+    private BusHouseLookrecordService busHouseLookrecordService;
+    @Resource
+    private BusHouseRecordService busHouseRecordService;
+    @Resource
+    private BusHouseClicklogService busHouseClicklogService;
+    @Resource
     private BusGuestService busGuestService;
+    
+    @Resource
+    private BusGuestLookrecordService busGuestLookrecordService;
+    
+    @Resource
+    private BusGuestRecordService busGuestRecordService;
     @Resource
     private MessageService messageService;
     @Resource
@@ -90,11 +110,23 @@ public class BusExamineController {
 		    	if(busExamineNew.getType().equals("1")){//审核类型为特殊房源审核
 		    		bushouse.setIsspecial("1");
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_SPECIAL;
+		    		busHouseService.update(bushouse);
 		    	}else if(busExamineNew.getType().equals("2")){  //审核类型为优质房源审核		
 		    		bushouse.setIsfine("1");
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_GOOD;
+		    		busHouseService.update(bushouse);
 		    	}else if(busExamineNew.getType().equals("3")){//审核类型为无效房源审核
-		    		bushouse.setState("1");
+		    		//情况相关信息并设置为无效房源
+		    		//清除房源的带看记录
+		    		busHouseLookrecordService.deleteLookrecord(bushouse.getId().toString());
+		    		//清除房源跟进记录
+		    		busHouseRecordService.deleteRecord(bushouse.getId().toString());;
+		    		//清空点击查看的记录
+		    		busHouseClicklogService.deleteClick(bushouse.getId().toString());
+		    		//清空房源待审核信息
+		    		busExamineService.deleteHouseState(bushouse.getId().toString());
+		    		//把房源下网
+		    		busHouseService.houseStateDown(bushouse.getId().toString());		    		
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_INVALID;
 		    	}else if(busExamineNew.getType().equals("4")){//审核类型为录入实勘图房源审核
 		    		bushouse.setShiimg(busExamineNew.getShiimg());
@@ -110,33 +142,46 @@ public class BusExamineController {
 		    		}
 		    		
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_REALIMG;
+		    		busHouseService.update(bushouse);
 		    	}else if(busExamineNew.getType().equals("6")){//审核类型为取消特殊房源审核
 		    		bushouse.setIsspecial("0");
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_NOSPECIAL;
+		    		busHouseService.update(bushouse);
 		    	}else if(busExamineNew.getType().equals("7")){//审核类型为取消优质房源审核
 		    		bushouse.setIsfine("0");
 		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_NOGOOD;
-		    	}else if(busExamineNew.getType().equals("8")){//审核类型为取消无效房源审核
-		    		bushouse.setState("0");
-		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_NOINVALID;
+		    		busHouseService.update(bushouse);
 		    	}
+		    	
+//		    	else if(busExamineNew.getType().equals("8")){//审核类型为取消无效房源审核
+//		    		bushouse.setState("0");
+//		    		textExamine=MessageConstant.MESSAGE_SUCCESS_HOUSE_NOINVALID;
+//		    	}
 		    	url=MessageConstant.MESSAGE_HOUSE_URL+bushouse.getId();
-		    	busHouseService.update(bushouse);
+		    
 	    	}else if(busExamineNew.getType().equals("5")){//客源无效审核
 	    		BusGuest busGuest=new BusGuest();
 	    		busGuest.setId(busExamineNew.getGuestId());
-	    		busGuest.setIskey("1");
-	    		busGuestService.update(busGuest);
+	    		//清空带看记录
+	    		busGuestLookrecordService.deleteBy("guestId", busExamineNew.getGuestId());
+	    		//清空跟进记录
+	    		busGuestRecordService.deleteBy("guestId", busExamineNew.getGuestId());
+	    		//清空所有的待审核信息
+	    		busExamineService.deleteGuestState(busExamineNew.getGuestId().toString());
+	    		//设置无效客源下网
+	    		busGuestService.updateGuestIsKeyDown(busGuest);
 	    		textExamine=MessageConstant.MESSAGE_SUCCESS_GUEST_INVALID;
 	    		url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
-	    	}else if(busExamineNew.getType().equals("9")){//取消客源无效审核
-	    		BusGuest busGuest=new BusGuest();
-	    		busGuest.setId(busExamineNew.getGuestId());
-	    		busGuest.setIskey("0");
-	    		busGuestService.update(busGuest);
-	    		textExamine=MessageConstant.MESSAGE_SUCCESS_GUEST_NOINVALID;
-	    		url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
-	    	}else if (busExamineNew.getType().equals("10")){
+	    	}
+	    	//else if(busExamineNew.getType().equals("9")){//取消客源无效审核
+//	    		BusGuest busGuest=new BusGuest();
+//	    		busGuest.setId(busExamineNew.getGuestId());
+//	    		busGuest.setIskey("0");
+//	    		busGuestService.update(busGuest);
+//	    		textExamine=MessageConstant.MESSAGE_SUCCESS_GUEST_NOINVALID;
+//	    		url=MessageConstant.MESSAGE_GUEST_URL+busGuest.getId();
+//	    	}
+	    	else if (busExamineNew.getType().equals("10")){
 	    		//通过业绩
 	    		BusAchievement busAchievement =new BusAchievement();
 	    		busAchievement.setTransactionId(busExamineNew.getTransactionId());
@@ -157,9 +202,7 @@ public class BusExamineController {
     		if(!"5".equals(busExamineNew.getType()) && !"9".equals(busExamineNew.getType())&&!"10".equals(busExamineNew.getType())){
 		    	BusHouse bushouse=new BusHouse();
 		    	bushouse.setId(busExamineNew.getHouseId());
-		    	if(busExamineNew.getType().equals("4")) {
-		    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_REALIMG;
-		    	}else {
+		    	 
 		    		if(busExamineNew.getType().equals("1")){//提交特殊房源审核未通过,状态从2:提交待审核变回0:不是特殊房源
 			    		bushouse.setIsspecial("0");
 			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_SPECIAL;
@@ -169,6 +212,9 @@ public class BusExamineController {
 			    	}else if(busExamineNew.getType().equals("3")){//提交无效房源审核未通过,状态从2:提交待审核变回0:不是无效房源
 			    		bushouse.setState("0");
 			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_INVALID;
+			    	}else if(busExamineNew.getType().equals("4")) {
+			    		bushouse.setExplorationUserName("");
+			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_REALIMG;
 			    	}else if(busExamineNew.getType().equals("6")){//提交取消特殊房源审核未通过,状态从2:提交待审核变回1:特殊房源
 			    		bushouse.setIsspecial("1");
 			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOSPECIAL;
@@ -180,7 +226,7 @@ public class BusExamineController {
 			    		noStr=MessageConstant.MESSAGE_FAIL_HOUSE_NOINVALID;
 			    	}
 		    		busHouseService.update(bushouse);
-		    	}
+		    	
 		    	
 		    	url=MessageConstant.MESSAGE_HOUSE_URL+bushouse.getId();
 	    	}else if(busExamineNew.getType().equals("5")){

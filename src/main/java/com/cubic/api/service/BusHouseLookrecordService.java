@@ -27,4 +27,11 @@ public interface BusHouseLookrecordService extends Service<BusHouseLookrecord> {
      * 
      * */
 	void insertBusHouseLookrecord(BusHouseLookrecord busHouseLookrecord);
+	
+	 /**
+     * 删除
+     * @param houseId
+     * 
+     * */
+	void deleteLookrecord(String houseId);
 }

@@ -245,4 +245,18 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 	public List<CurrentUser> findByUserInfo(Map<String, Object> map) {
 		return busHouseMapper.findByUserInfo(map);
 	}
+	/**
+	 *设置为无效房源(下网)
+	 * */
+	@Override
+	public void houseStateDown(String id) {
+		busHouseMapper.houseStateDown(id);
+		
+	}
+
+	@Override
+	public void houseStateUp(Map<String, Object> map) {
+		busHouseMapper.houseStateUp(map);
+		
+	}
 }

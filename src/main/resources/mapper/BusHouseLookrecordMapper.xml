@@ -23,5 +23,11 @@
   		ORDER BY bhl.create_time DESC	
   
   </select>
+  
+  <delete id="deleteLookrecord" parameterType="String">
+  	DELETE FROM bus_house_lookrecord
+  	WHERE 
+  			house_id=#{houseId}
+  </delete>
 
 </mapper>

@@ -31,6 +31,7 @@
     <result column="huxingting" jdbcType="VARCHAR" property="huxingting" />
     <result column="huxingchu" jdbcType="VARCHAR" property="huxingchu" />
     <result column="huxingwei" jdbcType="VARCHAR" property="huxingwei" />
+    <result column="reasontext" jdbcType="VARCHAR" property="reasontext" />
   </resultMap>
   
   
@@ -50,7 +51,8 @@
   					 user_name,
   					 state,
   					 create_time  ,
-  					 user_rel_name				
+  					 user_rel_name,
+  					 reasontext			
   					)
   		      VALUES(
   	
@@ -67,7 +69,8 @@
 	  		          #{userName},
 		  		  	  0,
 		  		      NOW(),
-		  		      (select su.relname from sys_user su	where su.username=#{userName})
+		  		      (select su.relname from sys_user su	where su.username=#{userName}),
+		  		      #{reasontext}
 	  					
   					)
   </insert>
@@ -130,6 +133,28 @@
 		ORDER BY be.state ,be.`create_time`DESC
   </select>
   
+  <select id="detailHouseExamineIs" parameterType="String" resultMap="BaseResultMap">
+    	SELECT *
+	  	FROM bus_examine
+	  	WHERE 
+	  		house_id=#{houseId}
+	  		AND TYPE='4'
+	  		AND state='0'
+  </select>
+  
+  <delete id="deleteHouseState" parameterType="String">
+  	DELETE FROM bus_examine
+  	WHERE 
+  			house_id=#{houseId}
+	  		AND state='0'  		
+  </delete>
+  
+  <delete id="deleteGuestState" parameterType="String">
+  	DELETE FROM bus_examine
+  	WHERE 
+  			guest_id=#{guest}
+	  		AND state='0'  		
+  </delete>
   
 
 </mapper>

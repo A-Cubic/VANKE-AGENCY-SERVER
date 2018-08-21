@@ -187,4 +187,17 @@ public interface BusHouseService extends Service<BusHouse> {
 	 * @param map
 	 * */
 	List<CurrentUser> findByUserInfo(Map<String, Object> map);
+	
+	/**
+	 * 置为无效房源
+	 * @param id
+	 * */
+	void houseStateDown(String id);
+	
+	
+	/**
+	 * 把无效房源上网
+	 * @param map
+	 * */
+	void houseStateUp(Map<String, Object> map);
 }

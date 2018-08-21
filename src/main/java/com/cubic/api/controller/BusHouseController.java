@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -76,7 +77,16 @@ public class BusHouseController {
     	
     	List<BusHouse> findlist=busHouseService.findIsAddress(busHouse);   
     	if(findlist!=null && findlist.size()!=0){
+    		BusHouse busHousenew=findlist.get(0);
+    		if(busHousenew.getState()!=null){
+	    		if(!"1".equals(busHousenew.getState())){
+	    			return ResultGenerator.genOkResult("0");
+	    		}else{
+	    			return ResultGenerator.genOkResult(busHousenew);
+	    		}
+    		}
     		return ResultGenerator.genOkResult("0");
+    		
     	}
     	if(null!=busHouse.getChaoxiang()){//朝向
 			   if("1".equals(busHouse.getChaoxiang())){
@@ -136,7 +146,7 @@ public class BusHouseController {
     	}
     	
     	
-        return ResultGenerator.genOkResult("添加成功");
+        return ResultGenerator.genOkResult("1");
     }
 
 //    @DeleteMapping("/{id}")
@@ -152,19 +162,23 @@ public class BusHouseController {
      * */
     @PreAuthorize("hasAuthority('house:updateState')")
     @PostMapping("/updateState")
-    public Result updateState(Principal user,@RequestBody BusHouse busHouse) {
+    public Result updateState(Principal user,@RequestBody Map<String,Object> map) {
+    	BusHouse busHouse = new BusHouse();
     	BusExamine busExamine =new BusExamine(); 
     	String msgContent="";
     	String url=MessageConstant.MESSAGE_AUDIT_URL;
-		if(busHouse.getState().equals("1")){//设置为无效房源
+		if("1".equals(map.get("state"))){//设置为无效房源
 			busExamine.setType("3");   
 			busHouse.setState("2");
+			busHouse.setId(Long.valueOf(map.get("id").toString()));
+			busExamine.setReasontext(map.get("reasontext").toString());
 			msgContent = MessageConstant.MESSAGE_HOUSE_INVALID;
-		}else if(busHouse.getState().equals("0")){//取消无效房源
-			busExamine.setType("8"); 
-			busHouse.setState("3");
-			msgContent = MessageConstant.MESSAGE_HOUSE_NOINVALID;
 		}
+//		else if("0".equals(map.get("state"))){//取消无效房源
+//			busExamine.setType("8"); 
+//			busHouse.setState("3");
+//			msgContent = MessageConstant.MESSAGE_HOUSE_NOINVALID;
+//		}
 		//提交审核消息
 		messageService.sendMessage("1", msgContent, url, user.getName());
 		//待审核状态
@@ -175,7 +189,17 @@ public class BusHouseController {
     	//提交到审核
         return ResultGenerator.genOkResult(busHouse.getState());
     }
-    
+    /**
+     * 把无效房源上网
+     * @param map
+     * 
+     * */
+    @PostMapping("/houseStateUp")
+    public Result houseStateUp(Principal user,@RequestBody Map<String,Object> map){
+	    	map.put("userName", user.getName());
+	    	busHouseService.houseStateUp(map);
+    	 return ResultGenerator.genOkResult("1");
+    }
     /**
      * 提交特殊房源申请
      * @param busHouse
@@ -354,6 +378,11 @@ public class BusHouseController {
     @PreAuthorize("hasAuthority('house:updateImg')")
     @PostMapping("/updateImg")
     public Result updateImg(Principal user,@RequestBody BusHouse busHouse) {
+    	//改成待审核
+    	BusHouse busHousenew=new BusHouse();
+    	busHousenew.setId(busHouse.getId());
+    	busHousenew.setExplorationUserName("-1");
+    	busHouseService.update(busHousenew);
     	StringBuffer url=new StringBuffer();
     	BusExamine busExamine =new BusExamine(); 
     	//循环读取室的实勘图片url
@@ -672,56 +701,64 @@ public class BusHouseController {
         
         Map<String,Object> mapnew=resMap(map);
         List<BusHouse> list = busHouseService.ListBusHouse(mapnew);
-        
+        List<BusHouse> temp = new ArrayList<BusHouse>();
          //显示图片
-        for(BusHouse bushouses:list){  
-    		if("1".equals(bushouses.getType())){
-    			if(null !=bushouses.getPrice()&& null !=bushouses.getAreas()){
-    				double d = Double.parseDouble(bushouses.getPrice())/10000;
-    				BigDecimal bd = new BigDecimal(d);
-    				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        for(BusHouse bushouses:list){
+        	try{
+        		if("1".equals(bushouses.getType())){
+        			if(null !=bushouses.getPrice()&& null !=bushouses.getAreas()){
+        				double d = Double.parseDouble(bushouses.getPrice())/10000;
+        				BigDecimal bd = new BigDecimal(d);
+        				double d1 = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-    				double d2=d1;
-    				int d3=(int)d1;
-    				if(d2==d3){
-    					bushouses.setPriceText(d3+"万");
-    				}else{
-    					bushouses.setPriceText(d1+"万");
-    				}
-    				//计算每平米多少钱
-    				double doione = Double.parseDouble(bushouses.getPrice())/Double.parseDouble(bushouses.getAreas());
-    				BigDecimal bdone = new BigDecimal(doione);
-    				int done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
-    				bushouses.setPriceOneText(done+"元/平");
-    			}
-    		}else if("2".equals(bushouses.getType())){			
-    			if(null !=bushouses.getPrice()){
-    				bushouses.setPriceText(bushouses.getPrice()+"元/月");
-    			}
-    		}
-        	     StringBuffer urltext=new StringBuffer();
-        	     if(null!=bushouses.getShiimg()){       	    	 
-        	    	 urltext.append(bushouses.getShiimg());
-        	     }
-			     if(null!=bushouses.getTingimg()){		        	    	 
-		            urltext.append(","+bushouses.getTingimg());
-		        	     }
-			     if(null!=bushouses.getWeiimg()){	    	 
-			    	 urltext.append(","+bushouses.getWeiimg());
-			     }
-			     if(null!=bushouses.getChuimg()){
-			    	 
-			    	 urltext.append(","+bushouses.getChuimg());
-			     }
-				 if(null!=bushouses.getHuxingimg()){
-							    	 
-					urltext.append(","+bushouses.getHuxingimg());
-							     }
-				 if(null!=bushouses.getOtherimg()){
-				  	 
-				  	 urltext.append(","+bushouses.getOtherimg());
-				   }				 
-				 bushouses.setImgurl(Arrays.asList(urltext.toString().split(",")));
+        				double d2=d1;
+        				int d3=(int)d1;
+        				if(d2==d3){
+        					bushouses.setPriceText(d3+"万");
+        				}else{
+        					bushouses.setPriceText(d1+"万");
+        				}
+        				//计算每平米多少钱
+        				double doione = Double.parseDouble(bushouses.getPrice())/Double.parseDouble(bushouses.getAreas());
+        				BigDecimal bdone = new BigDecimal(doione);
+        				int done = bdone.setScale(2, BigDecimal.ROUND_HALF_UP).intValue();
+        				bushouses.setPriceOneText(done+"元/平");
+        			}
+        		}else if("2".equals(bushouses.getType())){			
+        			if(null !=bushouses.getPrice()){
+        				bushouses.setPriceText(bushouses.getPrice()+"元/月");
+        			}
+        		}
+            	     StringBuffer urltext=new StringBuffer();
+            	     if(null!=bushouses.getShiimg()){       	    	 
+            	    	 urltext.append(bushouses.getShiimg());
+            	     }
+    			     if(null!=bushouses.getTingimg()){		        	    	 
+    		            urltext.append(","+bushouses.getTingimg());
+    		        	     }
+    			     if(null!=bushouses.getWeiimg()){	    	 
+    			    	 urltext.append(","+bushouses.getWeiimg());
+    			     }
+    			     if(null!=bushouses.getChuimg()){
+    			    	 
+    			    	 urltext.append(","+bushouses.getChuimg());
+    			     }
+    				 if(null!=bushouses.getHuxingimg()){
+    							    	 
+    					urltext.append(","+bushouses.getHuxingimg());
+    							     }
+    				 if(null!=bushouses.getOtherimg()){
+    				  	 
+    				  	 urltext.append(","+bushouses.getOtherimg());
+    				   }				 
+    				 bushouses.setImgurl(Arrays.asList(urltext.toString().split(",")));
+        	}catch(Exception e){
+        		temp.add(bushouses);
+        	}
+    		
+        }
+        for(BusHouse bean:temp){
+        	list.remove(bean);
         }
         PageInfo<BusHouse> pageInfo = new PageInfo<BusHouse>(list);
         return ResultGenerator.genOkResult(pageInfo);

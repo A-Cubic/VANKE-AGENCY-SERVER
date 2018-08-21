@@ -35,4 +35,10 @@ public interface BusHouseRecordMapper extends MyMapper<BusHouseRecord> {
     * 
     * */
    List<BusHouseRecord> listHouseRecord(Map<String,Object> map);
+   /**
+    * 删除跟进记录
+    * @param houseId
+    * 
+    * */
+   void deleteRecord(String houseId);
 }

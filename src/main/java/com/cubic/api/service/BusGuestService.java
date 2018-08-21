@@ -68,4 +68,18 @@ public interface BusGuestService extends Service<BusGuest> {
 	 * 
 	 * */
 	void updateAllocation(Map<String,Object> map);
+	
+	/**
+	 * 设置为无效客源,下网
+	 * @param busGuest
+	 * 
+	 * */
+	void updateGuestIsKeyDown(BusGuest busGuest);
+	
+	/**
+	 * 取消无效客源上网
+	 * @param busGuest
+	 * 
+	 * */
+	void updateGuestIsKeyUp(Map<String,Object> map);
 }

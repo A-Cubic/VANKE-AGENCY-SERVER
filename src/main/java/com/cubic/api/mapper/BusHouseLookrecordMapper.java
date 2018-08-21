@@ -21,4 +21,10 @@ public interface BusHouseLookrecordMapper extends MyMapper<BusHouseLookrecord> {
      * 
      * */
 	void insertBusHouseLookrecord(BusHouseLookrecord busHouseLookrecord);
+	 /**
+     * 删除
+     * @param houseId
+     * 
+     * */
+	void deleteLookrecord(String houseId);
 }

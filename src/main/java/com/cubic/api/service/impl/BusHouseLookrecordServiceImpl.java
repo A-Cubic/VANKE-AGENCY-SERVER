@@ -43,4 +43,10 @@ public class BusHouseLookrecordServiceImpl extends AbstractService<BusHouseLookr
 		
 	}
 
+	@Override
+	public void deleteLookrecord(String houseId) {
+		busHouseLookrecordMapper.deleteLookrecord(houseId);
+		
+	}
+
 }

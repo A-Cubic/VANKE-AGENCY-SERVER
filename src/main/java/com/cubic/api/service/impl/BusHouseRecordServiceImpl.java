@@ -62,5 +62,10 @@ public class BusHouseRecordServiceImpl extends AbstractService<BusHouseRecord> i
 
 		return busHouseRecordMapper.listHouseRecord(map);
 	}
+	@Override
+	public void deleteRecord(String houseId) {
+		busHouseRecordMapper.deleteRecord(houseId);
+		
+	}
 
 }

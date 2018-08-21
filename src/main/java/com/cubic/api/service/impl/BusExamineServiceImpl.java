@@ -62,5 +62,22 @@ public class BusExamineServiceImpl extends AbstractService<BusExamine> implement
 		busExamineMapper.updateState(busExamine);
 		
 	}
+	@Override
+	public BusExamine detailHouseExamineIs(String hosueid) {
+
+		return busExamineMapper.detailHouseExamineIs(hosueid);
+	}
+	@Override
+	public void deleteHouseState(String hosueId) {
+		busExamineMapper.deleteHouseState(hosueId);
+		
+	}
+	@Override
+	public void deleteGuestState(String guestId) {
+		busExamineMapper.deleteGuestState(guestId);
+		
+	}
+	
+	
 
 }

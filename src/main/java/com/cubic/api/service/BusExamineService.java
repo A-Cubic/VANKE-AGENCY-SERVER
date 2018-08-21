@@ -37,4 +37,26 @@ public interface BusExamineService extends Service<BusExamine> {
      * 
      * */
 	List<BusExamine>  listBusExamine(Map<String,Object> map);
+	
+	 /**
+     * 详情查询
+     * @param hosueid
+     * 
+     * */
+	BusExamine detailHouseExamineIs(String hosueid);
+	
+	
+	 /**
+     * 删除房源相关审核
+     * @param hosueId
+     * 
+     * */
+	void deleteHouseState(String hosueId);
+	
+	 /**
+     * 删除客源相关审核
+     * @param hosueId
+     * 
+     * */
+	void deleteGuestState(String guestId);
 }

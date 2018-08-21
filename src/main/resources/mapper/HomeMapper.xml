@@ -157,12 +157,12 @@
 		
 			 FROM 	bus_house bh
 			 WHERE 
-			 1=1
+			  bh.state='0'
 			 <if test="role != null and (role == 2 or role == 3)">
 				 AND (bh.`record_user_name`=#{username}
-				OR bh.`key_user_name`=#{username}
-				OR bh.`create_user_name`=#{username}
-				OR bh.`exploration_user_name`=#{username})
+				 OR bh.`key_user_name`=#{username}
+				 OR bh.`create_user_name`=#{username}
+				 OR bh.`exploration_user_name`=#{username})
 			 </if>	
 	
 	</select>
@@ -192,6 +192,8 @@
 			 FROM 	bus_house bh
 			 LEFT JOIN  `sys_user` u ON u.`username` =#{username}
 			 LEFT JOIN base_store bs ON bs.id = u.store_id	
+			 WHERE 
+			    bh.state='0'
 			 
 	
 	</select>

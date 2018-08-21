@@ -33,4 +33,23 @@ public interface BusExamineMapper extends MyMapper<BusExamine> {
      * 
      * */
 	List<BusExamine>  listBusExamine(Map<String,Object> map);
+	 /**
+     * 详情查询
+     * @param hosueid
+     * 
+     * */
+	BusExamine detailHouseExamineIs(String hosueId);
+	 /**
+     * 删除房源相关审核
+     * @param hosueId
+     * 
+     * */
+	void deleteHouseState(String hosueId);
+	
+	 /**
+     * 删除客源相关审核
+     * @param hosueId
+     * 
+     * */
+	void deleteGuestState(String guestId);
  }

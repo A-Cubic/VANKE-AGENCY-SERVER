@@ -41,4 +41,10 @@
   		AND bhc.type=#{type}
   	ORDER BY bhc.create_time	DESC
   </select>
+  
+  <delete id="deleteClick" parameterType="String">
+  		DELETE FROM bus_house_clicklog
+  		WHERE 
+  			house_id=#{houseId}
+  </delete>
 </mapper>

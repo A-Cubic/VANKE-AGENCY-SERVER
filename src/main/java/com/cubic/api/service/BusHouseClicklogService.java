@@ -25,4 +25,11 @@ public interface BusHouseClicklogService extends Service<BusHouseClicklog> {
      * 
      * */
 	List<BusHouseClicklog> listClickLog(Map<String,Object> map);
+	
+	 /**
+     * 删除点击记录
+     * @param houseId
+     * 
+     * */
+	void deleteClick(String houseId);
 }

@@ -171,7 +171,15 @@
 			<if test="rangeType!=null and rangeType==5"><!-- 关注房源条件-->
 			     and bhk.house_id=bh.id	
 			</if>
-				
+			
+			
+			<if test="rangeType!=null and rangeType==3"><!-- 无效房源条件-->
+				 	and bh.state ='1'
+			</if>
+			<if test="rangeType==null or rangeType!=3"><!-- 不是无效房源条件-->
+				 	 and bh.state = '0'
+			</if>
+			
 			<if test="regionCode != null and regionCode!=0"><!-- 区条件-->
 				 and bh.region_code = #{regionCode}
 			</if>
@@ -240,10 +248,7 @@
 				and  bh.number like "%"#{number}"%"
 			</if>
 		
-			
-			<if test="state != null"><!-- 无效房源条件-->
-				 and bh.state = #{state}
-			</if>
+		
 			
 			<if test="isspecial != null"><!-- 特殊房源条件-->
 				 and bh.isspecial = #{isspecial}
@@ -485,15 +490,16 @@
 	 <select id="listRecordTime" resultMap="BaseResultMap">
 				SELECT bh.id,su.`username` record_user_name,
 						(CASE 
-							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=10 AND TO_DAYS(NOW())-TO_DAYS(bh.record_time) <15 THEN '1']]>
+							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)=10 THEN '1']]>
 							<![CDATA[WHEN TO_DAYS(NOW())-TO_DAYS(bh.record_time)>=15 THEN '2']]>
 							END) casetype  
 				FROM `bus_house` bh 
 				LEFT JOIN `sys_user` su  ON ( su.`username`=bh.`record_user_name` OR su.`username` IN (SELECT user_name FROM  bus_house_like WHERE `house_id`=bh.`id`))
 				LEFT JOIN sys_user_role sur ON su.id = sur.user_id AND sur.role_id = 2
 				WHERE 
-				<![CDATA[(TO_DAYS(NOW())-TO_DAYS(bh.record_time)) >= 10	]]>
-					AND  bh.isshare = '0'			 
+				<![CDATA[((TO_DAYS(NOW())-TO_DAYS(bh.record_time)) = 10 OR (TO_DAYS(NOW())-TO_DAYS(bh.record_time)) = 15)	]]>
+					AND  bh.isshare = '0'
+					AND bh.state <![CDATA[<>]]>'1'			 
 	 </select>
 	 
 	 
@@ -533,7 +539,7 @@
 				             AND user_name=#{username}
 				) likeType,
 				(DATE_ADD(create_time,INTERVAL 1 DAY)>NOW()) explorationTimeType,
-				(SELECT be.state FROM  bus_examine be WHERE be.house_id=bh.`id` AND be.state = 0 AND be.type=4)  examineState
+				(SELECT distinct be.state FROM  bus_examine be WHERE be.house_id=bh.`id` AND be.state = 0 AND be.type=4)  examineState
 				,bs.store_name ketStoreName
 				FROM bus_house bh
 				LEFT JOIN sys_user su	 ON su.username=bh.record_user_name
@@ -552,7 +558,7 @@
 	</update>
 	
 	<select id="findIsAddress" parameterType="com.cubic.api.model.BusHouse" resultMap="BaseResultMap">
-		SELECT * 
+		SELECT id,number,state 
 		FROM bus_house
 		WHERE           type = #{type}
 					<!--  	AND region_code= #{regionCode}
@@ -563,7 +569,7 @@
 						and numhousehold=#{numhousehold}
 						and floor=#{floor}
 						and address=#{address}
-			AND state <![CDATA[<>]]>'1'
+			
 			
 	</select>
 	
@@ -673,4 +679,48 @@
 				AND (su.relname like "%"#{usertext}"%"  or su.user_no = "VK000"#{usertext})
 			</if>
 	</select>
+	
+	<update id="houseStateDown" parameterType="String">
+	UPDATE bus_house 
+		SET  record_user_name=NULL,
+		     create_user_name=NULL,
+		     key_user_name=NULL,
+		     exploration_user_name=NULL,
+		     exclusive_user_name=NULL,
+		     record_rel_name=NULL,
+		     create_rel_name=NULL,
+		     key_rel_name=NULL,
+		     exploration_rel_name=NULL,
+		     exclusive_rel_name=NULL,
+		     key_number=NULL,
+		     key_store_id=NULL,
+		     key_create_time=NULL,
+		     titleimg=DEFAULT,
+		     otherimg=NULL,
+		     huxingimg=NULL,
+		     chuimg=NULL,
+		     weiimg=NULL,
+		     tingimg=NULL,
+		     shiimg=NULL,
+		     state='1',
+		     iskey='0'
+	     WHERE 
+	      id=#{id}
+		
+	</update>
+	
+	<update id="houseStateUp" parameterType="map">
+		UPDATE bus_house bh
+		LEFT JOIN sys_user su ON su.username=#{userName}
+		SET bh.record_user_name=su.username,
+		    bh.create_user_name=su.username,
+		     bh.record_rel_name=su.relname,
+		     bh.create_rel_name=su.relname,
+		     bh.state='0',
+		     bh.create_time=NOW(),
+		     bh.record_time=NOW()
+		WHERE 
+			bh.id=#{id}     
+	</update>
+	
 </mapper>

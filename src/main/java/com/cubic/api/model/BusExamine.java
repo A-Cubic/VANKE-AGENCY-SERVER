@@ -182,6 +182,10 @@ public class BusExamine {
      * */
     @Transient
     private String huxingwei;
+    /**
+     * 申请理由
+     * */
+    private String reasontext;
     
 
     public String getNumber() {
@@ -602,6 +606,14 @@ public class BusExamine {
 
 	public void setOtherImglist(List<String> otherImglist) {
 		this.otherImglist = otherImglist;
+	}
+
+	public String getReasontext() {
+		return reasontext;
+	}
+
+	public void setReasontext(String reasontext) {
+		this.reasontext = reasontext;
 	}
     
     
