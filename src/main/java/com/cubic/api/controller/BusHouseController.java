@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -25,10 +24,12 @@ import com.cubic.api.core.response.ResultGenerator;
 import com.cubic.api.model.BusExamine;
 import com.cubic.api.model.BusHouse;
 import com.cubic.api.model.BusHouseClicklog;
+import com.cubic.api.model.BusHousePricelog;
 import com.cubic.api.model.User;
 import com.cubic.api.model.home.CurrentUser;
 import com.cubic.api.service.BusExamineService;
 import com.cubic.api.service.BusHouseClicklogService;
+import com.cubic.api.service.BusHousePricelogService;
 import com.cubic.api.service.BusHouseService;
 import com.cubic.api.service.MessageService;
 import com.cubic.api.service.UserService;
@@ -52,6 +53,10 @@ public class BusHouseController {
     private BusHouseService busHouseService;
     @Resource
     private BusHouseClicklogService busHouseClicklogService;
+    
+    @Resource
+    private BusHousePricelogService busHousePricelogService;
+
     @Resource
     private UserService userService;
     @Resource
@@ -73,12 +78,13 @@ public class BusHouseController {
     	//维护人账号名
     	busHouse.setRecordUserName(user.getName());
 
-    	//验证是否为空
-    	
+    	//验证是否为空    	(地址是否存在相同的)
     	List<BusHouse> findlist=busHouseService.findIsAddress(busHouse);   
     	if(findlist!=null && findlist.size()!=0){
     		BusHouse busHousenew=findlist.get(0);
+    		
     		if(busHousenew.getState()!=null){
+    			//判断是否是无效房源
 	    		if(!"1".equals(busHousenew.getState())){
 	    			return ResultGenerator.genOkResult("0");
 	    		}else{
@@ -287,7 +293,7 @@ public class BusHouseController {
      * */
     @PreAuthorize("hasAuthority('house:update')")
     @PostMapping("/update")
-    public Result update(@RequestBody BusHouse busHouse) {
+    public Result update(Principal user,@RequestBody BusHouse busHouse) {
     	if(null != busHouse){
     		BusHouse newBean=busHouseService.findById(busHouse.getId());
     		if("1".equals(newBean.getType())){
@@ -298,27 +304,39 @@ public class BusHouseController {
 				busHouse.setPrice(String.valueOf(d1));
     		}
     		//记录价格修改日志
-//    		if(!newBean.getPrice().equals(busHouse.getPrice())){
-//    			Map<String,Object> newMap=new HashMap<String,Object>();
-//    			//原价格
-//    			int priceold = Integer.valueOf(newBean.getPrice());
-//    			//新价格
-//    			int pricenew = Integer.valueOf(busHouse.getPrice());
-//    			//计算差价
-//    			int lockprice = pricenew-priceold;
-//    			//判断是上涨了还是下降了(1:上涨,2:下降)
-//    			int upordown=0;
-//    			if(lockprice>=1){
-//    				upordown=1;
-//    			}else if(lockprice<=-1){
-//    				upordown=2;
-//    			}
-//    			newMap.put("priceold", priceold);
-//    			newMap.put("pricenew", pricenew);
-//    			newMap.put("lockprice", lockprice);
-//    			newMap.put("upordown", upordown);
-//    			busHouseService.insertPriceLog(newMap);
-//    		}
+    		if(!newBean.getPrice().equals(busHouse.getPrice())){   			
+    			BusHousePricelog busHousePricelog=new BusHousePricelog();
+    			//原价格
+    			int priceold = Integer.valueOf(newBean.getPrice());
+    			//新价格
+    			int pricenew = Integer.valueOf(busHouse.getPrice());
+    			//计算差价
+    			int lockprice = (pricenew-priceold);
+    			//判断是上涨了还是下降了(1:上涨,2:下降)
+    			String typeprice="0";
+    			if(lockprice>=1){
+    				typeprice="1";
+    			}else if(lockprice<=-1){
+    				typeprice="2";
+    			}
+    			
+    			//修改的房源id
+    			busHousePricelog.setHouseId(busHouse.getId());
+    			//修改人
+    			busHousePricelog.setUsername(user.getName());
+    			//原金额
+    			busHousePricelog.setPriceold(String.valueOf(priceold));
+    			//修改后金额
+    			busHousePricelog.setPricenew(String.valueOf(pricenew));
+    			//差价
+    			busHousePricelog.setPricelock(String.valueOf(lockprice));
+    			//类型(1:上涨,2:下调)
+    			busHousePricelog.setType(typeprice);
+    			busHousePricelogService.insertPriceLog(busHousePricelog);
+    			//修改价格变动类型
+    			busHouse.setPricetype(typeprice);
+    		}
+    		
     		if(null!=busHouse.getChaoxiang()){//朝向
  			   if("1".equals(busHouse.getChaoxiang())){
 				   busHouse.setChaoxiang("正南");

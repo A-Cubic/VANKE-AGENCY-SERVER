@@ -98,7 +98,7 @@ public class BusGuestController {
     	String msgContent="";
     	String url=MessageConstant.MESSAGE_AUDIT_URL;
     	if("1".equals(map.get("iskey").toString())){
-    		//客源无效状态2:无效客源
+    		//客源无效状态2:无效客源待审核
         	busGuest.setIskey("2");
     		busExamine.setType("5");
     		busExamine.setReasontext(map.get("reasontext").toString());

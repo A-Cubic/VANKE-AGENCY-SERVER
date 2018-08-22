@@ -408,6 +408,11 @@ public class BusHouse {
      * 是否是共享池状态
      */
     private String isshare;
+    /**
+     * 变更价钱类型(0:未变,1:上涨,2:下调)
+     * 
+     * */
+    private String pricetype;
 
     /**
      * @return id
@@ -1409,6 +1414,14 @@ public class BusHouse {
 
 	public void setKetStoreName(String ketStoreName) {
 		this.ketStoreName = ketStoreName;
+	}
+
+	public String getPricetype() {
+		return pricetype;
+	}
+
+	public void setPricetype(String pricetype) {
+		this.pricetype = pricetype;
 	}
 	
     

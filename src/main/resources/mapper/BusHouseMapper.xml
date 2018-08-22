@@ -56,6 +56,7 @@
     <result column="key_number" jdbcType="VARCHAR" property="keyNumber" />
     <result column="key_store_id" jdbcType="VARCHAR" property="keyStoreId" />
     <result column="layout" jdbcType="VARCHAR" property="layout" />
+    <result column="pricetype" jdbcType="VARCHAR" property="pricetype" />
   </resultMap>
   
   <sql id="selectSql">
@@ -103,7 +104,8 @@
 		  bh.titleimg,
 		  bh.key_store_id,
 		  bh.key_number,
-		  bh.layout
+		  bh.layout,
+		  bh.pricetype
 		  
   </sql>
   
@@ -112,7 +114,7 @@
 		 <include refid="selectSql"/>
 
 		FROM bus_house bh
-		<if test="rangeType!=null and rangeType!='' and rangeType!=5">
+		<if test="(rangeType!=null and rangeType!='' and rangeType!=5) or (role!=null and (role == 1 or role ==5 or role == 4))">
 		   LEFT JOIN sys_user su on  su.username=#{userName}
 		   <if test="rangeType!=null and (rangeType==1 or rangeType==2)"> 
 			  LEFT JOIN base_store_range  bsr ON bsr.`store_id`=su.`store_id`
@@ -125,14 +127,8 @@
 
 		<where>
 		   1=1
-		  <!--   <if test="role!=null and (role == 1 or role ==5 or role == 4)"	>
-		   		
-		    </if>
-
-		    <if test="role!=null and role == 2">
-		    	
-		    </if>
-		    --> 
+		   
+		
 		    <if test="type != null and type!=''"><!-- 类型条件-->
 				 and bh.type = #{type}
 			</if>
@@ -241,33 +237,65 @@
 				</if>
 			</if>
 
+		
+		 <if test="role!=null and (role == 1 or role ==5 or role == 4)"	>
+		   			
+		    			<if test="createType==true"><!-- 录入人角色 -->
+		    				AND bh.create_user_name IN (select username from sys_user where store_id=su.store_id)
+		    			</if>
+		    			<if test="explorationType==true"><!--实勘人角色 -->
+		    				AND bh.exploration_user_name IN (select username from sys_user where store_id=su.store_id)
+		    			</if>
+		    			<if test="keyType==true"><!--钥匙人角色 -->
+		    				AND bh.key_user_name IN (select username from sys_user where store_id=su.store_id)
+		    			</if>
+
+		    			
+		    </if>
+
+		    <if test="role!=null and role == 2">
+
+		    			<if test="createType==true"><!-- 录入人角色 -->
+		    				AND bh.create_user_name=#{userName}
+		    			</if>
+		    			<if test="explorationType==true"><!--实勘人角色 -->
+		    				AND bh.exploration_user_name=#{userName}
+		    			</if>
+		    			<if test="keyType==true"><!--钥匙人角色 -->
+		    				AND bh.key_user_name=#{userName}
+		    			</if>
+	
+		    			    	
+		    </if>
+		   <if test="isspecialType==true"><!-- 特殊房源 -->
+		    		AND bh.isspecial='1'
+		    </if>
+		    			
+		    <if test="isfineType==true"><!-- 优质房源 -->
+		    	AND bh.isfine='1'
+		    </if>
+			<if test="grade != null and grade!=''"><!-- 房源等级条件-->
+				 and bh.grade = #{grade}
+			</if>
+			
+			<if test="layout != null and layout!=''"><!-- 房源装修条件-->
+				 and bh.layout = #{layout}
+			</if>
+			<if test="isshare==null or isshare == 0"><!-- 不是共享池数据 -->
+			     and bh.isshare = 0
+			</if>
+
+			<if test="iskey != null and  iskey !='' "><!-- 是否有钥匙条件-->
+				 and bh.iskey = #{iskey}
+			</if>
+			
+	
 			<if test="xiaoquName != null and xiaoquName != ''"><!--  小区查询-->
 				and  bh.xiaoqu_name like "%"#{xiaoquName}"%"
 			</if>
 			<if test="number != null and number != ''"><!--  编号查询-->
 				and  bh.number like "%"#{number}"%"
 			</if>
-		
-		
-			
-			<if test="isspecial != null"><!-- 特殊房源条件-->
-				 and bh.isspecial = #{isspecial}
-			</if>
-	
-			<if test="isshare!=null and isshare == 0">
-			     and bh.isshare = 0
-			</if>
-		
-		
-			<if test="grade != null and grade!=''"><!-- 房源等级条件-->
-				 and bh.grade = #{grade}
-			</if>
-			
-			<if test="iskey != null and  iskey !='' "><!-- 是否有钥匙条件-->
-				 and bh.iskey = #{iskey}
-			</if>
-			
-	
 
 	
 		</where>
