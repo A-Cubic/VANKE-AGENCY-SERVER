@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cubic.api.mapper.BusHousePricelogMapper">
+  <resultMap id="BaseResultMap" type="com.cubic.api.model.BusHousePricelog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="house_id" jdbcType="BIGINT" property="houseId" />
+    <result column="priceold" jdbcType="VARCHAR" property="priceold" />
+    <result column="pricenew" jdbcType="VARCHAR" property="pricenew" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="pricelock" jdbcType="VARCHAR" property="pricelock" />
+  </resultMap>
+  
+  <insert id="insertPriceLog" parameterType="com.cubic.api.model.BusHousePricelog">
+  	INSERT INTO bus_house_pricelog
+	  			(house_id,
+	  			priceold,
+	  			pricenew,
+	  			type,
+	  			create_time,
+	  			username,
+	  			pricelock)
+  			VALUES(
+	  			#{houseId},
+	  			#{priceold},
+	  			#{pricenew},
+	  			#{type},
+	  			NOW(),
+	  			#{username},
+	  			#{pricelock}
+  			)
+  </insert>
+  
+  <select id="listPriceLog" parameterType="map" resultMap="BaseResultMap">
+  	SELECT *  
+	FROM `bus_house_pricelog` 
+	WHERE house_id=#{houseId}
+	ORDER BY create_time DESC
+  
+  </select>
+</mapper>
