@@ -230,7 +230,7 @@
 				LEFT JOIN `sys_user` su  ON su.`username`=bg.`record_user_name`		
 				LEFT JOIN sys_user_role sur ON su.id = sur.user_id AND sur.role_id = 2
 				WHERE 
-				<![CDATA[((TO_DAYS(NOW())-TO_DAYS(bg.record_time)) = 10	or TO_DAYS(NOW())-TO_DAYS(bg.record_time)) = 15)]]>
+				<![CDATA[((TO_DAYS(NOW())-TO_DAYS(bg.record_time)) = 10	or TO_DAYS(NOW())-TO_DAYS(bg.record_time) = 15)]]>
 				AND bg.isshare = '0'
 				AND bg.iskey <![CDATA[<>]]>'1'
 						

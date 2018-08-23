@@ -1,7 +1,13 @@
 package com.cubic.api.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
-import javax.persistence.*;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Table(name = "bus_house_pricelog")
 public class BusHousePricelog {
@@ -34,7 +40,7 @@ public class BusHousePricelog {
      * 修改时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改人账号
@@ -136,7 +142,7 @@ public class BusHousePricelog {
      *
      * @return create_time - 修改时间
      */
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
@@ -145,7 +151,7 @@ public class BusHousePricelog {
      *
      * @param createTime 修改时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
