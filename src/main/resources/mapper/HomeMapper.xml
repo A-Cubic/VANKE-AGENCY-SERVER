@@ -263,6 +263,7 @@
 		LEFT JOIN base_store bs ON bs.`id`=su.store_id
 		WHERE 
 		   sur.role_id=2
+		   	 AND su.sign<![CDATA[<>]]>'0'
 			<if test="role!=null and role==2">
 			  AND 	su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{userName})
 		    </if>		
@@ -313,6 +314,7 @@
 			WHERE 
 				su.`store_id`=(SELECT store_id FROM sys_user WHERE username=#{username})
 				AND sur.`role_id`='2'
+				AND su.sign<![CDATA[<>]]>'0'
 			GROUP BY su.`username`	
 			ORDER BY sumScore DESC
 		) a,(SELECT @rownum:=0) r
@@ -325,6 +327,7 @@
 				LEFT JOIN `sys_user` su ON su.username= bgl.user_name
 				WHERE 
 					bgl.user_name=#{username}
+					AND su.sign<![CDATA[<>]]>'0'
 				GROUP BY bgl.guest_id,DATE(bgl.create_time)
 	</select>
 	
@@ -363,6 +366,7 @@
 			LEFT JOIN `sys_user_role` sur ON su.id=sur.`user_id`
 			WHERE 
 				 sur.`role_id`='2'
+				 AND su.sign<![CDATA[<>]]>'0'
 			GROUP BY bs.store_name
 			ORDER BY sumScore DESC
 		) a,(SELECT @rownum:=0) r
@@ -377,6 +381,7 @@
 						WHERE 
 							su.`store_id`=#{store_id}
 							AND sur.`role_id`='2'
+							AND su.sign<![CDATA[<>]]>'0'
 						GROUP BY bgl.guest_id,DATE(bgl.create_time)
 	</select>
 	<select id="selectAllStoreKey" parameterType="String" resultType="map">
