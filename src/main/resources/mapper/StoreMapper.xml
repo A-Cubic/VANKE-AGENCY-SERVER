@@ -91,6 +91,7 @@
   			WHERE 
   				store_id=#{id}
   				AND username <![CDATA[<>]]> 'admin'
+  				AND sign<![CDATA[<>]]>'0'
   	
   	</select>
   	

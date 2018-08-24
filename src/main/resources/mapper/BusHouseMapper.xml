@@ -143,7 +143,11 @@
 					 and (bh.record_rel_name = #{searchText} or bh.record_user_name =(select username from sys_user where user_no = "VK000"#{searchText})) 
 				</if>
 			</if>
-		    
+		    <if test="searchType!=null and searchType == 3">
+				<if test="searchText != null and searchText != ''"><!-- 搜索条件(小区名或房源编号)-->
+					and ( bh.xiaoqu_name like "%"#{searchText}"%" or bh.number like "%"#{searchText}"%")
+				</if>
+			</if>
 		    <if test="rangeType!=null and rangeType==1"><!-- 范围盘条件-->				
 					and  bh.region_name=bsr.region_name
 					and  bh.street_name=bsr.street_name

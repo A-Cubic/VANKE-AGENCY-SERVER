@@ -76,11 +76,15 @@ public class BusGuestController {
 //        return ResultGenerator.genOkResult();
 //    }
 //
-//    @PutMapping
-//    public Result update(@RequestBody BusGuest busGuest) {
-//    	busGuestService.update(busGuest);
-//        return ResultGenerator.genOkResult();
-//    }
+    /**
+     * 修改客源信息
+     * @param busGuest
+     * */
+    @PostMapping("/update")
+    public Result update(@RequestBody BusGuest busGuest) {
+    	busGuestService.update(busGuest);
+        return ResultGenerator.genOkResult();
+    }
     /**
      * 设置为无效客源
      * @param busGuest
