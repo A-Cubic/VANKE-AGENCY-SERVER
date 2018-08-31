@@ -1,7 +1,10 @@
 package com.cubic.api.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -156,10 +159,11 @@ public class BusHouseTransactionController {
     /**
      * 查询成交记录
      * @param map
+     * @throws ParseException 
      * */
     @PreAuthorize("hasAuthority('transaction:list')")
     @PostMapping("/list")
-    public Result list(Principal user,@RequestBody Map<String,Object> map) {
+    public Result list(Principal user,@RequestBody Map<String,Object> map) throws ParseException {
     	PageHelper.startPage(Integer.valueOf( map.get("page").toString()), Integer.valueOf( map.get("size").toString()));
         map.put("username", user.getName());
         if(user.toString().indexOf("ROLE_USER")!=-1){//经济人看自己的成交记录
@@ -169,7 +173,11 @@ public class BusHouseTransactionController {
     	List<BusHouseTransaction> list = busHouseTransactionService.listTransaction(map);
         
         for(BusHouseTransaction busHouseTransaction:list){
-        	
+         	//转换时间格式
+        	SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         	Date date = fmt.parse(busHouseTransaction.getCreateTime());
+    		String  sre= fmt.format(date);    		
+    		busHouseTransaction.setCreateTime(sre);
         	//合同图片
         	if(busHouseTransaction.getContractImg()!=null &&!"".equals(busHouseTransaction.getContractImg())){
         		StringBuffer urlImg=new StringBuffer();

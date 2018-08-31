@@ -136,6 +136,7 @@ public class BusAchievementController {
     public Result detail(@RequestBody Map<String,Object> map) throws ParseException {
     	List<BusAchievement> busAchievementlist = busAchievementService.detailListAchievement(map);
     	  for(BusAchievement busAchievement:busAchievementlist){
+    		  //占比角色
             	if(!"".equals(busAchievement.getRolenum())||null!=busAchievement.getRolenum()){
             		String rolenametext=busAchievement.getRolenum();
             		rolenametext=rolenametext.replaceAll("1","录入人");
@@ -176,6 +177,7 @@ public class BusAchievementController {
     	double price=Double.parseDouble(busHouseTransaction.getBuyIntermediaryPrice())+Double.parseDouble(busHouseTransaction.getBuyLoanPrice())+Double.parseDouble(busHouseTransaction.getSellIntermediaryPrice());
     	//百分之一百
     	double pro=1;
+    	double priceOne=price;
     	//获取房源信息
     	BusHouse busHouse =busHouseService.findById(busHouseTransaction.getHouseId());
     	if(busHouse.getCreateUserName()!=null && !"".equals(busHouse.getCreateUserName())){
@@ -197,7 +199,7 @@ public class BusAchievementController {
     		busAchievementNew.setProportion(String.valueOf((int)(proCreate*100)));
     		pro=pro-proCreate;
     		double priceCreate=price*proCreate;
-    		price=price-priceCreate;
+    		priceOne=priceOne-priceCreate;
     		//录入人业绩金额
     		busAchievementNew.setPrice(String.valueOf((int)priceCreate));
     		list.add(busAchievementNew);
@@ -221,7 +223,7 @@ public class BusAchievementController {
     		busAchievementNew.setProportion(String.valueOf((int)(proRecord*100)));
     		pro=pro-proRecord;
     		double priceRecord=price*proRecord;
-    		price=price-priceRecord;
+    		priceOne=priceOne-priceRecord;
     		//维护人业绩金额
     		busAchievementNew.setPrice(String.valueOf((int)priceRecord));
     		list.add(busAchievementNew);
@@ -245,7 +247,7 @@ public class BusAchievementController {
     		busAchievementNew.setProportion(String.valueOf((int)(proKey*100)));
     		pro=pro-proKey;
     		double priceKey=price*proKey;
-    		price=price-priceKey;
+    		priceOne=priceOne-priceKey;
     		//钥匙人业绩金额
     		busAchievementNew.setPrice(String.valueOf((int)priceKey));
     		list.add(busAchievementNew);
@@ -269,7 +271,7 @@ public class BusAchievementController {
     		busAchievementNew.setProportion(String.valueOf((int)(proExploration*100)));
     		pro=pro-proExploration;
     		double priceExploration=price*proExploration;
-    		price=price-priceExploration;
+    		priceOne=priceOne-priceExploration;
     		//实勘人业绩金额
     		busAchievementNew.setPrice(String.valueOf((int)priceExploration));
     		list.add(busAchievementNew);
@@ -290,7 +292,7 @@ public class BusAchievementController {
     		//促成人占剩下的全部
     		busAchievementNew.setProportion(String.valueOf((int)(pro*100)));
     		//促成人占剩下的全部
-    		busAchievementNew.setPrice(String.valueOf((int)price));
+    		busAchievementNew.setPrice(String.valueOf((int)priceOne));
     		list.add(busAchievementNew);
     	
         return ResultGenerator.genOkResult(list);
@@ -312,7 +314,6 @@ public class BusAchievementController {
     	}
     	//查询
         List<BusAchievement> list = busAchievementService.listMyAchievement(map);
-        
         
         for(BusAchievement busAchievement:list){
         	

@@ -1,6 +1,5 @@
 package com.cubic.api.model;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -60,7 +59,7 @@ public class BusHouseTransaction {
      * 创建时间
      */
     @Column(name = "create_time")
-    private Date createTime;
+    private String createTime;
 
     /**
      * 买方服务费
@@ -243,7 +242,7 @@ public class BusHouseTransaction {
      *
      * @return create_time - 创建时间
      */
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
@@ -252,7 +251,7 @@ public class BusHouseTransaction {
      *
      * @param createTime 创建时间
      */
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

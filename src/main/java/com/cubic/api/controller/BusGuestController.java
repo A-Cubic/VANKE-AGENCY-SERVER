@@ -249,10 +249,6 @@ public class BusGuestController {
  			sre= fmt.format(date);
  			busGuest.setRecordTime(sre);
  			
-//    			//如果当前登录人不为维护人就是合作人
-//    			if(!busGuest.getRecordUserName().equals(user.getName())){	
-//    				busGuest.setCollaboratorType("1");
-//    			}
    		}
         PageInfo<BusGuest> pageInfo = new PageInfo<BusGuest>(list);
         return ResultGenerator.genOkResult(pageInfo);
