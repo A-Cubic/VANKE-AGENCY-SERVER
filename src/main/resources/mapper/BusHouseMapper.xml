@@ -153,12 +153,16 @@
 					and  bh.street_name=bsr.street_name
 				
 			</if>
+			<if test="rangeType==null or rangeType != 2"><!-- 不是共享池数据 -->
+			     and bh.isshare = 0
+			</if>
 		    <if test="rangeType!=null and rangeType==2"><!-- 共享房源条件-->	
 					
 				 and  bh.region_name=bsr.region_name
 				 and  bh.street_name=bsr.street_name
-				 and bh.isshare = 1
+				 and  bh.isshare = 1
 			</if>
+		
 			<if test="rangeType!=null and rangeType==4"><!-- 维护房源条件-->
 				    <if test="role!=null and (role == 1 or role ==5 or role == 4)"	><!-- 店长和店经理可以看本店所有人维护的房源 -->
 			   				 and  bh.record_user_name in (select username from sys_user where store_id=su.store_id)
@@ -285,9 +289,7 @@
 			<if test="layout != null and layout!=''"><!-- 房源装修条件-->
 				 and bh.layout = #{layout}
 			</if>
-			<if test="isshare==null or isshare == 0"><!-- 不是共享池数据 -->
-			     and bh.isshare = 0
-			</if>
+		
 
 			<if test="iskey != null and  iskey !='' "><!-- 是否有钥匙条件-->
 				 and bh.iskey = #{iskey}
