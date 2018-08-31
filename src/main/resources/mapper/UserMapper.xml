@@ -145,4 +145,21 @@
     	WHERE 
     		id=#{id}
     </update>
+    
+    
+    <select id="UserCut" parameterType="map" resultType="com.cubic.api.model.home.CurrentUser">
+    	SELECT suer.username,bs.store_name
+    	FROM  sys_user suer
+    	LEFT JOIN sys_user su ON su.username=#{username}
+    	LEFT JOIN  base_store bs ON bs.`id`!=su.`store_id`
+    	LEFT JOIN sys_user_role sur ON sur.user_id=su.id
+    	LEFT JOIN sys_user_role sur2 ON sur2.user_id=suer.id
+    	WHERE
+		suer.`store_id`=bs.`id`
+		AND sur2.`role_id`=sur.`role_id`
+		AND suer.`username`!=su.`username`
+		AND suer.`phone`=su.`phone` 		
+		AND suer.`relname`=su.relname 
+		GROUP BY bs.store_name 
+    </select>
 </mapper>

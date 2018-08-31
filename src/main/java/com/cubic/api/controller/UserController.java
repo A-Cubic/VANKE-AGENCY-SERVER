@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -251,6 +252,28 @@ public class UserController {
     	}
     	return ResultGenerator.genOkResult("0");
     }
+    
+    /**
+     * 查询切换账号
+     * 
+     * */
+    @PostMapping("/UserCut")
+    public Result UserCut(Principal user){
+    	Map<String,Object> map=new HashMap<String,Object>();
+    	map.put("username", user.getName());	
+    	List<CurrentUser> list=userService.UserCut(map);   	
+        return ResultGenerator.genOkResult(list);
+    }
+    /**
+     * 切换账号
+     * 
+     * */
+    @PostMapping("/changeAccount")
+    public Result changeAccount(@RequestBody final User user){
+    	 this.userService.updateLoginTimeByUsername(user.getUsername());
+         return this.getLogin(user);
+    }
+    
     /**
      * 获得 token
      */
@@ -277,4 +300,5 @@ public class UserController {
         }
         return ResultGenerator.genOkResult(response);	 
     }
+	
 }

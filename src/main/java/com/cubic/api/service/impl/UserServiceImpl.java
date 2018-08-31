@@ -164,4 +164,10 @@ public class UserServiceImpl extends AbstractService<User> implements UserServic
 		userMapper.updateSign(map);
 		
 	}
+
+	@Override
+	public List<CurrentUser> UserCut(Map<String, Object> map) {
+
+		return userMapper.UserCut(map);
+	}
 }

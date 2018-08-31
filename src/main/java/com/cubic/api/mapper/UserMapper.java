@@ -57,6 +57,11 @@ public interface UserMapper extends MyMapper<User> {
     void updateSign(Map<String, Object> map);
     
     /**
+     * 查询切换账号门店
+     * */
+    List<CurrentUser> UserCut(Map<String, Object> map);
+    
+    /**
      * 查询账户列表
      * */
     List<CurrentUser> findMyStoreUser(Map<String, Object> param);

@@ -85,4 +85,9 @@ public interface UserService extends Service<User> {
     
     String getTokenFromDB(String username);
     void updateTokenDB(String username,String token);
+    
+    /**
+     * 查询切换账号门店
+     * */
+    List<CurrentUser> UserCut(Map<String, Object> map);
 }
