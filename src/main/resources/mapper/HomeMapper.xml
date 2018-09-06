@@ -322,7 +322,7 @@
 	</select>
 	
 	<select id="selectStoreLook" parameterType="String" resultType="map">
-			SELECT DATE(bgl.create_time) createTime,COUNT(bgl.house_id) countScore
+			SELECT DATE(bgl.create_time) createTime,COUNT(DISTINCT bgl.house_id) countScore
 				FROM  `bus_guest_lookrecord` bgl
 				LEFT JOIN `sys_user` su ON su.username= bgl.user_name
 				WHERE 
