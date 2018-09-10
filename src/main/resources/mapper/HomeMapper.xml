@@ -157,7 +157,7 @@
 		
 			 FROM 	bus_house bh
 			 WHERE 
-			  bh.state='0'
+			  bh.state <![CDATA[<>]]> '1' 
 			 <if test="role != null and (role == 2 or role == 3)">
 				 AND (bh.`record_user_name`=#{username}
 				 OR bh.`key_user_name`=#{username}
@@ -193,7 +193,7 @@
 			 LEFT JOIN  `sys_user` u ON u.`username` =#{username}
 			 LEFT JOIN base_store bs ON bs.id = u.store_id	
 			 WHERE 
-			    bh.state='0'
+			    bh.state <![CDATA[<>]]> '1' 
 			 
 	
 	</select>
@@ -253,10 +253,10 @@
           
           <if test="type!=null">
 				<if test="type==1">
-					<![CDATA[ AND DATE(ba.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(ba.create_time) <= DATE(NOW())]]>
+					<![CDATA[ AND YEARWEEK(DATE(ba.create_time))=YEARWEEK(NOW())]]>
 				</if>
 				<if test="type==2">
-					<![CDATA[ AND DATE(ba.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(ba.create_time) <= DATE(NOW())]]>
+					<![CDATA[ AND DATE_FORMAT(ba.create_time,'%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m')]]>
 				</if>
 			</if>
 		LEFT JOIN sys_user_role sur ON su.id=sur.user_id 
@@ -295,19 +295,19 @@
 			LEFT JOIN `bus_house` bh ON su.`username`=bh.`create_user_name`	     AND bh.state<![CDATA[<>]]>'1'               
 				<if test="type!=null">
 					<if test="type==1">
-						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND YEARWEEK(DATE(bh.create_time))=YEARWEEK(NOW())]]>
 					</if>
 					<if test="type==2">
-						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND DATE_FORMAT(bh.create_time,'%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m')]]>
 					</if>
 				</if>
 			LEFT JOIN `bus_guest` bg ON su.`username`=bg.`create_user_name`    AND bg.iskey<![CDATA[<>]]>'1'
 				<if test="type!=null">
 					<if test="type==1">
-						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND YEARWEEK(DATE(bg.create_time))=YEARWEEK(NOW())]]>
 					</if>
 					<if test="type==2">
-						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND DATE_FORMAT(bg.create_time,'%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m')]]>
 					</if>
 				</if>
 			LEFT JOIN `sys_user_role` sur ON su.id=sur.`user_id`
@@ -348,19 +348,19 @@
 			LEFT JOIN `bus_house` bh ON su.`username`=bh.`create_user_name`	 AND bh.state<![CDATA[<>]]>'1'          
 				<if test="type!=null">
 					<if test="type==1">
-						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND YEARWEEK(DATE(bh.create_time))=YEARWEEK(NOW())]]>
 					</if>
 					<if test="type==2">
-						<![CDATA[ AND DATE(bh.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bh.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND DATE_FORMAT(bh.create_time,'%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m')]]>
 					</if>
 				</if>
 			LEFT JOIN `bus_guest` bg ON su.`username`=bg.`create_user_name` AND bg.iskey<![CDATA[<>]]>'1'
 				<if test="type!=null">
 					<if test="type==1">
-						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 7 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND YEARWEEK(DATE(bg.create_time))=YEARWEEK(NOW())]]>
 					</if>
 					<if test="type==2">
-						<![CDATA[ AND DATE(bg.create_time) > DATE(DATE_SUB(NOW(),INTERVAL 30 DAY)) AND  DATE(bg.create_time) <= DATE(NOW())]]>
+						<![CDATA[ AND DATE_FORMAT(bg.create_time,'%Y%m')=DATE_FORMAT(CURDATE(),'%Y%m')]]>
 					</if>
 				</if>
 			LEFT JOIN `sys_user_role` sur ON su.id=sur.`user_id`

@@ -153,6 +153,7 @@
 					and  bh.street_name=bsr.street_name
 				
 			</if>
+
 			<if test="rangeType==null or rangeType != 2"><!-- 不是共享池数据 -->
 			     and bh.isshare = 0
 			</if>
@@ -181,7 +182,7 @@
 				 	and bh.state ='1'
 			</if>
 			<if test="rangeType==null or rangeType!=3"><!-- 不是无效房源条件-->
-				 	 and bh.state = '0'
+				 	 and bh.state <![CDATA[<>]]> '1'
 			</if>
 			
 			<if test="regionCode != null and regionCode!=0"><!-- 区条件-->
@@ -556,7 +557,7 @@
 				 su.username=#{userName}	
 				 and  su.store_id=(SELECT store_id FROM `sys_user` WHERE username=bh.record_user_name)
 				 and bh.isfine = 1
-				 and bh.state=0
+				 and bh.state <![CDATA[<>]]> '1'
 		group by  bh.id
 		order by  bh.create_time desc
 	</select>

@@ -165,7 +165,7 @@
 							and  bg.isshare='1'
 					</if>
 					<if test="isType==null or isType!=2"><!-- 不是无效池条件 -->
-							and bg.iskey='0'
+							and bg.iskey<![CDATA[<>]]>'1'
 					</if>
 					<if test="isType!=null and isType==2"><!-- 是无效池条件 -->
 							and bg.iskey='1'

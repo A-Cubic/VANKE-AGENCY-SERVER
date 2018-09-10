@@ -3,8 +3,10 @@ package com.cubic.api.controller;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -227,13 +229,21 @@ public class HomeController {
 				int sumScoreLook=0;
 				for(Map<String,Object> maplist:score.getMyStoreLookList()){
 					DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					DateTimeFormatter fmtM = DateTimeFormatter.ofPattern("yyyy-MM");
 					LocalDate cr=LocalDate.now();
+				
 					//按照时间计算
 					if(maplist.get("createTime")!=null&&!"".equals(maplist.get("createTime").toString())){
 						LocalDate cr2=LocalDate.parse(maplist.get("createTime").toString(),fmt);
+						WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY,4);
+						//获取当前时间的周
+						int weeks=cr.get(weekFields.weekOfWeekBasedYear());
+						//获取带看时间的周
+						int weeks2=cr2.get(weekFields.weekOfWeekBasedYear());
 						if("1".equals(map.get("type").toString())){
-							long num=cr.toEpochDay()-cr2.toEpochDay();
-							if(num<=7){
+							//long num=cr.toEpochDay()-cr2.toEpochDay();
+							//当周
+							if(weeks==weeks2){
 								int looknum=Integer.valueOf(maplist.get("countScore").toString());
 								sum=sum+looknum;
 								if(looknum==1){
@@ -246,8 +256,11 @@ public class HomeController {
 							}
 						}
 						if("2".equals(map.get("type").toString())){
-							long num=cr.toEpochDay()-cr2.toEpochDay();
-							if(num<=30){
+							String crM=fmtM.format(cr);
+							String cr2M=fmtM.format(cr2);
+//							long num=cr.toEpochDay()-cr2.toEpochDay();
+							//当月
+							if(crM.equals(cr2M)){
 								int looknum=Integer.valueOf(maplist.get("countScore").toString());
 								sum=sum+looknum;
 								if(looknum==1){
@@ -334,14 +347,21 @@ public class HomeController {
 				int sumScoreLook=0;
 				for(Map<String,Object> maplist:score.getStoreAllLookList()){
 					DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					DateTimeFormatter fmtM = DateTimeFormatter.ofPattern("yyyy-MM");
 					LocalDate cr=LocalDate.now();
+					WeekFields weekFields = WeekFields.of(DayOfWeek.MONDAY,4);
+				
 					//按照时间计算
 					if(maplist.get("createTime")!=null&&!"".equals(maplist.get("createTime"))){
 						LocalDate cr2=LocalDate.parse(maplist.get("createTime").toString(),fmt);
 						if("1".equals(map.get("type").toString())){//周
-							long num=cr.toEpochDay()-cr2.toEpochDay();
-							if(num<=7){
-								
+							//获取当前时间的周
+							int weeks=cr.get(weekFields.weekOfWeekBasedYear());
+							//获取带看时间的周
+							int weeks2=cr2.get(weekFields.weekOfWeekBasedYear());
+							//long num=cr.toEpochDay()-cr2.toEpochDay();
+							//当周
+							if(weeks==weeks2){
 								int looknum=Integer.valueOf(maplist.get("countScore").toString());
 								sumLook=sumLook+looknum;
 								if(looknum==1){
@@ -354,8 +374,11 @@ public class HomeController {
 							}
 						}
 						if("2".equals(map.get("type").toString())){//月
-							long num=cr.toEpochDay()-cr2.toEpochDay();
-							if(num<=30){
+							//long num=cr.toEpochDay()-cr2.toEpochDay();
+							String crM=fmtM.format(cr);
+							String cr2M=fmtM.format(cr2);
+							//当月
+							if(crM.equals(cr2M)){
 								
 								int looknum=Integer.valueOf(maplist.get("countScore").toString());
 								sumLook=sumLook+looknum;
