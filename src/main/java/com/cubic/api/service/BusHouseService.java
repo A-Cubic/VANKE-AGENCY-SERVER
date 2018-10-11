@@ -200,4 +200,10 @@ public interface BusHouseService extends Service<BusHouse> {
 	 * @param map
 	 * */
 	void houseStateUp(Map<String, Object> map);
+	
+	/**
+	 * 同步地址(位置)搜索條件
+	 * @param busHouse
+	 * */
+	void updateSearchText(BusHouse busHouse);
 }

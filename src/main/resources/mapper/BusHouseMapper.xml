@@ -435,7 +435,13 @@
 				  
 				);
 	 </insert>
-	 
+	 <update id="updateSearchText" parameterType="Map">
+	 	update bus_house bh
+	 	set searchtext=CONCAT_WS('','大连市',bh.region_name,bh.street_name,bh.xiaoqu_name,bh.address,bh.numfloor,bh.numunit,bh.numhousehold)
+	 	where 
+	 		id=#{id}
+	 	
+	 </update>
 	 
 	 <select id="DetailContacts"  parameterType="Map" resultMap="BaseResultMap">
 	 		SELECT bh.owner,bh.phone,bh.record_user_name,bh.`owner1`,

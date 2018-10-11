@@ -259,4 +259,14 @@ public class BusHouseServiceImpl extends AbstractService<BusHouse> implements Bu
 		busHouseMapper.houseStateUp(map);
 		
 	}
+
+	/**
+	 * 同步地址(位置)搜索條件
+	 * @param busHouse
+	 * */
+	@Override
+	public void updateSearchText(BusHouse busHouse) {
+		busHouseMapper.updateSearchText(busHouse);
+		
+	}
 }

@@ -367,7 +367,9 @@ public class BusHouseController {
 			   }
  		   }
     		    //修改
-    			busHouseService.update(busHouse);  		
+    			busHouseService.update(busHouse);  
+    			//同步位置搜索條件
+    			busHouseService.updateSearchText(busHouse); 
     	}
         return ResultGenerator.genOkResult("1");
     }
